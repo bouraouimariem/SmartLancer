@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espace Freelance - SmartLancer 🌱</title>
+  <style>
+    /* === STYLE GLOBAL === */
+    body {
+      background-color: #f5f9f6;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* HEADER */
+    .bradcam_area {
+      background: linear-gradient(90deg, #1e7a46, #3fae74);
+      padding: 50px 0;
+      color: white;
+      text-align: center;
+    }
+
+    .bradcam_area h3 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    /* CONTAINER PRINCIPAL */
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 40px auto;
+    }
+
+    /* BOUTONS */
+    .btn {
+      border: 2px solid #2b8a56;
+      color: #2b8a56;
+      background: transparent;
+      border-radius: 30px;
+      padding: 8px 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #2b8a56;
+      color: #fff;
+    }
+
+    /* STYLE DES CARTES DE PROJET */
+    .single_jobs {
+      border: 1px solid #d6e9dc;
+      background-color: white;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      padding: 20px;
+      transition: 0.3s;
+    }
+
+    .single_jobs:hover {
+      transform: scale(1.01);
+      border-color: #2b8a56;
+      box-shadow: 0 4px 12px rgba(43, 138, 86, 0.2);
+    }
+
+    .single_jobs h4 {
+      color: #2b8a56;
+      margin-bottom: 10px;
+    }
+
+    .text-muted {
+      color: #555;
+      font-size: 14px;
+    }
+
+    /* FORMULAIRE DE PROPOSITION */
+    .proposal-form {
+      display: none;
+      background: #f0f7f3;
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 10px;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .proposal-form textarea,
+    .proposal-form input {
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .proposal-form button {
+      background: #2b8a56;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 600;
+    }
+
+    .proposal-form button:hover {
+      background: #3fae74;
+    }
+
+    /* === MODAL MES PROPOSITIONS === */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 650px;
+      padding: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+      border-bottom: 2px solid #c8e6c9;
+    }
+
+    .nav-link {
+      padding: 10px 15px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #2b8a56;
+      border-bottom: 3px solid transparent;
+    }
+
+    .nav-link.active {
+      border-bottom: 3px solid #2b8a56;
+    }
+
+    .tab-content {
+      margin-top: 20px;
+    }
+
+    /* Propositions dans le modal */
+    .proposal-item {
+      background: #f5f9f6;
+      border: 1px solid #c8e6c9;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 10px;
+    }
+
+    .proposal-item h4 {
+      color: #1e7a46;
+      margin: 0 0 8px 0;
+    }
+
+    .proposal-item p {
+      margin: 4px 0;
+      color: #333;
+    }
+
+    .proposal-item.refused {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+    }
+
+    .proposal-item.accepted {
+      background: #d1f5d3;
+      border: 1px solid #a7e1ab;
+    }
+
+    .discussion-btn {
+      background: #2b8a56;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 14px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+
+    .discussion-btn:hover {
+      background: #3fae74;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Bouton flottant */
+    .floating-btn {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: #2b8a56;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .floating-btn:hover {
+      background: #3fae74;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="bradcam_area">
+    <h3>🌿 Espace Freelance - SmartLancer</h3>
+  </div>
+
+  <div class="container">
+    <!-- Exemple de projets -->
+    <div class="single_jobs">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h4>Création d’un site éco-responsable</h4>
+        <button class="btn" onclick="toggleForm(this)">Faire une proposition</button>
+      </div>
+      <p class="text-muted">Développer un site rapide et respectueux de l’environnement numérique.</p>
+      <div class="text-muted">
+        💰 Budget : 1000 dt <br>
+        ⏱ Délai : 12 jours <br>
+        📅 Publié le : 10/11/2025
+      </div>
+
+      <div class="proposal-form">
+        <textarea placeholder="💬 Votre proposition..."></textarea>
+        <input type="number" placeholder="💰 Montant proposé (dt)">
+        <input type="number" placeholder="⏱ Délai estimé (jours)">
+        <button>Soumettre la proposition</button>
+      </div>
+    </div>
+
+    <div class="single_jobs">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h4>Application mobile recyclage intelligent ♻️</h4>
+        <button class="btn" onclick="toggleForm(this)">Faire une proposition</button>
+      </div>
+      <p class="text-muted">Créer une application mobile pour localiser les points de recyclage.</p>
+      <div class="text-muted">
+        💰 Budget : 1500 dt <br>
+        ⏱ Délai : 20 jours <br>
+        📅 Publié le : 08/11/2025
+      </div>
+
+      <div class="proposal-form">
+        <textarea placeholder="💬 Votre proposition..."></textarea>
+        <input type="number" placeholder="💰 Montant proposé (dt)">
+        <input type="number" placeholder="⏱ Délai estimé (jours)">
+        <button>Soumettre la proposition</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- === MODAL MES PROPOSITIONS === -->
+  <div id="proposalsModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3 style="text-align:center; color:#2b8a56;">📋 Mes Propositions</h3>
+
+      <div class="nav-tabs">
+        <div class="nav-link active" onclick="showTab('en-attente', event)">🕓 En Attente</div>
+        <div class="nav-link" onclick="showTab('acceptee', event)">✅ Acceptée</div>
+        <div class="nav-link" onclick="showTab('refusee', event)">❌ Refusée</div>
+      </div>
+
+      <!-- Onglet En attente -->
+      <div class="tab-content" id="en-attente">
+        <div class="proposal-item">
+          <h4>Projet : Création d’un site éco-responsable 🌱</h4>
+          <p>Montant proposé : <strong>950 dt</strong></p>
+          <p>Délai estimé : 10 jours</p>
+          <p>Statut : En attente de validation</p>
+        </div>
+      </div>
+
+      <!-- Onglet Acceptée -->
+      <div class="tab-content" id="acceptee" style="display:none;">
+        <div class="proposal-item accepted">
+          <h4>Projet : Application recyclage intelligent ♻️</h4>
+          <p>Montant accepté : <strong>1400 dt</strong></p>
+          <p>Délai : 18 jours</p>
+          <p>Statut : ✅ Acceptée</p>
+          <button class="discussion-btn">💬 Discussion</button>
+        </div>
+      </div>
+
+      <!-- Onglet Refusée -->
+      <div class="tab-content" id="refusee" style="display:none;">
+        <div class="proposal-item refused">
+          <h4>Projet : Tableau de bord écologique</h4>
+          <p>Montant proposé : <strong>800 dt</strong></p>
+          <p>Délai estimé : 7 jours</p>
+          <p>Statut : ❌ Refusée</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === BOUTON FLOTTANT === -->
+  <button class="floating-btn" onclick="openModal()">📋</button>
+
+  <script>
+    // toggle formulaire
+    function toggleForm(button) {
+      const form = button.closest('.single_jobs').querySelector('.proposal-form');
+      const allForms = document.querySelectorAll('.proposal-form');
+      allForms.forEach(f => { if (f !== form) f.style.display = 'none'; });
+      form.style.display = form.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // modal
+    function openModal() { document.getElementById('proposalsModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('proposalsModal').style.display = 'none'; }
+
+    // tabs
+    function showTab(tabId, event) {
+      document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      document.getElementById(tabId).style.display = 'block';
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>
