@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Publications - SmartLancer</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    /* === HEADER === */
+    header {
+      background: #2e7d32;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-container img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+    }
+
+    .logo-container span {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 500;
+      margin-right: 20px;
+    }
+
+    /* === CONTENU === */
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 40px auto;
+    }
+
+    h3 {
+      color: #1b5e20;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h4 {
+      color: #2e7d32;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #555;
+    }
+
+    .details {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      gap: 15px;
+    }
+
+    .details div {
+      background: #f1f8e9;
+      padding: 8px 15px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .btn-info {
+      background: #66bb6a;
+      color: white;
+    }
+
+    .btn-danger {
+      background: #e53935;
+      color: white;
+    }
+
+    .btn-primary {
+      background: #2e7d32;
+      color: white;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    .side-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .side-card h4 {
+      color: #2e7d32;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 12px;
+      font-family: inherit;
+      font-size: 15px;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #66bb6a;
+      box-shadow: 0 0 5px rgba(102,187,106,0.4);
+    }
+
+    .form-check {
+      margin-bottom: 8px;
+    }
+
+    footer {
+      background: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      margin-top: 40px;
+    }
+
+    @media (min-width: 992px) {
+      .grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="logo-container">
+      <img src="https://cdn-icons-png.flaticon.com/512/1163/1163624.png" alt="logo SmartLancer">
+      <span>SmartLancer</span>
+    </div>
+    <div class="page-title">🌿 Mes Publications</div>
+  </header>
+
+  <!-- ===== CONTENU PRINCIPAL ===== -->
+  <div class="container grid">
+    <!-- COLONNE GAUCHE -->
+    <div>
+      <h3>Vos Publications</h3>
+
+      <div class="card">
+        <h4>Création d’un site web éco-responsable</h4>
+        <p>Développer un site vitrine moderne, rapide et respectueux des principes de l’éco-conception numérique.</p>
+        <div class="details">
+          <div>💰 Budget : 1200 DT</div>
+          <div>⏱ Délai : 20 jours</div>
+          <div>📅 Date : 2025-10-10</div>
+          <div>🔖 Statut : en cours</div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-info">Voir Propositions</button>
+          <button class="btn btn-primary">Modifier</button>
+          <button class="btn btn-danger">Supprimer</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4>Application mobile pour recyclage intelligent ♻️</h4>
+        <p>Créer une application Android pour localiser les points de recyclage et sensibiliser les citoyens.</p>
+        <div class="details">
+          <div>💰 Budget : 2000 DT</div>
+          <div>⏱ Délai : 30 jours</div>
+          <div>📅 Date : 2025-09-25</div>
+          <div>🔖 Statut : terminé</div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary">💬 Ouvrir discussion</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLONNE DROITE -->
+    <div class="side-card">
+      <h4>Créer un Nouveau Projet</h4>
+
+      <form>
+        <input type="text" placeholder="Nom du projet">
+        <textarea rows="3" placeholder="Décrivez votre projet..."></textarea>
+        <input type="number" placeholder="Budget (DT)">
+        <input type="number" placeholder="Délai (jours)">
+
+        <label>Catégories :</label>
+        <div class="form-check"><input type="checkbox"> Web Development</div>
+        <div class="form-check"><input type="checkbox"> Mobile App</div>
+        <div class="form-check"><input type="checkbox"> Design</div>
+        <div class="form-check"><input type="checkbox"> Marketing</div>
+        <div class="form-check"><input type="checkbox"> Intelligence Artificielle</div>
+
+        <button class="btn btn-info" style="width:100%; margin-top:15px;">Publier</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    © 2025 SmartLancer – Ensemble pour un numérique durable 🌍
+  </footer>
+
+</body>
+</html>

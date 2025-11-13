@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title> Gestion des Projets</title>
+  <style>
+    body {
+      background-color: #f1f9f3;
+      font-family: "Poppins", sans-serif;
+      color: #2f4f4f;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background-color: #2e7d32;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 40px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    header img {
+      height: 45px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .username {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .logout-btn {
+      background-color: #c62828;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background-color: #b71c1c;
+    }
+
+    /* ===== CONTENU ===== */
+    .container {
+      width: 90%;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 25px;
+    }
+
+    h2 {
+      color: #1b5e20;
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    .table-responsive {
+      max-height: 400px;
+      overflow-y: auto;
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    thead {
+      background-color: #388e3c;
+      color: white;
+      position: sticky;
+      top: 0;
+    }
+
+    th, td {
+      text-align: center;
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover {
+      background-color: #e8f5e9;
+      transition: 0.3s;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .published {
+      background-color: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    .draft {
+      background-color: #fff8e1;
+      color: #b37400;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .delete-btn {
+      color: #d32f2f;
+      transition: 0.3s;
+    }
+
+    .delete-btn:hover {
+      color: #b71c1c;
+    }
+
+    .section-title {
+      margin: 40px 0 15px;
+      color: #2e7d32;
+      border-left: 5px solid #66bb6a;
+      padding-left: 10px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="logo">
+      <img src="../img/logo.png" alt="Logo Développement Durable">
+    </div>
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+    <div class="header-right">
+      <span class="username">👤 Rasslene</span>
+      <button class="logout-btn">Déconnexion</button>
+    </div>
+  </header>
+
+  <!-- ===== CONTENU ===== -->
+  <div class="container">
+    <h2>🌿 Gestion des Projets</h2>
+
+    <!-- Publications -->
+    <div class="section-title">📢 Liste des Publications</div>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Pub</th>
+            <th>Client</th>
+            <th>Nom Projet</th>
+            <th>Description</th>
+            <th>Budget (DT)</th>
+            <th>Délai</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Utilisateur 12</td>
+            <td>EcoMarket</td>
+            <td>Création d’un site e-commerce durable</td>
+            <td>2000</td>
+            <td>30 jours</td>
+            <td>2025-11-10</td>
+            <td><span class="status-badge published">Publié</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn delete-btn" onclick="confirmDelete(this)"><i class="fa-regular fa-trash-can"></i></button>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td>Utilisateur 7</td>
+            <td>RecyclApp</td>
+            <td>Application mobile pour la gestion du tri sélectif</td>
+            <td>1500</td>
+            <td>20 jours</td>
+            <td>2025-10-20</td>
+            <td><span class="status-badge draft">En attente</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn delete-btn" onclick="confirmDelete(this)"><i class="fa-regular fa-trash-can"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Propositions -->
+    <div class="section-title">💼 Liste des Propositions</div>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Proposition</th>
+            <th>Freelancer</th>
+            <th>ID Projet</th>
+            <th>Commentaire</th>
+            <th>Montant (DT)</th>
+            <th>Délai Estimé</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5</td>
+            <td>Freelancer 8</td>
+            <td>1</td>
+            <td>Je peux livrer en 25 jours avec design inclus.</td>
+            <td>1800</td>
+            <td>25 jours</td>
+            <td>2025-11-08</td>
+            <td><span class="status-badge published">Acceptée</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn delete-btn" onclick="confirmDelete(this)"><i class="fa-regular fa-trash-can"></i></button>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td>Freelancer 5</td>
+            <td>2</td>
+            <td>Expérience en développement d’applis éco-responsables.</td>
+            <td>1600</td>
+            <td>22 jours</td>
+            <td>2025-10-22</td>
+            <td><span class="status-badge draft">En attente</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn delete-btn" onclick="confirmDelete(this)"><i class="fa-regular fa-trash-can"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function confirmDelete(button) {
+      if (confirm("🗑️ Voulez-vous vraiment supprimer cet élément ?")) {
+        const row = button.closest('tr');
+        row.style.transition = "0.5s";
+        row.style.backgroundColor = "#ffcdd2";
+        setTimeout(() => row.remove(), 500);
+      }
+    }
+  </script>
+</body>
+</html>
