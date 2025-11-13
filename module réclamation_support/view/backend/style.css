@@ -1,0 +1,126 @@
+/* Style global */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f6f8;
+}
+
+/* En-tête */
+header {
+  background-color: #1b7c3d;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+header h1 {
+  margin: 0;
+}
+
+header nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 500;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+/* Section tableau */
+section {
+  margin: 40px auto;
+  width: 80%;
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #1b7c3d;
+  color: white;
+  padding: 15px;
+  text-align: left;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Statuts */
+.statut {
+  padding: 5px 10px;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.attente {
+  background-color: #f0ad4e;
+}
+
+.encours {
+  background-color: #0275d8;
+}
+
+.resolue {
+  background-color: #5cb85c;
+}
+
+/* Boutons */
+button {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  font-weight: 500;
+  transition: 0.3s;
+  
+}
+
+.repondre {
+  background-color: #28a745;
+}
+
+.repondre:hover {
+  background-color: #218838;
+}
+
+.supprimer {
+  background-color: #dc3545;
+  margin-left: 8px;
+}
+
+.supprimer:hover {
+  background-color: #c82333;
+}
+
+/* Pied de page */
+footer {
+  text-align: center;
+  padding: 15px;
+  background-color: #1b7c3d;
+  color: white;
+  font-size: 0.9em;
+  margin-top: 40px;
+  box-shadow: 0 -3px 6px rgba(0,0,0,0.1);
+}
