@@ -11,7 +11,7 @@ body {
 
 /* ===== Header ===== */
 header {
-    background-color: #28a745; /* vert */
+    background-color:#1b7c3d; /* vert */
     color: white;
     display: flex;
     align-items: center;
@@ -54,7 +54,7 @@ form {
 form h1 {
     text-align: center;
     margin-bottom: 20px;
-    color: #28a745; /* vert */
+    color:#1b7c3d; /* vert */
 }
 
 .form-group {
@@ -78,7 +78,7 @@ form h1 {
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: #28a745; /* vert */
+    border-color: #1b7c3d; /* vert */
     outline: none;
 }
 
@@ -86,7 +86,7 @@ form h1 {
 .btn-submit {
     width: 100%;
     padding: 12px;
-    background-color: #28a745; /* vert */
+    background-color: #1b7c3d; /* vert */
     color: white;
     border: none;
     border-radius: 5px;
@@ -96,13 +96,13 @@ form h1 {
 }
 
 .btn-submit:hover {
-    background-color: #218838; /* vert plus foncé au survol */
+    background-color: #1b7c3d; /* vert plus foncé au survol */
 }
 
 /* ===== Footer ===== */
 footer {
     text-align: center;
     padding: 15px;
-    background-color: #28a745; /* vert */
+    background-color: #1b7c3d; /* vert */
     color: white;
 }
