@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Freelancers - SmartLancer</title>
+  <style>
+   
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #f4f7f6;
+      color: #333;
+    }
+
+    
+    header {
+      background-color: #0d623d;
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 25px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #b2f0c3;
+    }
+
+    
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      text-align: center;
+    }
+
+    h2 {
+      color: #0d623d;
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    p.subtitle {
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+   
+    .freelancers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 25px 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 3px solid #0d623d;
+    }
+
+    .card h3 {
+      color: #0d623d;
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .stars {
+      color: #f8b400;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 14px;
+      background-color: #0d623d;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #128e5d;
+    }
+
+   
+    footer {
+      background-color: #0d623d;
+      color: white;
+      text-align: center;
+      padding: 12px 0;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.2rem;
+      }
+      nav a {
+        margin-left: 12px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  
+  <header>
+    <h1>SmartLancer</h1>
+    <nav>
+      <a href="#">Accueil</a>
+      <a href="#">Explorer</a>
+      <a href="#">Freelancers</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  
+  <div class="container">
+    <h2>Top Freelancers 🌟</h2>
+    <p class="subtitle">Découvrez nos meilleurs freelances notés par les clients</p>
+
+    <div class="freelancers">
+        <span class="rank"></span>
+      <div class="card">
+         
+        <img src="images/profil1.jpeg" alt="Ahmed Ben Salah">
+        <span class="rank">👑 </span>
+        <h3>Ahmed Ben Salah</h3>
+        <p>Développeur Web</p>
+        <div class="stars">★★★★★</div>
+        <p><strong>Note moyenne :</strong> 5.0 / 5</p>
+        <a href="#" class="btn">Voir Profil</a>
+      </div>
+       <span class="rank"></span>
+
+      <div class="card">
+        <img src="images/profil2.jpeg" alt="Fatma Trabelsi">
+        <h3>Fatma Trabelsi</h3>
+        <p>Designer Graphique</p>
+        <div class="stars">★★★★★</div>
+        <p><strong>Note moyenne :</strong> 4.9 / 5</p>
+        <a href="#" class="btn">Voir Profil</a>
+      </div>
+
+      <div class="card">
+        <img src="images/profil3.jpeg" alt="Yassine Khemiri">
+        <h3>Yassine Khemiri</h3>
+        <p>Rédacteur Web</p>
+        <div class="stars">★★★★☆</div>
+        <p><strong>Note moyenne :</strong> 4.5 / 5</p>
+        <a href="#" class="btn">Voir Profil</a>
+      </div>
+
+      <div class="card">
+        <img src="images/profil5.jpeg" alt="Zaineb Jlassi">
+        <h3>Bassma Jlassi</h3>
+        <p>Community Manager</p>
+        <div class="stars">★★★★☆</div>
+        <p><strong>Note moyenne :</strong> 4.4 / 5</p>
+        <a href="#" class="btn">Voir Profil</a>
+      </div>
+    </div>
+  </div>
+
+  
+  <footer>
+    &copy; 2025 SmartLancer - Tous droits réservés.
+  </footer>
+</body>
+</html>

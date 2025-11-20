@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avis & Évaluations - SmartLancer</title>
+    <style>
+      
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: #dadedb;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #1b7c3d;
+            padding: 20px 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header img.logo {
+            height: 100px;
+        }
+
+        header nav a {
+            margin-left: 20px;
+            color: #ffffff; 
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        header nav a:hover {
+            color: #1d4ed8; 
+        }
+
+        
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 85vh;
+        }
+
+        .avis-box {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .avis-box h2 {
+            text-align: center;
+            color: #1b7c3d;
+            margin-bottom: 25px;
+        }
+
+        
+        .form-avis {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-avis label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .form-avis input, 
+        .form-avis textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-avis input:focus, 
+        .form-avis textarea:focus {
+            outline: none;
+            border-color: #009879;
+            box-shadow: 0 0 0 3px rgba(0,152,121,0.2);
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+       
+        .rating {
+            display: flex;
+            justify-content: flex-start;
+            gap: 8px;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 28px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .rating input:checked ~ label,
+        .rating label:hover,
+        .rating label:hover ~ label {
+            color: #ffc107;
+        }
+
+        
+        .btn {
+            background-color: #0d984e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #243f8b; 
+        }
+
+       
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #1b7c3d;
+            border-top: 1px solid #eee;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+       
+        @media (max-width: 600px) {
+            .avis-box {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+  
+    <header>
+        <img src="images/logo10.png " alt="Logo SmartLancer" class="logo" >
+        <nav>
+            <a href="services.html">Accueil</a>
+            <a href="Explorer.html">Explorer</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+   
+    <main>
+        <div class="avis-box">
+            <h2>Laisser un avis</h2>
+            <form action="#" method="post" class="form-avis">
+                <label for="nom">Nom complet</label>
+                <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Votre email" required>
+
+                <label>Votre note</label>
+                <div class="rating">
+                                
+                    <input type="radio" id="star1" name="note" value="1"><label for="star1">★</label>
+                    <input type="radio" id="star2" name="note" value="2"><label for="star2">★</label>
+                    <input type="radio" id="star3" name="note" value="3"><label for="star3">★</label>
+                    <input type="radio" id="star4" name="note" value="4"><label for="star4">★</label>
+                    <input type="radio" id="star5" name="note" value="5"><label for="star5">★</label>
+
+
+                </div>
+
+                <label for="commentaire">Votre avis</label>
+                <textarea id="commentaire" name="commentaire" placeholder="Écrivez votre retour..." required></textarea>
+
+                <button type="submit" class="btn">Envoyer l'avis</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 SmartLancer. Tous droits réservés.</p>
+    </footer>
+
+</body>
+</html>
