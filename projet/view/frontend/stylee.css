@@ -1,0 +1,56 @@
+/* --------- BACKGROUND (Vert pastel élégant) --------- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+
+    background-color: #d6f5d6; /* Vert pastel doux */
+
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --------- CONTAINER (style glass, léger) --------- */
+.landing-container {
+    background: rgba(255, 255, 255, 0.6); /* Blanc translucide moderne */
+    backdrop-filter: blur(6px); /* Effet verre */
+    padding: 40px 50px;
+    border-radius: 18px;
+    text-align: center;
+    width: 480px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* LOGO */
+.logo {
+    width: 110px;
+    margin-bottom: 20px;
+}
+
+/* TITRE */
+.landing-container h1 {
+    font-size: 26px;
+    margin-bottom: 25px;
+    color: #1a3d1a; /* Vert foncé lisible */
+    font-weight: 700;
+}
+
+/* BUTTON (vert moderne) */
+.btn {
+    display: inline-block;
+    background-color: #2e8b57; /* Vert moderne élégant */
+    color: white;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.25s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #256f47; /* Plus foncé au survol */
+    transform: translateY(-2px);
+}
