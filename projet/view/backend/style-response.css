@@ -1,0 +1,109 @@
+/* --------- BACKGROUND (Vert pastel élégant) --------- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #d6f5d6; /* Vert pastel doux */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* --------- CONTAINER (style glass, léger) --------- */
+.container {
+    background: rgba(255, 255, 255, 0.65); /* Blanc translucide moderne */
+    backdrop-filter: blur(8px); /* Effet verre */
+    padding: 40px 50px;
+    border-radius: 18px;
+    text-align: center;
+    width: 500px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* TITRE */
+.container h1 {
+    font-size: 26px;
+    margin-bottom: 25px;
+    color: #1a3d1a; /* Vert foncé lisible */
+    font-weight: 700;
+}
+
+/* BLOC INFO RÉCLAMATION */
+.reclamation-info {
+    background-color: rgba(46, 139, 87, 0.1); /* Vert clair doux */
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    text-align: left;
+    color: #1a3d1a;
+}
+
+.reclamation-info p {
+    margin: 6px 0;
+    font-size: 15px;
+}
+
+/* TEXTAREA */
+textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    resize: vertical;
+    margin-bottom: 20px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* --------- BOUTONS --------- */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Bouton envoyer (vert moderne) */
+button.btn-send {
+    background-color: #2e8b57;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+}
+
+button.btn-send:hover {
+    background-color: #256f47;
+    transform: translateY(-2px);
+}
+
+/* Bouton annuler (gris moderne) */
+a.btn-cancel {
+    background-color: #aaaaaa;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.25s ease-in-out;
+}
+
+a.btn-cancel:hover {
+    background-color: #888888;
+    transform: translateY(-2px);
+}
+
+/* FOOTER */
+footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #1a3d1a;
+}

@@ -1,0 +1,89 @@
+/* --------- BACKGROUND (Vert pastel élégant) --------- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #d6f5d6; /* Vert pastel doux */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --------- CONTAINER PRINCIPAL --------- */
+h1 {
+    margin-top: 40px;
+    margin-bottom: 25px;
+    color: #1a3d1a;
+    text-align: center;
+}
+
+/* --------- TABLEAU --------- */
+table {
+    width: 90%;
+    max-width: 1100px;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(6px);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 15px;
+    color: #1a3d1a;
+}
+
+th {
+    background-color: rgba(46, 139, 87, 0.2); /* vert clair pour les en-têtes */
+}
+
+tr:nth-child(even) {
+    background-color: rgba(46, 139, 87, 0.05);
+}
+
+/* --------- BOUTONS --------- */
+.button {
+    padding: 8px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    transition: all 0.25s ease-in-out;
+    font-size: 14px;
+    display: inline-block;
+    margin-right: 10px; /* <-- espace entre les boutons */
+}
+
+.button.delete {
+    background-color: #e74c3c;
+}
+
+.button.delete:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+.button.reply {
+    background-color: #2e8b57;
+}
+
+.button.reply:hover {
+    background-color: #256f47;
+    transform: translateY(-2px);
+}
+
+
+/* --------- FOOTER --------- */
+footer {
+    width: 100%;
+    background-color: #2f4f2f;
+    color: white;
+    text-align: center;
+    padding: 15px 10px;
+    margin-top: auto;
+}
