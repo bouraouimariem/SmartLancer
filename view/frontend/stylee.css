@@ -1,56 +1,98 @@
-/* --------- BACKGROUND (Vert pastel élégant) --------- */
-body {
+/* --------- RESET --------- */
+* {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
 
-    background-color: #d6f5d6; /* Vert pastel doux */
-
-    height: 100vh;
+/* --------- BODY --------- */
+body {
+    font-family: 'Arial', sans-serif;
+    background: #d6f5d6; /* Vert pastel doux */
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
 }
 
-/* --------- CONTAINER (style glass, léger) --------- */
+/* --------- CONTAINER PRINCIPAL --------- */
 .landing-container {
-    background: rgba(255, 255, 255, 0.6); /* Blanc translucide moderne */
-    backdrop-filter: blur(6px); /* Effet verre */
-    padding: 40px 50px;
-    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 50px 40px;
+    border-radius: 20px;
     text-align: center;
-    width: 480px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
-/* LOGO */
+/* --------- LOGO --------- */
 .logo {
-    width: 110px;
-    margin-bottom: 20px;
+    width: 100px;
+    margin-bottom: 25px;
 }
 
-/* TITRE */
+/* --------- TITRE --------- */
 .landing-container h1 {
     font-size: 26px;
-    margin-bottom: 25px;
-    color: #1a3d1a; /* Vert foncé lisible */
-    font-weight: 700;
+    color: #1a3d1a;
+    font-weight: bold;
+    margin-bottom: 15px;
 }
 
-/* BUTTON (vert moderne) */
-.btn {
-    display: inline-block;
-    background-color: #2e8b57; /* Vert moderne élégant */
-    color: white;
-    padding: 12px 28px;
-    border-radius: 8px;
-    text-decoration: none;
+/* --------- SOUS-TITRE --------- */
+.landing-container .subtitle {
     font-size: 16px;
+    color: #2e8b57;
+    margin-bottom: 30px;
+}
+
+/* --------- BOUTONS --------- */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 8px;
     font-weight: bold;
-    transition: 0.25s ease-in-out;
+    font-size: 16px;
+    color: white;
+    background-color: #2e8b57;
+    transition: all 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #256f47; /* Plus foncé au survol */
-    transform: translateY(-2px);
+    background-color: #256f47;
+    transform: translateY(-3px);
+}
+
+/* BOUTON SECONDAIRE */
+.btn.secondary-btn {
+    background-color: #4caf50;
+}
+
+.btn.secondary-btn:hover {
+    background-color: #3e8e41;
+}
+
+/* --------- RESPONSIVE --------- */
+@media (max-width: 480px) {
+    .landing-container {
+        padding: 30px 20px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
 }

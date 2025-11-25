@@ -22,7 +22,7 @@ if (isset($_GET['delete_id'])) {
 <head>
     <meta charset="UTF-8">
     <title>Mes Réclamations</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="reclamations.css">
 </head>
 <body>
 <div class="container">
