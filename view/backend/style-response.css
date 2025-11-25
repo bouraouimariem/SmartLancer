@@ -48,7 +48,7 @@ body {
 /* --------- TEXTAREA --------- */
 textarea {
     width: 100%;
-    padding: 15px 40px 15px 15px; /* espace pour icône à droite */
+    padding: 15px;
     border-radius: 12px;
     border: 1px solid #ccc;
     font-size: 16px;
@@ -61,39 +61,6 @@ textarea {
 /* TEXTAREA FOCUS */
 textarea:focus {
     border-color: #1b7c3d;
-}
-
-/* --------- VALIDATION JS AVEC ICONES ✔ ✖ --------- */
-.input-success {
-    border: 2px solid #1b7c3d !important;
-    background: #e6ffea url('check.png') no-repeat right 12px center;
-    background-size: 20px;
-}
-
-.input-error {
-    border: 2px solid #e63946 !important;
-    background: #ffe6e6 url('cross.png') no-repeat right 12px center;
-    background-size: 20px;
-    animation: shake 0.15s;
-}
-
-/* MESSAGE D'ERREUR */
-span.error {
-    display: block;
-    font-size: 14px;
-    color: red;
-    margin-top: 5px;
-    height: 18px;
-    font-weight: 600;
-}
-
-/* Animation shake */
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-4px); }
-    50% { transform: translateX(4px); }
-    75% { transform: translateX(-4px); }
-    100% { transform: translateX(0); }
 }
 
 /* --------- BOUTONS --------- */

@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- -------- FORMULAIRE RÉPONSE -------- -->
     <form method="POST">
 
-        <textarea name="response" id="response" rows="6" required placeholder="Écrire votre réponse ici..."><?= isset($reclamation['reponse']) ? htmlspecialchars($reclamation['reponse']) : '' ?></textarea>
+        <textarea name="response" id="response" rows="6"><?= isset($reclamation['reponse']) ? htmlspecialchars($reclamation['reponse']) : '' ?></textarea>
 
         <div class="actions">
             <button type="submit" class="btn-send">Envoyer la réponse</button>
@@ -72,6 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <footer>
     &copy; <?= date('Y') ?> SmartLancer | Tous droits réservés
 </footer>
+<script src="replayReclamation.js"></script>
+
 
 </body>
 </html>
