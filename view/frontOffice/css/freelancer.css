@@ -1,0 +1,171 @@
+/* ===============================
+   🌿 THÈME DÉVELOPPEMENT DURABLE
+   Couleurs Nature : Vert, Terre, Blanc
+   =============================== */
+
+/* --- Couleurs principales --- */
+:root {
+    --green-primary: #2e7d32;
+    --green-dark: #1b5e20;
+    --green-light: #e8f5e9;
+    --green-soft: #c8e6c9;
+    --earth-brown: #6d4c41;
+    --sky-blue: #81d4fa;
+}
+
+/* --- Header écologique --- */
+.bradcam_bg_1 {
+    background: linear-gradient(135deg, var(--green-primary), var(--green-dark)) !important;
+}
+.bradcam_text h3 {
+    color: white;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* --- Cartes des jobs --- */
+.single_jobs {
+    background: #ffffff;
+    border-left: 5px solid var(--green-primary);
+    border-radius: 12px;
+    transition: 0.3s ease-in-out;
+}
+.single_jobs:hover {
+    transform: scale(1.02);
+    border-left-color: var(--earth-brown);
+    background: var(--green-light);
+}
+
+/* --- Boutons éco-responsables --- */
+.btn-outline-info,
+.propose-btn {
+    border-color: var(--green-primary) !important;
+    color: var(--green-primary) !important;
+    font-weight: bold;
+}
+.btn-outline-info:hover,
+.propose-btn:hover {
+    background: var(--green-primary) !important;
+    color: white !important;
+}
+
+/* --- Boutons secondaires --- */
+.btn-primary {
+    background: var(--green-primary) !important;
+    border: none !important;
+}
+.btn-primary:hover {
+    background: var(--green-dark) !important;
+}
+
+/* --- Form Inputs --- */
+input, textarea, select {
+    border: 1px solid var(--green-primary) !important;
+    border-radius: 8px !important;
+}
+input:focus, textarea:focus, select:focus {
+    border-color: var(--green-dark) !important;
+    box-shadow: 0 0 5px var(--green-soft);
+}
+
+/* --- Tabs du modal --- */
+.custom-nav-tabs .nav-link {
+    font-weight: bold;
+    color: var(--green-primary) !important;
+}
+.custom-nav-tabs .nav-link.active {
+    background: var(--green-primary) !important;
+    color: white !important;
+    border-radius: 8px;
+}
+
+/* --- Modal style nature --- */
+.modal-content {
+    border-radius: 15px;
+    border: 2px solid var(--green-primary);
+    box-shadow: 0 0 25px rgba(0,0,0,0.2);
+}
+.close {
+    color: var(--green-primary) !important;
+}
+.close:hover {
+    color: var(--green-dark) !important;
+}
+
+/* --- Propositions --- */
+.proposition {
+    background: var(--green-light) !important;
+    border-left: 4px solid var(--green-primary);
+}
+.proposition h5 {
+    color: var(--green-primary);
+}
+
+/* --- Floating Button (voir propositions) --- */
+.floating-ball button {
+    background: var(--green-primary) !important;
+    border-radius: 30px;
+    color: white;
+    font-weight: bold;
+}
+.floating-ball button:hover {
+    background: var(--green-dark) !important;
+}
+
+/* --- Pagination --- */
+.pagination_wrap ul li a {
+    background: var(--green-light);
+    color: var(--green-primary);
+    font-weight: bold;
+}
+.pagination_wrap ul li a:hover {
+    background: var(--green-primary);
+    color: white;
+}
+
+/* ===============================
+   🌙 MODE SOMBRE DÉVELOPPEMENT DURABLE
+   =============================== */
+.dark-mode {
+    background: #0f281f !important;
+    color: white !important;
+}
+
+.dark-mode .single_jobs {
+    background: #123324 !important;
+    border-left-color: var(--sky-blue) !important;
+    color: white !important;
+}
+
+.dark-mode .btn-outline-info {
+    color: var(--sky-blue) !important;
+    border-color: var(--sky-blue) !important;
+}
+.dark-mode .btn-outline-info:hover {
+    background: var(--sky-blue) !important;
+    color: #0f281f !important;
+}
+
+.dark-mode .modal-content {
+    background: #10251c;
+    border-color: var(--sky-blue);
+}
+
+.dark-mode .custom-nav-tabs .nav-link.active {
+    background: var(--sky-blue) !important;
+    color: #0f281f !important;
+}
+
+.dark-mode .proposition {
+    background: #153828 !important;
+    color: white !important;
+}
+
+.dark-mode .pagination_wrap ul li a {
+    background: #153828;
+    color: var(--sky-blue);
+}
+.dark-mode .pagination_wrap ul li a:hover {
+    background: var(--sky-blue);
+    color: #0f281f;
+}
