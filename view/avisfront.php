@@ -65,125 +65,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>Avis & Évaluations - SmartLancer</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-    :root {
-        --green: #075e3a;
-        --green-dark: #075e3a;
-        --green-light: #c7f6e4;
-        --bg-body: #edf2f7;
-        --card-bg: #ffffff;
-    }
+:root {
+    --green: #075e3a;
+    --green-dark: #075e3a;
+    --green-light: #c7f6e4;
+    --bg-body: #edf2f7;
+    --card-bg: #ffffff;
+}
 
-    body {
-        font-family: 'Poppins', sans-serif;
-        background: var(--bg-body);
-        margin: 0;
-        color: #333;
-    }
+body { font-family: 'Poppins', sans-serif; background: var(--bg-body); margin: 0; color: #333; }
 
-    main {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 90vh;
-        padding: 20px;
-    }
+main {
+    display: flex; justify-content: center; align-items: center;
+    min-height: 90vh; padding: 20px;
+}
 
-    .avis-box {
-        background: var(--card-bg);
-        border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-        padding: 40px;
-        width: 100%;
-        max-width: 500px;
-        border: 3px solid var(--green-light);
-        transition: 0.3s;
-    }
+.avis-box {
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    border: 3px solid var(--green-light);
+    transition: 0.3s;
+}
 
-    .avis-box:hover { transform: translateY(-3px); }
+.avis-box:hover { transform: translateY(-3px); }
 
-    .avis-box h2 {
-        text-align: center;
-        color: var(--green-dark);
-        margin-bottom: 25px;
-        font-size: 28px;
-    }
+.avis-box h2 { text-align: center; color: var(--green-dark); margin-bottom: 25px; font-size: 28px; }
 
-    .form-avis {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-    }
+.form-avis { display: flex; flex-direction: column; gap: 18px; }
 
-    .form-avis label {
-        font-weight: 600;
-        font-size: 14px;
-        color: #333;
-    }
+.form-avis label { font-weight: 600; font-size: 14px; color: #333; }
 
-    .form-avis input, 
-    .form-avis textarea {
-        width: 100%;
-        padding: 12px 14px;
-        border-radius: 14px;
-        border: 1px solid #cdded7;
-        font-size: 15px;
-        font-family: inherit;
-        transition: all 0.3s ease;
-    }
+.form-avis input, .form-avis textarea {
+    width: 100%; padding: 12px 14px; border-radius: 14px;
+    border: 1px solid #cdded7; font-size: 15px; font-family: inherit;
+    transition: all 0.3s ease;
+}
 
-    .form-avis input:focus, 
-    .form-avis textarea:focus {
-        outline: none;
-        border-color: var(--green);
-        box-shadow: 0 0 10px rgba(15,163,107,0.3);
-    }
+.form-avis input:focus, .form-avis textarea:focus {
+    outline: none; border-color: var(--green);
+    box-shadow: 0 0 10px rgba(15,163,107,0.3);
+}
 
-    textarea { resize: none; height: 120px; }
+textarea { resize: none; height: 120px; }
 
-    .rating { display: flex; justify-content: flex-start; gap: 10px; }
+.rating { display: flex; justify-content: flex-start; gap: 10px; }
 
-    .rating input { display: none; }
+.rating input { display: none; }
 
-    .rating label {
-        font-size: 28px;
-        color: #ccc;
-        cursor: pointer;
-        transition: color 0.25s ease;
-    }
+.rating label {
+    font-size: 28px; color: #ccc; cursor: pointer; transition: color 0.25s ease;
+}
 
-    .rating input:checked ~ label,
-    .rating label:hover,
-    .rating label:hover ~ label { color: #FFC107; }
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label { color: #FFC107; }
 
-    .btn {
-        background-color: var(--green);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        padding: 14px 20px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-        margin-top: 10px;
-    }
+.btn {
+    background-color: var(--green);
+    color: white; border: none; border-radius: 12px;
+    padding: 14px 20px; font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: 0.3s; margin-top: 10px;
+}
 
-    .btn:hover {
-        background-color: var(--green-dark);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 14px rgba(15,163,107,0.35);
-    }
+.btn:hover {
+    background-color: var(--green-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(15,163,107,0.35);
+}
 
-    .message {
-        text-align: center;
-        font-weight: bold;
-        color: var(--green-dark);
-        margin-bottom: 15px;
-    }
+.message { text-align: center; font-weight: bold; color: var(--green-dark); margin-bottom: 15px; }
 
-    @media (max-width: 600px) {
-        .avis-box { padding: 30px; }
-    }
+.error-message { color: red; font-size: 13px; margin-top: 2px; display: block; min-height: 18px; }
+
+input.error, textarea.error { border: 2px solid red; animation: shake 0.3s; }
+input.success, textarea.success { border: 2px solid green; }
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+@media (max-width: 600px) { .avis-box { padding: 30px; } }
 </style>
 </head>
 
@@ -198,10 +167,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form action="" method="post" class="form-avis">
             <label for="nom">Nom complet</label>
-            <input type="text" id="nom" name="nom" placeholder="Votre nom" value="<?= htmlspecialchars($avisData['nom']) ?>" required>
+            <input type="text" id="nom" name="nom" placeholder="Votre nom" value="<?= htmlspecialchars($avisData['nom']) ?>" >
+            <span id="nom_error" class="error-message"></span>
 
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Votre email" value="<?= htmlspecialchars($avisData['email']) ?>" required>
+            <input type="text" id="email" name="email" placeholder="Votre email" value="<?= htmlspecialchars($avisData['email']) ?>" >
+            <span id="email_error" class="error-message"></span>
 
             <label>Votre note</label>
             <div class="rating">
@@ -210,13 +181,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="star<?= $i ?>">★</label>
                 <?php endfor; ?>
             </div>
+            <span id="note_error" class="error-message"></span>
 
             <label for="avis">Votre avis</label>
-            <textarea id="avis" name="avis" placeholder="Écrivez votre retour..." required><?= htmlspecialchars($avisData['contenu']) ?></textarea>
+            <textarea id="avis" name="avis" placeholder="Écrivez votre avis..." ><?= htmlspecialchars($avisData['contenu']) ?></textarea>
+            <span id="avis_error" class="error-message"></span>
 
             <button type="submit" class="btn"><?= $isEdit ? "Enregistrer les modifications" : "Envoyer l'avis" ?></button>
         </form>
     </div>
 </main>
+
+<script src="avisfront.js"></script>
 </body>
 </html>

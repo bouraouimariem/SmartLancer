@@ -1,9 +1,11 @@
 <?php 
 require_once __DIR__ . '/../../model/database.php';
 require_once __DIR__ . '/../../model/avis.php';
+require_once __DIR__ . '/../../model/reponse.php';
 
 $pdo = (new Database())->getConnection();
 $avisModel = new Avis($pdo);
+$reponseModel = new Reponse($pdo);
 
 // Supprimer un avis
 if (isset($_GET['delete_id'])) {
@@ -12,7 +14,18 @@ if (isset($_GET['delete_id'])) {
     exit;
 }
 
+// Supprimer une réponse (admin)
+if (isset($_GET['delete_response_id'])) {
+    $id = (int)$_GET['delete_response_id'];
+    if ($id > 0) {
+        $reponseModel->deleteById($id);
+    }
+    header("Location: avisadmin.php");
+    exit;
+}
+
 $allAvis = $avisModel->getAllAvis();
+$allResponses = $reponseModel->getAll();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -206,6 +219,45 @@ $allAvis = $avisModel->getAllAvis();
                 </tbody>
             </table>
 
+        </div>
+    </main>
+
+    <main>
+        <div class="card" style="margin-top:20px;">
+            <h2>Liste des réponses</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Avis ID</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Contenu</th>
+                        <th>Créé le</th>
+                        <th>Supprimer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($allResponses)): ?>
+                        <?php foreach ($allResponses as $r): ?>
+                            <tr>
+                                <td><?= (int)$r['id'] ?></td>
+                                <td><?= (int)$r['avis_id'] ?></td>
+                                <td><?= htmlspecialchars($r['nom']) ?></td>
+                                <td><?= htmlspecialchars($r['email']) ?></td>
+                                <td><?= nl2br(htmlspecialchars($r['contenu'])) ?></td>
+                                <td><?= htmlspecialchars(date('d/m/Y H:i', strtotime($r['created_at']))) ?></td>
+                                <td>
+                                    <a href="avisadmin.php?delete_response_id=<?= $r['id'] ?>" class="btn-delete" onclick="return confirm('Voulez-vous vraiment supprimer cette réponse ?')">Supprimer</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr><td colspan="7" style="text-align:center;">Aucune réponse trouvée.</td></tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     </main>
 

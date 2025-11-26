@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../model/database.php';
 require_once __DIR__ . '/../model/avis.php';
+require_once __DIR__ . '/../model/reponse.php';
 
 // Profil du freelancer
 $profil = [
@@ -14,6 +15,8 @@ $profil = [
 $pdo = (new Database())->getConnection();
 $avisModel = new Avis($pdo);
 $avisList = $avisModel->getAllAvis();
+
+$reponseModel = new Reponse($pdo);
 
 // Traitement du like
 if (isset($_POST['like_avis_id']) && isset($_POST['like_email'])) {
@@ -74,6 +77,15 @@ header nav a {
     background-color: rgba(255,255,255,0.1);
     transition: 0.3s;
 }
+
+/* Dropdown login/menu */
+.nav-dropdown { display:inline-block; position:relative; margin-left:12px; }
+.login-toggle { cursor:pointer; color:white; display:inline-block; padding:6px 12px; border-radius:6px; background-color:rgba(255,255,255,0.06); font-weight:600; }
+.login-toggle:hover { background-color: rgba(255,255,255,0.16); }
+.login-menu { display:none; position:absolute; right:0; top:calc(100% + 6px); background:#fff; color:#333; min-width:180px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.12); overflow:hidden; z-index:2000; }
+.login-menu a { display:block; padding:10px 12px; color:#0a5338; text-decoration:none; font-weight:600; border-bottom:1px solid #f0f0f0; }
+.login-menu a:hover { background:#f6fff7; }
+.nav-dropdown.open .login-menu { display:block; }
 
 header nav a:hover {
     background-color: rgba(255,255,255,0.3);
@@ -203,6 +215,12 @@ footer.secondary-footer {
     <img src="/validationmodule/view/images/logo.png" alt="Logo SmartLancer" class="logo">
     <nav>
         <a href="accueil.html">Accueil</a>
+        <div class="nav-dropdown" id="nav-login">
+            <span class="login-toggle" id="login-toggle" tabindex="0">Se connecter ▾</span>
+            <div class="login-menu" id="login-menu">
+                <a href="/validationmodule/view/backoffice/avisadmin.php">Dashboard</a>
+            </div>
+        </div>
     </nav>
 </header>
 
@@ -243,7 +261,7 @@ footer.secondary-footer {
                 <!-- Like -->
                 <form method="post" style="display:inline;">
                     <input type="hidden" name="like_avis_id" value="<?= $avis['id'] ?>">
-                    <input type="email" name="like_email" placeholder="Votre email" required>
+                    <input type="text" name="like_email" placeholder="Votre email">
 
                     <?php 
                         $likesCount = $avisModel->getLikesCount($avis['id']);
@@ -262,6 +280,35 @@ footer.secondary-footer {
 
                 <a href="/validationmodule/view/avisfront.php?id=<?= $avis['id'] ?>" class="btn-action">✏️ Modifier</a>
                 <a href="/validationmodule/view/deleteAvis.php?id=<?= $avis['id'] ?>" class="btn-action btn-delete">🗑️ Supprimer</a>
+                
+                <!-- Réponses associées -->
+                <?php
+                    $responses = $reponseModel->getByAvisId($avis['id']);
+                ?>
+                <div id="responses-<?= $avis['id'] ?>" class="responses-list" style="margin-top:12px;">
+                    <?php if (!empty($responses)): ?>
+                        <div style="padding:10px; border-left:3px solid #eee; background:#fafafa; border-radius:8px;">
+                        <?php foreach ($responses as $r): ?>
+                            <div class="reponse-item" data-id="<?= $r['id'] ?>" data-avis-id="<?= $avis['id'] ?>" data-nom="<?= htmlspecialchars($r['nom'], ENT_QUOTES) ?>" data-email="<?= htmlspecialchars($r['email'], ENT_QUOTES) ?>" data-contenu="<?= htmlspecialchars($r['contenu'], ENT_QUOTES) ?>" style="margin-bottom:10px;">
+                                <div>
+                                    <strong><?= htmlspecialchars($r['nom']) ?></strong>
+                                    <span style="color:#777; font-size:12px; margin-left:8px;">le <?= htmlspecialchars(date('d/m/Y H:i', strtotime($r['created_at']))) ?></span>
+                                </div>
+                                <p style="margin:6px 0;" class="reponse-contenu"><?= nl2br(htmlspecialchars($r['contenu'])) ?></p>
+                                <div style="display:flex; gap:8px;">
+                                    <button class="btn-action edit-reponse" data-id="<?= $r['id'] ?>">Modifier</button>
+                                    <button class="btn-action btn-delete delete-reponse" data-id="<?= $r['id'] ?>">Supprimer</button>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Bouton pour ouvrir la modal d'ajout -->
+                <div style="margin-top:12px;">
+                    <button class="btn-action open-reponse-btn" data-avis-id="<?= $avis['id'] ?>">Ajouter une réponse</button>
+                </div>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
@@ -286,5 +333,30 @@ footer.secondary-footer {
     <p>Conçu avec ❤️ par l'équipe SmartLancer</p>
 </footer>
 
+<script src="reponse.js"></script>
+<script>
+// Toggle login dropdown
+(function(){
+    const toggle = document.getElementById('login-toggle');
+    const dropdown = document.getElementById('nav-login');
+    if (!toggle || !dropdown) return;
+
+    function closeDropdown() { dropdown.classList.remove('open'); }
+    function openDropdown() { dropdown.classList.add('open'); }
+
+    toggle.addEventListener('click', function(e){
+        e.stopPropagation();
+        dropdown.classList.toggle('open');
+    });
+
+    // close on outside click
+    document.addEventListener('click', function(){ closeDropdown(); });
+
+    // allow keyboard open (Enter/Space)
+    toggle.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dropdown.classList.toggle('open'); }
+    });
+})();
+</script>
 </body>
 </html>
