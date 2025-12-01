@@ -3,15 +3,12 @@ session_start();
 require_once __DIR__ . "/../../Model/Reclamation.php";
 
 $model = new Reclamation();
-
-// Option : si l'utilisateur est connecté, on liste ses réclamations uniquement
 $userEmail = $_SESSION['email'] ?? null;
 $reclamations = $model->listReclamations($userEmail);
 
-// Suppression via GET (en production, préférer POST)
 if (isset($_GET['delete_id'])) {
-    $id = (int)$_GET['delete_id'];
-    $model->deleteReclamation($id);
+    $id_reclamation = (int)$_GET['delete_id'];
+    $model->deleteReclamation($id_reclamation);
     header("Location: reclamations.php");
     exit;
 }
@@ -22,7 +19,7 @@ if (isset($_GET['delete_id'])) {
 <head>
     <meta charset="UTF-8">
     <title>Mes Réclamations</title>
-    <link rel="stylesheet" href="reclamations.css">
+    <link rel="stylesheet" href="css/listreclamations.css">
 </head>
 <body>
 <div class="container">
@@ -38,27 +35,30 @@ if (isset($_GET['delete_id'])) {
             <th>Email</th>
             <th>Sujet</th>
             <th>Message</th>
+            <th>Téléphone</th>
             <th>Date</th>
-            <th>Statut</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
 
         <?php foreach($reclamations as $rec): ?>
         <tr>
-            <td><?= htmlspecialchars($rec['id']) ?></td>
+            <td><?= htmlspecialchars($rec['id_reclamation']) ?></td>
             <td><?= htmlspecialchars($rec['nom']) ?></td>
             <td><?= htmlspecialchars($rec['email']) ?></td>
             <td><?= htmlspecialchars($rec['sujet']) ?></td>
             <td><?= nl2br(htmlspecialchars($rec['message'])) ?></td>
+            <td><?= htmlspecialchars($rec['telephone']) ?></td>
             <td><?= htmlspecialchars($rec['date_envoi']) ?></td>
-            <td><?= htmlspecialchars($rec['statut'] ?? 'En attente') ?></td>
+            <td><?= htmlspecialchars($rec['status'] ?? 'En attente') ?></td>
             <td>
-                <a href="index.php?edit_id=<?= $rec['id'] ?>" class="button edit">Modifier</a>
-                <a href="reclamations.php?delete_id=<?= $rec['id'] ?>" class="button delete"
+                <a href="index.php?edit_id=<?= $rec['id_reclamation'] ?>" class="button edit">Modifier</a>
+                <a href="reclamations.php?delete_id=<?= $rec['id_reclamation'] ?>" class="button delete"
                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?');">Supprimer</a>
-                <?php if(!empty($rec['statut']) && strtolower($rec['statut']) === 'répondu'): ?>
-                    <a href="view_response.php?id=<?= $rec['id'] ?>" class="button add-new">Voir la réponse</a>
-                <?php endif; ?>
+                <a href="discussion_user.php?id=<?= $rec['id_reclamation'] ?>" class="button chat">Voir discussion</a>
+
+                
+ 
             </td>
         </tr>
         <?php endforeach; ?>

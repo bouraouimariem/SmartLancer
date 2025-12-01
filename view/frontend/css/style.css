@@ -1,0 +1,176 @@
+/* ------------------------- */
+/*      STYLE GLOBAL         */
+/* ------------------------- */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background: #ffffff; /* fond blanc du navigateur */
+    color: #333; 
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* ------------------------- */
+/*   CONTENEUR FORMULAIRE    */
+/* ------------------------- */
+
+.container {
+    width: 100%;           /* prend toute la largeur possible */
+    max-width: 700px;      /* taille max pour grands écrans */
+    background: #ffffff;   
+    color: #333;           
+    padding: 40px 30px;    
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* ------------------------- */
+/*          TITRES           */
+/* ------------------------- */
+
+.logo {
+    display: block;
+    margin: 0 auto 20px;
+    width: 120px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    color: #1E90FF;
+    letter-spacing: 1px;
+}
+
+/* ------------------------- */
+/*      MESSAGES HAUT        */
+/* ------------------------- */
+
+.message {
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* succès et erreur */
+.success-message {
+    background: #2ecc71;
+    color: #fff;
+}
+
+.error-message {
+    background: #e74c3c;
+    color: #fff;
+}
+
+/* ------------------------- */
+/*       FORMULAIRES         */
+/* ------------------------- */
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 20px;
+    color: #333;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 15px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 16px;
+    background: #f9f9f9;
+    color: #333;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #999;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: 2px solid #1E90FF;
+    background: #fff;
+}
+
+textarea {
+    resize: none;
+}
+
+/* ------------------------- */
+/*        BOUTONS            */
+/* ------------------------- */
+
+.actions {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+button, .button {
+    background: #1E90FF;
+    padding: 15px 20px;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    flex-grow: 1;
+    transition: 0.3s;
+}
+
+button:hover, .button:hover {
+    background: #0a74d6;
+}
+
+.button.back {
+    background: #555;
+}
+
+.button.back:hover {
+    background: #777;
+}
+
+/* ------------------------- */
+/*          FOOTER           */
+/* ------------------------- */
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #555;
+    font-size: 14px;
+}
+
+/* ------------------------- */
+/*       RESPONSIVE          */
+/* ------------------------- */
+
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 20px;
+    }
+
+    button, .button {
+        font-size: 15px;
+        padding: 12px 18px;
+    }
+}

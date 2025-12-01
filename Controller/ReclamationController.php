@@ -1,86 +1,83 @@
 <?php
 require_once __DIR__ . '/../Model/Reclamation.php';
+require_once __DIR__ . '/../Model/Reponse.php';
 
 class ReclamationController {
+
     private $model;
+    private $responseModel;
 
     public function __construct() {
         $this->model = new Reclamation();
+        $this->responseModel = new Reponse();
     }
 
-    // Liste toutes les réclamations ou celles d'un utilisateur
+    /* -------------------------------
+       RECLAMATIONS
+    --------------------------------*/
     public function list($email = null) {
         return $this->model->listReclamations($email);
     }
 
-    // Ajout d'une réclamation
-    public function add($nom, $email, $sujet, $message, $status = 'En attente') {
-        return $this->model->addReclamation($nom, $email, $sujet, $message, $status);
+    public function add($nom, $email, $sujet, $message, $telephone, $status = 'En attente') {
+        return $this->model->addReclamation($nom, $email, $sujet, $message, $telephone, $status);
     }
 
-    // Suppression
     public function delete($id) {
         $this->model->deleteReclamation($id);
     }
 
-    // Modification
-    public function update($id, $nom, $email, $sujet, $message, $status = null) {
-        $this->model->updateReclamation($id, $nom, $email, $sujet, $message, $status);
+    public function update($id, $nom, $email, $sujet, $message, $telephone, $status = null) {
+        $this->model->updateReclamation($id, $nom, $email, $sujet, $message, $telephone, $status);
     }
 
-    // Récupérer une réclamation par ID
     public function get($id) {
         return $this->model->getReclamation($id);
     }
 
-    // Répondre à une réclamation
-    public function reply($id, $response) {
-        $this->model->replyReclamation($id, $response);
-    }
-
-    // Changer le statut uniquement
     public function changeStatut($id, $statut) {
-        $this->model->updateStatut($id, $statut);
+        return $this->model->updateStatus($id, $statut);
     }
-}
 
+    /* -------------------------------
+       REPONSES / CHAT
+    --------------------------------*/
+    public function reply($id_reclamation, $contenu) {
+        if (empty(trim($contenu))) return false;
+        $this->responseModel->addResponse($id_reclamation, $contenu);
+        $this->model->updateStatus($id_reclamation, "Répondu");
+        return true;
+    }
 
-$controller = new ReclamationController();
+    public function userReply($id_reclamation, $contenu) {
+        if (empty(trim($contenu))) return false;
+        $this->responseModel->addResponse($id_reclamation, $contenu);
+        $this->model->updateStatus($id_reclamation, "Répondu");
+        return true;
+    }
 
-if (isset($_GET['action'])) {
-    $action = $_GET['action'];
-    $id = $_GET['id'] ?? null;
+    public function getResponsesByReclamation($id_reclamation) {
+        return $this->responseModel->getResponsesByReclamation($id_reclamation);
+    }
 
-    switch ($action) {
-        case "delete":
-            if ($id) {
-                $controller->delete($id);
-                header("Location: ../view/backend/listReclamations.php");
-                exit();
-            }
-            break;
+    public function getAllResponses() {
+        return $this->responseModel->getAllResponses();
+    }
 
-        case "reply":
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
-                $response = $_POST['response'];
-                $controller->reply($id, $response);
-                header("Location: ../view/backend/listReclamations.php");
-                exit();
-            }
-            break;
+    public function getResponse($id) {
+        return $this->responseModel->getResponseById($id);
+    }
 
-        case "update":
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
-                $nom = $_POST['nom'] ?? '';
-                $email = $_POST['email'] ?? '';
-                $sujet = $_POST['sujet'] ?? '';
-                $message = $_POST['message'] ?? '';
-                $status = $_POST['statut'] ?? null; // récupère le statut si fourni
-                $controller->update($id, $nom, $email, $sujet, $message, $status);
-                header("Location: ../view/backend/listReclamations.php");
-                exit();
-            }
-            break;
+    public function updateResponse($id, $contenu) {
+        $this->responseModel->updateResponse($id, $contenu);
+    }
+
+    public function deleteResponse($id) {
+        $this->responseModel->deleteResponse($id);
+    }
+
+    public function listWithResponses($email = null) {
+        return $this->model->listReclamationsWithResponses($email);
     }
 }
 ?>

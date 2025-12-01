@@ -10,7 +10,6 @@ class Reclamation {
         $this->conn = $config->getConnexion();
     }
 
-    /* --------------------  LISTE  --------------------- */
     public function listReclamations($email = null) {
         if ($email) {
             $stmt = $this->conn->prepare("SELECT * FROM reclamation WHERE email = ? ORDER BY date_envoi DESC");
@@ -22,55 +21,79 @@ class Reclamation {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /* --------------------  AJOUT  --------------------- */
-    public function addReclamation($nom, $email, $sujet, $message, $status = 'En attente') {
-        $query = "INSERT INTO reclamation (nom, email, sujet, message, status, date_envoi) 
-                  VALUES (?, ?, ?, ?, ?, NOW())";
+    public function addReclamation($nom, $email, $sujet, $message, $telephone, $status = 'En attente') {
+        $query = "INSERT INTO reclamation (nom, email, sujet, message, telephone, status, date_envoi)
+                  VALUES (?, ?, ?, ?, ?, ?, NOW())";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([$nom, $email, $sujet, $message, $status]);
-        return $this->conn->lastInsertId(); 
+        $stmt->execute([$nom, $email, $sujet, $message, $telephone, $status]);
+        return $this->conn->lastInsertId();
     }
 
-    /* --------------------  SUPPRESSION  --------------------- */
-    public function deleteReclamation($id) {
-        $stmt = $this->conn->prepare("DELETE FROM reclamation WHERE id = ?");
-        $stmt->execute([$id]);
+    public function deleteReclamation($id_reclamation) {
+        $stmt = $this->conn->prepare("DELETE FROM reclamation WHERE ID_reclamation = ?");
+        $stmt->execute([$id_reclamation]);
     }
 
-    /* --------------------  MODIFICATION  --------------------- */
-    public function updateReclamation($id, $nom, $email, $sujet, $message, $status = null) {
+    public function updateReclamation($id_reclamation, $nom, $email, $sujet, $message, $telephone, $status = null) {
         if ($status !== null) {
-            $query = "UPDATE reclamation SET nom=?, email=?, sujet=?, message=?, status=? WHERE id=?";
+            $query = "UPDATE reclamation SET nom = ?, email = ?, sujet = ?, message = ?, telephone = ?, status = ? WHERE ID_reclamation = ?";
             $stmt = $this->conn->prepare($query);
-            $stmt->execute([$nom, $email, $sujet, $message, $status, $id]);
+            $stmt->execute([$nom, $email, $sujet, $message, $telephone, $status, $id_reclamation]);
         } else {
-            $query = "UPDATE reclamation SET nom=?, email=?, sujet=?, message=? WHERE id=?";
+            $query = "UPDATE reclamation SET nom = ?, email = ?, sujet = ?, message = ?, telephone = ? WHERE ID_reclamation = ?";
             $stmt = $this->conn->prepare($query);
-            $stmt->execute([$nom, $email, $sujet, $message, $id]);
+            $stmt->execute([$nom, $email, $sujet, $message, $telephone, $id_reclamation]);
         }
     }
 
-    /* --------------------  GET BY ID  --------------------- */
-    public function getReclamation($id) {
-        $stmt = $this->conn->prepare("SELECT * FROM reclamation WHERE id = ?");
-        $stmt->execute([$id]);
+    public function getReclamation($id_reclamation) {
+        $stmt = $this->conn->prepare("SELECT * FROM reclamation WHERE ID_reclamation = ?");
+        $stmt->execute([$id_reclamation]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /* --------------------  REPONSE  --------------------- */
-    public function replyReclamation($id, $reponse) {
-        $query = "UPDATE reclamation 
-                  SET reponse = ?, status = 'Répondu' 
-                  WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$reponse, $id]);
+    // ⚡ Corrigé : status au lieu de statut
+    public function updateStatus($id_reclamation, $status) {
+        $sql = "UPDATE reclamation SET status = :status WHERE id_reclamation = :id";
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(':status', $status);
+        $stmt->bindValue(':id', $id_reclamation);
+
+        return $stmt->execute();
     }
 
-    /* --------------------  CHANGER STATUT  --------------------- */
-    public function updateStatus($id, $status) {
-        $query = "UPDATE reclamation SET status=? WHERE id=?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$status, $id]);
+    public function listReclamationsWithResponses($email = null) {
+        if ($email) {
+            $stmt = $this->conn->prepare("
+                SELECT r.ID_reclamation, r.nom, r.email, r.sujet, r.message, r.status, r.date_envoi, r.telephone,
+                       rep.ID_reponse, rep.contenu, rep.date_reponse
+                FROM reclamation r
+                LEFT JOIN reponses rep ON r.ID_reclamation = rep.ID_reclamation
+                WHERE r.email = ?
+                ORDER BY r.date_envoi DESC
+            ");
+            $stmt->execute([$email]);
+        } else {
+            $stmt = $this->conn->prepare("
+                SELECT r.ID_reclamation, r.nom, r.email, r.sujet, r.message, r.status, r.date_envoi, r.telephone,
+                       rep.ID_reponse, rep.contenu, rep.date_reponse
+                FROM reclamation r
+                LEFT JOIN reponses rep ON r.ID_reclamation = rep.ID_reclamation
+                ORDER BY r.date_envoi DESC
+            ");
+            $stmt->execute();
+        }
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function showReclamation($id) {
+        $sql = "SELECT * FROM reclamation WHERE id_reclamation = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 }
 ?>

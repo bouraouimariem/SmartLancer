@@ -1,0 +1,166 @@
+/* ------------------------- */
+/*      STYLE GLOBAL         */
+/* ------------------------- */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background: #ffffff; /* fond blanc du navigateur */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* ------------------------- */
+/*   CONTENEUR PRINCIPAL     */
+/* ------------------------- */
+
+.container {
+    width: 100%;
+    max-width: 1000px; /* largeur maximum pour grandes résolutions */
+    background: #ffffff;   
+    color: #333;           
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* ------------------------- */
+/*          TITRE            */
+/* ------------------------- */
+
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    color: #1E90FF;
+    letter-spacing: 1px;
+}
+
+/* ------------------------- */
+/*          TABLE            */
+/* ------------------------- */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background-color: #1E90FF;
+    color: #fff;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* ------------------------- */
+/*        BOUTONS            */
+/* ------------------------- */
+
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #fff;
+    background: #1E90FF;
+    text-align: center;
+    transition: 0.3s;
+    margin: 2px;
+}
+
+.button:hover {
+    background: #0a74d6;
+}
+
+.button.back {
+    background: #555;
+}
+
+.button.back:hover {
+    background: #777;
+}
+
+.button.delete {
+    background: #e74c3c;
+}
+
+.button.delete:hover {
+    background: #c0392b;
+}
+
+.button.edit {
+    background: #f39c12;
+}
+
+.button.edit:hover {
+    background: #d68910;
+}
+
+.button.chat {
+    background: #2ecc71;
+}
+
+.button.chat:hover {
+    background: #27ae60;
+}
+
+/* ------------------------- */
+/*      BACK-ZONE BUTTONS    */
+/* ------------------------- */
+
+.back-zone {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/* ------------------------- */
+/*       RESPONSIVE          */
+/* ------------------------- */
+
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .button {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+}
