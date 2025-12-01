@@ -15,19 +15,22 @@ class DiscussionController {
         return $this->messageModel->getMessagesByReclamation($id_reclamation);
     }
 
-    public function sendMessage($id_reclamation, $sender, $contenu) {
-        $rec = $this->reclamationModel->showReclamation($id_reclamation);
-        if (!$rec) return false;
+    public function sendMessage($id_reclamation, $sender, $contenu = '', $file = null) {
+        $filename = null;
 
-        // Vérifier si la discussion est fermée
-        if ($rec['status'] === 'Fermée') return false;
+        if ($file && isset($file['tmp_name']) && $file['error'] === UPLOAD_ERR_OK) {
+            $uploadsDir = __DIR__ . '/../uploads/';
+            if (!is_dir($uploadsDir)) mkdir($uploadsDir, 0775, true);
 
-        // Mettre le statut à "En cours" si c'est la première réponse
-        if ($rec['status'] === 'En attente') {
-            $this->reclamationModel->updateStatus($id_reclamation, 'En cours');
+            $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $filename = uniqid() . "." . $ext;
+            move_uploaded_file($file['tmp_name'], $uploadsDir . $filename);
         }
 
-        return $this->messageModel->addMessage($id_reclamation, $sender, $contenu);
+        // Ne rien envoyer si contenu et fichier sont vides
+        if (empty($contenu) && empty($filename)) return false;
+
+        return $this->messageModel->addMessage($id_reclamation, $sender, $contenu, $filename);
     }
 
     public function closeDiscussion($id_reclamation) {

@@ -11,17 +11,19 @@ class Message {
     }
 
     // Ajouter un message dans le chat
-    public function addMessage($id_reclamation, $sender, $contenu) {
-        $sql = "INSERT INTO messages (id_reclamation, sender, contenu) 
-                VALUES (:id_reclamation, :sender, :contenu)";
-        $stmt = $this->conn->prepare($sql);
+    public function addMessage($id_reclamation, $sender, $contenu, $fichier = null) {
+    $sql = "INSERT INTO messages (id_reclamation, sender, contenu, fichier) 
+            VALUES (:id_reclamation, :sender, :contenu, :fichier)";
+    $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(':id_reclamation', $id_reclamation);
-        $stmt->bindValue(':sender', $sender);
-        $stmt->bindValue(':contenu', $contenu);
+    $stmt->bindValue(':id_reclamation', $id_reclamation);
+    $stmt->bindValue(':sender', $sender);
+    $stmt->bindValue(':contenu', $contenu);
+    $stmt->bindValue(':fichier', $fichier);
 
-        return $stmt->execute();
-    }
+    return $stmt->execute();
+}
+
 
     // Récupérer tous les messages d'une discussion
     public function getMessagesByReclamation($id_reclamation) {

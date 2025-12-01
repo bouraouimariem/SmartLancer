@@ -104,6 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p>© <?= date('Y') ?> Service de Réclamation — Tous droits réservés</p>
 </footer>
 
-<script src="reclamation.js"></script>
+<script src="public/js/reclamation.js"></script>
 </body>
 </html>

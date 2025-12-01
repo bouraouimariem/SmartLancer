@@ -65,5 +65,6 @@ button:hover{background:#256f47;}
 
 <a href="listReclamations.php" class="back">← Retour aux Réclamations</a>
 </div>
+<script src="replayReclamation.js"></script>
 </body>
 </html>
