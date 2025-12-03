@@ -56,6 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$deja_repondu) {
 
 <a href="listReclamations.php" class="back">← Retour aux Réclamations</a>
 </div>
-<script src="replayReclamation.js"></script>
+<script src="public/js/replayReclamation.js"></script>
 </body>
 </html>

@@ -30,7 +30,7 @@ if (isset($_GET['delete_id'])) {
     <meta charset="UTF-8">
     <title>Réclamation de Client</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="listreclamations.css">
+    <link rel="stylesheet" href="css/listreclamations.css">
 
     <style>
         form{margin-bottom:20px;}

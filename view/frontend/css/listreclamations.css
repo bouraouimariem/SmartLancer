@@ -1,178 +1,219 @@
-/* ------------------------- */
-/*      STYLE GLOBAL         */
-/* ------------------------- */
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html, body {
-    height: 100%;
-}
-
-body {
-    font-family: "Poppins", sans-serif;
-    background: #ffffff; /* fond blanc du navigateur */
-    color: #333;
+/* Formulaire de filtrage */
+form {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
-    padding: 20px;
+    gap: 15px;
+    margin-bottom: 20px;
+    background-color: #f0f8ff; /* léger fond bleu clair */
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* ------------------------- */
-/*   CONTENEUR PRINCIPAL     */
-/* ------------------------- */
+/* Labels */
+form label {
+    font-weight: bold;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
+/* Inputs et selects */
+form input[type="text"],
+form input[type="date"],
+form select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="date"]:focus,
+form select:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 8px rgba(30,144,255,0.4);
+}
+
+/* Boutons du formulaire */
+form button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #1E90FF;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Effet glow sur hover */
+form button:hover {
+    background-color: #1C86EE;
+    box-shadow: 0 0 10px #1E90FF, 0 0 20px #1E90FF, 0 0 30px #1E90FF;
+    transform: scale(1.05);
+}
+
+/* Lien Réinitialiser */
+form a {
+    text-decoration: none;
+    color: #6a0dad; /* violet */
+    font-weight: bold;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+form a:hover {
+    color: #4b0082;
+    transform: scale(1.05);
+}
+
+/* Container */
 .container {
-    width: 100%;
-    max-width: 1000px; /* largeur maximum pour grandes résolutions */
-    background: #ffffff;   
-    color: #333;           
-    padding: 40px 30px;
+    max-width: 1200px;
+    margin: auto;
+    background: #f9f9f9;
+    padding: 30px 20px;
     border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    animation: fadeIn 0.8s ease-in-out;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
 }
 
-/* ------------------------- */
-/*          TITRE            */
-/* ------------------------- */
-
+/* Title */
 h1 {
     text-align: center;
-    margin-bottom: 25px;
-    font-size: 28px;
     color: #1E90FF;
-    letter-spacing: 1px;
+    margin-bottom: 25px;
 }
 
-/* ------------------------- */
-/*          TABLE            */
-/* ------------------------- */
-
+/* Table Styling */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
-    font-size: 15px;
+    margin-top: 20px;
 }
 
 th, td {
-    padding: 12px;
+    padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ddd;
 }
 
 th {
     background-color: #1E90FF;
-    color: #fff;
-    font-weight: bold;
+    color: white;
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #f2f8ff;
 }
 
-tr:nth-child(odd) {
-    background-color: #ffffff;
+tr:hover {
+    background-color: #e0f0ff;
+    transition: background-color 0.3s ease;
 }
 
-/* ------------------------- */
-/*        BOUTONS            */
-/* ------------------------- */
-
+/* Buttons Styling */
 .button {
-    display: inline-block;
-    padding: 10px 15px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 8px;
     color: #fff;
-    background: #1E90FF;
-    text-align: center;
-    transition: 0.3s;
-    margin: 2px;
-}
-
-.button:hover {
-    background: #0a74d6;
-}
-
-.button.back {
-    background: #555;
-}
-
-.button.back:hover {
-    background: #777;
-}
-
-.button.delete {
-    background: #e74c3c;
-}
-
-.button.delete:hover {
-    background: #c0392b;
-}
-
-.button.edit {
-    background: #f39c12;
-}
-
-.button.edit:hover {
-    background: #d68910;
-}
-
-.button.chat {
-    background: #2ecc71;
-}
-
-.button.chat:hover {
-    background: #27ae60;
-}
-
-/* ------------------------- */
-/*      BACK-ZONE BUTTONS    */
-/* ------------------------- */
-
-.back-zone {
-    display: flex;
-    justify-content: flex-start;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-/* ------------------------- */
-/*       RESPONSIVE          */
-/* ------------------------- */
-
-@media (max-width: 768px) {
-    .container {
-        padding: 30px 20px;
-    }
-
-    th, td {
-        padding: 10px;
-        font-size: 14px;
-    }
-
-    .button {
-        font-size: 13px;
-        padding: 8px 12px;
-    }
-}
-
-.button.response {
-    background-color: #0066cc;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 5px;
     text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
-.button.response:hover {
-    background-color: #004a99;
+/* Glow animation */
+.button::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, rgba(30,144,255,0.5), rgba(0,255,255,0.5), rgba(30,144,255,0.5));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+    transform: rotate(45deg);
+}
+
+.button:hover::after {
+    opacity: 1;
+}
+
+/* Button Variants */
+.edit {
+    background-color: #1E90FF;
+    z-index: 1;
+}
+
+.edit:hover {
+    transform: scale(1.08);
+}
+
+.delete {
+    background-color: #FF4C4C;
+    z-index: 1;
+}
+
+.delete:hover {
+    transform: scale(1.08);
+}
+
+.chat {
+    background-color: #32CD32;
+    z-index: 1;
+}
+
+.chat:hover {
+    transform: scale(1.08);
+}
+
+.back, .add-new {
+    background-color: #1E90FF;
+    margin-right: 10px;
+    z-index: 1;
+}
+
+.back:hover, .add-new:hover {
+    transform: scale(1.08);
+}
+
+/* Form styling */
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+input[type="text"], input[type="date"], select {
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="date"]:focus, select:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 8px rgba(30,144,255,0.5);
+}
+
+/* Back-zone container */
+.back-zone {
+    margin-top: 20px;
+    text-align: center;
 }
