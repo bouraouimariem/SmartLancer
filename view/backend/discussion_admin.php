@@ -8,8 +8,29 @@ if (!$id_reclamation) die("Réclamation introuvable");
 $messages = $controller->getDiscussion($id_reclamation);
 $closed = $controller->isClosed($id_reclamation);
 
+// Fermer discussion
+if (isset($_POST['close'])) {
+    $controller->closeDiscussion($id_reclamation);
+    header("Location: discussion_admin.php?id=$id_reclamation");
+    exit;
+}
+
+// Ouvrir discussion
+if (isset($_POST['open'])) {
+    $controller->openDiscussion($id_reclamation);
+    header("Location: discussion_admin.php?id=$id_reclamation");
+    exit;
+}
+
+// Supprimer un message
+if (isset($_GET['delete_msg'])) {
+    $controller->deleteMessage((int)$_GET['delete_msg']);
+    header("Location: discussion_admin.php?id=$id_reclamation");
+    exit;
+}
+
 // Envoyer un message
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['close'], $_POST['open'])) {
     $contenu = trim($_POST['contenu']);
     $fichier = $_FILES['fichier'] ?? null;
 
@@ -29,12 +50,25 @@ $emojis = ['😀','😂','😍','🤔','😡','😭','🙏','🎉','❤️','�
 <meta charset="UTF-8">
 <title>Discussion Admin</title>
 <link rel="stylesheet" href="css/chat.css">
+<style>
+.close-chat {background:red;color:white;padding:5px 10px;margin-left:10px;}
+.open-chat {background:green;color:white;padding:5px 10px;margin-left:10px;}
+.delete-msg {color:red;text-decoration:none;margin-left:5px;}
+</style>
 </head>
 <body>
 <div class="chat-container">
     <header class="chat-header">
         <h2>Discussion Réclamation #<?= $id_reclamation ?></h2>
         <span class="chat-status"><?= $closed ? 'Fermée' : 'Ouverte' ?></span>
+
+        <form method="POST" style="display:inline;">
+            <?php if(!$closed): ?>
+                <button type="submit" name="close" class="close-chat">Fermer discussion</button>
+            <?php else: ?>
+                <button type="submit" name="open" class="open-chat">Ouvrir discussion</button>
+            <?php endif; ?>
+        </form>
     </header>
 
     <div id="messages-list" class="messages-list">
@@ -49,6 +83,9 @@ $emojis = ['😀','😂','😍','🤔','😡','😭','🙏','🎉','❤️','�
                 <?php endif; ?>
                 <p class="msg-text"><?= nl2br(htmlspecialchars($msg['contenu'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) ?></p>
                 <span class="msg-time"><?= $msg['date_message'] ?></span>
+                <a href="?id=<?= $id_reclamation ?>&delete_msg=<?= $msg['id_message'] ?>" 
+                   class="delete-msg"
+                   onclick="return confirm('Supprimer ce message ?')">🗑</a>
             </div>
         <?php endforeach; ?>
     </div>

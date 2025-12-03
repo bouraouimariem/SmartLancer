@@ -8,6 +8,13 @@ if (!$id_reclamation) die("Réclamation introuvable");
 $messages = $controller->getDiscussion($id_reclamation);
 $closed = $controller->isClosed($id_reclamation);
 
+// Supprimer un message
+if (isset($_GET['delete_msg'])) {
+    $controller->deleteMessage((int)$_GET['delete_msg']);
+    header("Location: discussion_user.php?id=$id_reclamation");
+    exit;
+}
+
 // Envoyer un message avec fichier
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contenu = trim($_POST['contenu']);
@@ -29,6 +36,9 @@ $emojis = ['😀','😂','😍','🤔','😡','😭','🙏','🎉','❤️','�
 <meta charset="UTF-8">
 <title>Discussion Utilisateur</title>
 <link rel="stylesheet" href="css/chat.css">
+<style>
+.delete-msg {color:red;text-decoration:none;margin-left:5px;}
+</style>
 </head>
 <body>
 <div class="chat-container">
@@ -49,6 +59,9 @@ $emojis = ['😀','😂','😍','🤔','😡','😭','🙏','🎉','❤️','�
                 <?php endif; ?>
                 <p class="msg-text"><?= nl2br(htmlspecialchars($msg['contenu'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) ?></p>
                 <span class="msg-time"><?= $msg['date_message'] ?></span>
+                <a href="?id=<?= $id_reclamation ?>&delete_msg=<?= $msg['id_message'] ?>" 
+                   class="delete-msg"
+                   onclick="return confirm('Supprimer ce message ?')">🗑</a>
             </div>
         <?php endforeach; ?>
     </div>

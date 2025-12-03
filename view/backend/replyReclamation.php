@@ -29,21 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$deja_repondu) {
 <head>
 <meta charset="UTF-8">
 <title>Répondre à la Réclamation</title>
-<style>
-body{background:#d6f5d6;padding:20px;font-family:Arial;}
-.container{max-width:600px;margin:auto;background:rgba(255,255,255,0.9);padding:30px;border-radius:20px;box-shadow:0 12px 35px rgba(0,0,0,0.15);}
-textarea{width:100%;padding:10px;font-size:16px;border-radius:6px;margin-bottom:15px;}
-button{padding:10px 20px;background:#2e8b57;color:white;border:none;border-radius:6px;font-weight:bold;cursor:pointer;}
-button:hover{background:#256f47;}
-.back{margin-top:15px;display:inline-block;text-decoration:none;color:white;background:#1a3d1a;padding:8px 14px;border-radius:6px;}
-.back:hover{background:#13301a;}
-.info{background:#f0fff0;padding:12px;border-radius:6px;margin-bottom:20px;}
-.error{color:red;font-weight:bold;margin-bottom:10px;}
-</style>
+<link rel="stylesheet" href="css/replayReclamation.css">
+
 </head>
 <body>
 <div class="container">
-<h2>Répondre à la Réclamation #<?= $id_reclamation ?></h2>
+<h2>Répondre à la Réclamation N°:<?= $id_reclamation ?></h2>
 
 <div class="info">
     <p><strong>Nom:</strong> <?= htmlspecialchars($reclamation['nom']) ?></p>

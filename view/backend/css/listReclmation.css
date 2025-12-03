@@ -1,0 +1,248 @@
+/* ------------------------- */
+/*      STYLE GLOBAL         */
+/* ------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background: #ffffff;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* ------------------------- */
+/*   CONTENEUR PRINCIPAL     */
+/* ------------------------- */
+.container {
+    width: 100%;
+    max-width: 100%; /* prend toute la largeur de l'écran */
+    background: #ffffff;
+    color: #333;
+    padding: 40px 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* ------------------------- */
+/*          TITRE            */
+/* ------------------------- */
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    color: #1E90FF;
+    letter-spacing: 1px;
+}
+
+/* ------------------------- */
+/*          TABLE            */
+/* ------------------------- */
+table {
+    width: 100%; /* occupe toute la largeur */
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background-color: #1E90FF;
+    color: #fff;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* ------------------------- */
+/*        STATUTS            */
+/* ------------------------- */
+.status-en-attente, .status-en-cours {
+    background: #ffa500; /* orange clair */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.status-repondu {
+    background: #27ae60; /* vert */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.status-clos {
+    background: #e74c3c; /* rouge */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* ------------------------- */
+/*        BOUTONS            */
+/* ------------------------- */
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #fff;
+    background: #1E90FF;
+    text-align: center;
+    transition: 0.3s;
+    margin: 2px;
+}
+
+.button:hover {
+    background: #0a74d6;
+}
+
+.button.back {
+    background: #555;
+}
+
+.button.back:hover {
+    background: #777;
+}
+
+.button.delete {
+    background: #e74c3c;
+}
+
+.button.delete:hover {
+    background: #c0392b;
+}
+
+.button.reply {
+    background: #2ecc71;
+}
+
+.button.reply:hover {
+    background: #27ae60;
+}
+
+/* ------------------------- */
+/*      FORMULAIRE           */
+/* ------------------------- */
+form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    background-color: #f0f8ff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+form label {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+form input[type="text"],
+form input[type="date"],
+form select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="date"]:focus,
+form select:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 8px rgba(30,144,255,0.4);
+}
+
+form button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #1E90FF;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+form button:hover {
+    background-color: #0a74d6;
+    transform: scale(1.05);
+}
+
+form a {
+    text-decoration: none;
+    color: #6a0dad;
+    font-weight: bold;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+form a:hover {
+    color: #4b0082;
+    transform: scale(1.05);
+}
+
+/* ------------------------- */
+/*       RESPONSIVE          */
+/* ------------------------- */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .button {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
+    form {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* ------------------------- */
+/*      ANIMATION            */
+/* ------------------------- */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}

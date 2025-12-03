@@ -27,7 +27,6 @@ class DiscussionController {
             move_uploaded_file($file['tmp_name'], $uploadsDir . $filename);
         }
 
-        // Ne rien envoyer si contenu et fichier sont vides
         if (empty($contenu) && empty($filename)) return false;
 
         return $this->messageModel->addMessage($id_reclamation, $sender, $contenu, $filename);
@@ -37,9 +36,17 @@ class DiscussionController {
         return $this->reclamationModel->updateStatus($id_reclamation, 'Fermée');
     }
 
+    public function openDiscussion($id_reclamation) {
+        return $this->reclamationModel->updateStatus($id_reclamation, 'Ouverte');
+    }
+
     public function isClosed($id_reclamation) {
         $rec = $this->reclamationModel->showReclamation($id_reclamation);
         return $rec && $rec['status'] === 'Fermée';
+    }
+
+    public function deleteMessage($id_message) {
+        return $this->messageModel->deleteMessage($id_message);
     }
 }
 ?>

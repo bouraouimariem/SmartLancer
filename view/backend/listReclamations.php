@@ -1,7 +1,17 @@
 <?php
 require_once "../../Controller/ReclamationController.php";
 $controller = new ReclamationController();
-$reclamations = $controller->list();
+
+// Récupérer les filtres depuis l'URL
+$filters = [
+    'status' => $_GET['status'] ?? null,
+    'date' => $_GET['date'] ?? null,
+    'search' => $_GET['search'] ?? null
+];
+
+
+// Récupérer les réclamations filtrées
+$reclamations = $controller->filterAndSearch($filters);
 ?>
 
 <!DOCTYPE html>
@@ -9,29 +19,34 @@ $reclamations = $controller->list();
 <head>
 <meta charset="UTF-8">
 <title>Liste Réclamations</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-body{background:#d6f5d6;padding:20px;font-family:Arial;}
-.container{max-width:1200px;margin:auto;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);padding:30px 20px;border-radius:20px;box-shadow:0 12px 35px rgba(0,0,0,0.15);}
-h1{text-align:center;font-size:30px;color:#1a3d1a;margin-bottom:30px;}
-table{width:100%;border-collapse:collapse;}
-th,td{padding:12px;text-align:left;}
-th{background:#2e8b57;color:#fff;}
-tr:nth-child(even){background:#f0fff0;}
-tr:hover{background:#e6ffe6;transition:0.2s;}
-.button{padding:6px 12px;color:#fff;text-decoration:none;border-radius:6px;font-weight:bold;}
-.delete{background:#e74c3c;} .delete:hover{background:#c0392b;}
-.reply{background:#3498db;} .reply:hover{background:#2980b9;}
-.update{background:#f39c12;} .update:hover{background:#d68910;}
-.back{background:#1a3d1a;} .back:hover{background:#13301a;}
-.status-en-attente{background:orange;color:white;padding:2px 6px;border-radius:4px;}
-.status-repondu{background:green;color:white;padding:2px 6px;border-radius:4px;}
-.status-clos{background:red;color:white;padding:2px 6px;border-radius:4px;}
-</style>
+<link rel="stylesheet" href="css/listReclmation.css">
+
 </head>
 <body>
 <div class="container">
 <h1>Liste des Réclamations</h1>
+
+
+<!-- FORMULAIRE DE FILTRAGE, TRI ET RECHERCHE -->
+<form method="GET">
+    <label>Status: 
+        <select name="status">
+            <option value="">Tous</option>
+            <option value="En attente" <?= (isset($_GET['status']) && $_GET['status']=='En attente')?'selected':'' ?>>En attente</option>
+            <option value="Répondu" <?= (isset($_GET['status']) && $_GET['status']=='Répondu')?'selected':'' ?>>Répondu</option>
+            <option value="Clos" <?= (isset($_GET['status']) && $_GET['status']=='Clos')?'selected':'' ?>>Clos</option>
+        </select>
+    </label>
+
+    <label>Date: <input type="date" name="date" value="<?= $_GET['date'] ?? '' ?>"></label>
+
+
+    <label>Recherche: <input type="text" name="search" placeholder="Nom, email,sujet, ID" value="<?= $_GET['search'] ?? '' ?>"></label>
+
+    <button type="submit">Filtrer</button>
+    <a href="listReclamations.php" style="margin-left:10px;">Réinitialiser</a>
+</form>
+
 <table>
 <tr><th>ID</th><th>Nom</th><th>Email</th><th>Sujet</th><th>Message</th><th>Date</th><th>telephone</th><th>Statut</th><th>Actions</th></tr>
 <?php foreach($reclamations as $rec): ?>
@@ -49,10 +64,9 @@ tr:hover{background:#e6ffe6;transition:0.2s;}
 </td>
 <td>
 <a href="deleteReclamation.php?id_reclamation=<?= $rec['id_reclamation'] ?>" class="button delete" onclick="return confirm('Supprimer ?');">Supprimer</a>
-<!-- Répondre uniquement si la réclamation est en attente -->
-    <?php if (strtolower($rec['status']) === 'en attente'): ?>
-        <a href="replyReclamation.php?id=<?= $rec['id_reclamation'] ?>" class="button reply">Répondre</a>
-    <?php endif; ?>
+<?php if (strtolower($rec['status']) === 'en attente'): ?>
+    <a href="replyReclamation.php?id=<?= $rec['id_reclamation'] ?>" class="button reply">Répondre</a>
+<?php endif; ?>
 </td>
 </tr>
 <?php endforeach; ?>

@@ -1,14 +1,24 @@
 <?php
 session_start();
-require_once __DIR__ . "/../../Model/Reclamation.php";
+require_once __DIR__ . "/../../Controller/ReclamationController.php";
 
-$model = new Reclamation();
+$controller = new ReclamationController();
 $userEmail = $_SESSION['email'] ?? null;
-$reclamations = $model->listReclamations($userEmail);
+
+// Récupérer les filtres depuis l'URL
+$filters = [
+    'status' => $_GET['status'] ?? null,
+    'date' => $_GET['date'] ?? null,
+    'search' => $_GET['search'] ?? null
+];
+
+
+// Récupérer les réclamations filtrées
+$reclamations = $controller->filterAndSearch($filters, 'date_envoi DESC', $userEmail);
 
 if (isset($_GET['delete_id'])) {
     $id_reclamation = (int)$_GET['delete_id'];
-    $model->deleteReclamation($id_reclamation);
+    $controller->delete($id_reclamation);
     header("Location: reclamations.php");
     exit;
 }
@@ -18,12 +28,36 @@ if (isset($_GET['delete_id'])) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mes Réclamations</title>
-    <link rel="stylesheet" href="css/listreclamations.css">
+    <title>Réclamation de Client</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="listreclamations.css">
+
+    <style>
+        form{margin-bottom:20px;}
+        label{margin-right:15px;}
+    </style>
 </head>
 <body>
 <div class="container">
     <h1>Liste de mes réclamations</h1>
+
+    <!-- FORMULAIRE DE FILTRAGE, TRI ET RECHERCHE -->
+    <form method="GET">
+        <label>Status: 
+            <select name="status">
+                <option value="">Tous</option>
+                <option value="En attente" <?= (isset($_GET['status']) && $_GET['status']=='En attente')?'selected':'' ?>>En attente</option>
+                <option value="Répondu" <?= (isset($_GET['status']) && $_GET['status']=='Répondu')?'selected':'' ?>>Répondu</option>
+                <option value="Clos" <?= (isset($_GET['status']) && $_GET['status']=='Clos')?'selected':'' ?>>Clos</option>
+            </select>
+        </label>
+
+        <label>Date: <input type="date" name="date" value="<?= $_GET['date'] ?? '' ?>"></label>
+        <label>Recherche: <input type="text" name="search" placeholder="Nom, email, sujet, ID" value="<?= $_GET['search'] ?? '' ?>"></label>
+
+        <button type="submit">Filtrer</button>
+        <a href="reclamations.php" style="margin-left:10px;">Réinitialiser</a>
+    </form>
 
     <?php if(empty($reclamations)): ?>
         <p>Aucune réclamation trouvée.</p>
@@ -56,9 +90,6 @@ if (isset($_GET['delete_id'])) {
                 <a href="reclamations.php?delete_id=<?= $rec['id_reclamation'] ?>" class="button delete"
                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?');">Supprimer</a>
                 <a href="discussion_user.php?id=<?= $rec['id_reclamation'] ?>" class="button chat">Voir discussion</a>
-
-                
- 
             </td>
         </tr>
         <?php endforeach; ?>

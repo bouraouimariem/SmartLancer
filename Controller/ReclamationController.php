@@ -79,5 +79,12 @@ class ReclamationController {
     public function listWithResponses($email = null) {
         return $this->model->listReclamationsWithResponses($email);
     }
+     public function filterAndSearch($filters = [], $sort = 'date_envoi DESC', $email = null) {
+    return $this->model->filterReclamations($filters, $sort, $email);
+}
+
+
+
+
 }
 ?>

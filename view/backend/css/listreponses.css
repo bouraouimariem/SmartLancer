@@ -1,0 +1,184 @@
+/* ------------------------- */
+/*      STYLE GLOBAL         */
+/* ------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #d0e8ff, #f0f9ff); /* dégradé bleu clair */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Arrière-plan animé avec vagues légères */
+body::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 30%, rgba(30,144,255,0.05) 0%, transparent 70%),
+                radial-gradient(circle at 70% 70%, rgba(30,144,255,0.05) 0%, transparent 70%);
+    background-size: 100% 100%;
+    animation: bgMove 30s linear infinite;
+    z-index: 0;
+}
+
+@keyframes bgMove {
+    0% { transform: translate(0,0) rotate(0deg); }
+    100% { transform: translate(50px,50px) rotate(360deg); }
+}
+
+/* ------------------------- */
+/*   CONTENEUR PRINCIPAL     */
+/* ------------------------- */
+.container {
+    position: relative;
+    z-index: 1; /* devant l’animation du fond */
+    width: 100%;
+    max-width: 1200px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px 20px;
+    border-radius: 15px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* ------------------------- */
+/*          TITRE            */
+/* ------------------------- */
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    color: #1E90FF;
+    letter-spacing: 1px;
+}
+
+/* ------------------------- */
+/*          TABLE            */
+/* ------------------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background-color: #1E90FF;
+    color: #fff;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+tr:hover {
+    background-color: #e6f0ff;
+    transition: 0.2s;
+}
+
+/* ------------------------- */
+/*        BOUTONS            */
+/* ------------------------- */
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #fff;
+    background: #1E90FF;
+    text-align: center;
+    transition: 0.3s;
+    margin: 2px;
+}
+
+.button:hover {
+    background: #0a74d6;
+}
+
+.button.back {
+    background: #555;
+}
+
+.button.back:hover {
+    background: #777;
+}
+
+.button.delete {
+    background: #e74c3c;
+}
+
+.button.delete:hover {
+    background: #c0392b;
+}
+
+.button.update {
+    background: #f39c12;
+}
+
+.button.update:hover {
+    background: #d68910;
+}
+
+.button.view {
+    background: #3498db;
+}
+
+.button.view:hover {
+    background: #2980b9;
+}
+
+/* ------------------------- */
+/*       RESPONSIVE          */
+/* ------------------------- */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .button {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+}
+
+/* ------------------------- */
+/*      ANIMATION            */
+/* ------------------------- */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
