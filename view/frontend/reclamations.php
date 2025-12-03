@@ -89,7 +89,11 @@ if (isset($_GET['delete_id'])) {
                 <a href="index.php?edit_id=<?= $rec['id_reclamation'] ?>" class="button edit">Modifier</a>
                 <a href="reclamations.php?delete_id=<?= $rec['id_reclamation'] ?>" class="button delete"
                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?');">Supprimer</a>
-                <a href="discussion_user.php?id=<?= $rec['id_reclamation'] ?>" class="button chat">Voir discussion</a>
+                <?php if($rec['status'] === 'Répondu'): ?>
+                   <a href="voir_reponse.php?id=<?= $rec['id_reclamation'] ?>" class="button response">Voir réponse</a>
+    
+                <?php endif; ?>
+
             </td>
         </tr>
         <?php endforeach; ?>

@@ -11,7 +11,6 @@ $responses = $controller->getAllResponses();
 <meta charset="UTF-8">
 <title>Liste des Réponses</title>
 <link rel="stylesheet" href="css/listreponses.css">
-
 </head>
 <body>
 <div class="container">
@@ -27,13 +26,16 @@ $responses = $controller->getAllResponses();
 </tr>
 
 <?php foreach($responses as $res): ?>
+<?php $closed = $controller->isClosed($res['id_reclamation']); ?>
 <tr>
     <td><?= $res['id_reponse'] ?></td>
     <td><?= $res['id_reclamation'] ?></td>
     <td><?= htmlspecialchars($res['contenu']) ?></td>
     <td><?= htmlspecialchars($res['date_reponse']) ?></td>
     <td>
-        <a href="updateReponse.php?id=<?= $res['id_reponse'] ?>" class="button update">Modifier</a>
+        <?php if (!$closed): ?>
+            <a href="updateReponse.php?id=<?= $res['id_reponse'] ?>" class="button update">Modifier</a>
+        <?php endif; ?>
         <a href="deleteReponse.php?id=<?= $res['id_reponse'] ?>" class="button delete" onclick="return confirm('Supprimer cette réponse ?');">Supprimer</a>
         <a href="discussion_admin.php?id=<?= $res['id_reclamation'] ?>" class="button view">Ouvrir discussion</a>
     </td>
@@ -43,7 +45,7 @@ $responses = $controller->getAllResponses();
 </table>
 <br>
 <a href="admin_home.php" class="button back"><i class="fas fa-home"></i> Accueil</a>
-<a href="listReclamations.php" class="button back"><i class="fas fa-home"></i>Liste Réclamations </a>
+<a href="listReclamations.php" class="button back"><i class="fas fa-home"></i> Liste Réclamations</a>
 </div>
 </body>
 </html>

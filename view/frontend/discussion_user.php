@@ -1,21 +1,31 @@
 <?php
+session_start();
 require_once "../../Controller/DiscussionController.php";
 
 $controller = new DiscussionController();
-$id_reclamation = $_GET['id'] ?? null;
+
+// Récupérer l'ID depuis GET (id ou id_reclamation)
+$id_reclamation = $_GET['id'] ?? $_GET['id_reclamation'] ?? null;
 if (!$id_reclamation) die("Réclamation introuvable");
 
+// Récupération des messages et statut de la discussion
 $messages = $controller->getDiscussion($id_reclamation);
 $closed = $controller->isClosed($id_reclamation);
 
-// Supprimer un message
+// Supprimer un message (uniquement ceux de l'utilisateur)
 if (isset($_GET['delete_msg'])) {
-    $controller->deleteMessage((int)$_GET['delete_msg']);
+    $msgId = (int)$_GET['delete_msg'];
+    foreach ($messages as $msg) {
+        if ($msg['id_message'] === $msgId && $msg['sender'] === 'user') {
+            $controller->deleteMessage($msgId);
+            break;
+        }
+    }
     header("Location: discussion_user.php?id=$id_reclamation");
     exit;
 }
 
-// Envoyer un message avec fichier
+// Envoyer un message
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contenu = trim($_POST['contenu']);
     $fichier = $_FILES['fichier'] ?? null;
@@ -27,17 +37,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Liste d'emojis
+// Liste emojis
 $emojis = ['😀','😂','😍','🤔','😡','😭','🙏','🎉','❤️','🔥','👍','👎','✅','❌'];
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Discussion Utilisateur</title>
+<title>Discussion Réclamation</title>
 <link rel="stylesheet" href="css/chat.css">
 <style>
 .delete-msg {color:red;text-decoration:none;margin-left:5px;}
+.closed {color:gray;margin:10px 0;}
 </style>
 </head>
 <body>
@@ -49,7 +60,7 @@ $emojis = ['😀','😂','😍','🤔','😡','😭','🙏','🎉','❤️','�
 
     <div id="messages-list" class="messages-list">
         <?php foreach($messages as $msg): ?>
-            <div class="message <?= $msg['sender']==='user'?'user':'admin' ?>">
+            <div class="message <?= $msg['sender']==='admin'?'admin':'user' ?>">
                 <?php if(!empty($msg['fichier'])): ?>
                     <?php if(preg_match('/\.(jpg|jpeg|png|gif)$/i', $msg['fichier'])): ?>
                         <img src="../../uploads/<?= $msg['fichier'] ?>" class="msg-image">
@@ -59,9 +70,11 @@ $emojis = ['😀','😂','😍','🤔','😡','😭','🙏','🎉','❤️','�
                 <?php endif; ?>
                 <p class="msg-text"><?= nl2br(htmlspecialchars($msg['contenu'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) ?></p>
                 <span class="msg-time"><?= $msg['date_message'] ?></span>
-                <a href="?id=<?= $id_reclamation ?>&delete_msg=<?= $msg['id_message'] ?>" 
-                   class="delete-msg"
-                   onclick="return confirm('Supprimer ce message ?')">🗑</a>
+                <?php if($msg['sender']==='user' && !$closed): ?>
+                    <a href="?id=<?= $id_reclamation ?>&delete_msg=<?= $msg['id_message'] ?>" 
+                       class="delete-msg"
+                       onclick="return confirm('Supprimer ce message ?')">🗑</a>
+                <?php endif; ?>
             </div>
         <?php endforeach; ?>
     </div>
@@ -84,7 +97,7 @@ $emojis = ['😀','😂','😍','🤔','😡','😭','🙏','🎉','❤️','�
     <p class="closed">La discussion est fermée. Vous ne pouvez plus répondre.</p>
     <?php endif; ?>
 
-    <a href="index.php" class="back">← Retour</a>
+    <a href="reclamations.php" class="back">← Retour </a>
 </div>
 
 <script src="public/js/chat.js"></script>

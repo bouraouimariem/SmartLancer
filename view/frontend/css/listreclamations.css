@@ -164,3 +164,15 @@ tr:nth-child(odd) {
         padding: 8px 12px;
     }
 }
+
+.button.response {
+    background-color: #0066cc;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.button.response:hover {
+    background-color: #004a99;
+}

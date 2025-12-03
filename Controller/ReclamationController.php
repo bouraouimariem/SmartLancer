@@ -83,6 +83,13 @@ class ReclamationController {
     return $this->model->filterReclamations($filters, $sort, $email);
 }
 
+// Vérifier si une réclamation est fermée
+public function isClosed($id_reclamation) {
+    $rec = $this->model->getReclamation($id_reclamation);
+    return $rec && $rec['status'] === 'Fermée';
+}
+
+
 
 
 

@@ -29,6 +29,9 @@ class DiscussionController {
 
         if (empty($contenu) && empty($filename)) return false;
 
+        // Vérifier si discussion fermée
+        if ($this->isClosed($id_reclamation)) return false;
+
         return $this->messageModel->addMessage($id_reclamation, $sender, $contenu, $filename);
     }
 
@@ -49,4 +52,5 @@ class DiscussionController {
         return $this->messageModel->deleteMessage($id_message);
     }
 }
+
 ?>
