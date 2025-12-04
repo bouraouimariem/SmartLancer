@@ -33,8 +33,27 @@ class Notification {
         return $stmt->execute([$id]);
     }
 
-    public function delete($id) {
-        $stmt = $this->conn->prepare("DELETE FROM notifications WHERE id_notification=?");
-        return $stmt->execute([$id]);
-    }
+    public function deleteReclamation($id_reclamation) {
+
+    // 1️⃣ Supprimer les messages liés
+    $stmt = $this->conn->prepare("DELETE FROM messages WHERE id_reclamation = ?");
+    $stmt->execute([$id_reclamation]);
+
+    // 2️⃣ Supprimer les réponses liées
+    $stmt = $this->conn->prepare("DELETE FROM reponses WHERE id_reclamation = ?");
+    $stmt->execute([$id_reclamation]);
+
+    // 3️⃣ Supprimer les notifications liées
+    $stmt = $this->conn->prepare("DELETE FROM notifications WHERE id_reclamation = ?");
+    $stmt->execute([$id_reclamation]);
+
+    // 4️⃣ Supprimer la réclamation
+    $stmt = $this->conn->prepare("DELETE FROM reclamation WHERE id_reclamation = ?");
+    $stmt->execute([$id_reclamation]);
+}
+public function delete($id_notification) {
+    $stmt = $this->conn->prepare("DELETE FROM notifications WHERE id_notification = ?");
+    return $stmt->execute([$id_notification]);
+}
+
 }

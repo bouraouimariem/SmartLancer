@@ -22,12 +22,26 @@ class Reclamation {
     }
 
     public function addReclamation($nom, $email, $sujet, $message, $telephone, $status = 'En attente') {
-        $query = "INSERT INTO reclamation (nom, email, sujet, message, telephone, status, date_envoi)
-                  VALUES (?, ?, ?, ?, ?, ?, NOW())";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$nom, $email, $sujet, $message, $telephone, $status]);
-        return $this->conn->lastInsertId();
-    }
+    // 1️⃣ Ajouter la réclamation
+    $query = "INSERT INTO reclamation (nom, email, sujet, message, telephone, status, date_envoi)
+              VALUES (?, ?, ?, ?, ?, ?, NOW())";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute([$nom, $email, $sujet, $message, $telephone, $status]);
+
+    $id_reclamation = $this->conn->lastInsertId();
+
+    // 2️⃣ Ajouter une notification pour l'admin
+    require_once __DIR__ . '/Notification.php';
+    $notification = new Notification();
+    $notification->add(
+        $id_reclamation,
+        'admin', // destinataire
+        "Nouvelle réclamation envoyée par $nom : $sujet"
+    );
+
+    return $id_reclamation;
+}
+
 
     public function deleteReclamation($id_reclamation) {
 
@@ -105,45 +119,36 @@ class Reclamation {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
     public function filterReclamations($filters = [], $sort = 'date_envoi DESC', $email = null) {
     $sql = "SELECT * FROM reclamation WHERE 1=1";
     $params = [];
 
-    // Filtrage par email (si user)
-    if ($email) {
-        $sql .= " AND email = :email";
-        $params[':email'] = $email;
-    }
-
-    // Filtrage par statut
+    // Filtre par status
     if (!empty($filters['status'])) {
         $sql .= " AND status = :status";
         $params[':status'] = $filters['status'];
     }
 
-    // Filtrage par date
-    // Filtrage par date
+    // Filtre par date
     if (!empty($filters['date'])) {
-       $sql .= " AND DATE(date_envoi) = :date";
-       $params[':date'] = $filters['date'];
+        $sql .= " AND DATE(date_envoi) = :date";
+        $params[':date'] = $filters['date'];
     }
 
-    
-    
-
-    // Recherche par nom, email, sujet ou id
+    // Filtre par recherche sur ID ou Nom seulement
     if (!empty($filters['search'])) {
-        $sql .= " AND (nom LIKE :search OR email LIKE :search OR sujet LIKE :search OR id_reclamation LIKE :search)";
+        $sql .= " AND (id_reclamation LIKE :search OR nom LIKE :search)";
         $params[':search'] = "%" . $filters['search'] . "%";
     }
 
+    // Tri
     $sql .= " ORDER BY $sort";
 
-    $stmt = $this->conn->prepare($sql); // OK, dans le modèle
+    $stmt = $this->conn->prepare($sql);
     $stmt->execute($params);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+   
 
 
 }
