@@ -13,7 +13,7 @@ $redirect = "login.php";
 if ($_SESSION['role'] === "admin") {
     $redirect = "../backOffice/index.php";
 } elseif ($_SESSION['role'] === "client") {
-    $redirect = "pages/projet_client.php";
+    $redirect = "pages/accueil_client.php";
 } elseif ($_SESSION['role'] === "freelance") {
     $redirect = "pages/accueil_freelancer.php";
 }

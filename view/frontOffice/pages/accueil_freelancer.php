@@ -15,261 +15,31 @@ if (!isset($_SESSION['user'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil Freelancer</title>
      <link rel="shortcut icon" type="image/x-icon" href="../img/logo.png?v=<?php echo time(); ?>">
+     <link rel="stylesheet" href="../css/accueil_freelancer.css">
+
      <?php
 $img = "../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
 ?>
+<?php
+
+// Charger le contrôleur
+include '../../../controller/notificationC.php';
+$notifC = new NotificationController();
+$nb_notif = $notifC->countUnread($_SESSION['id_user']);
+$liste_notif = $notifC->getNotifications($_SESSION['id_user']);
+
+// ID du freelancer connecté
+$id_user = $_SESSION['user']['id_utilisateur'];
+echo "<script>console.log('ID SESSION = $id_user');</script>";
+
+// Compter les notifications non lues
+$nb_notif = $notifC->countUnread($id_user);
+echo "<script>console.log('NB NOTIF = $nb_notif');</script>";
+
+?>
 
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: #e0f5e8ff;
-        }
 
-        /* HEADER */
-        .header {
-    background: #2c8f4c;
-    height: 70px;              /* 👉 hauteur FIXE */
-    padding: 0 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-     overflow: visible; /* IMPORTANT */
-    }
-
-
-        
-
-        .logout-btn {
-            background: #d9534f;
-            padding: 8px 15px;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-
-        /* CONTAINER */
-        .container {
-            width: 80%;
-            margin: 50px auto;
-            text-align: center;
-        }
-
-        .btn-menu {
-            display: inline-block;
-            width: 260px;
-            padding: 20px;
-            margin: 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
-            text-decoration: none;
-            color: #333;
-            font-size: 20px;
-            transition: 0.3s;
-        }
-
-        .btn-menu:hover {
-            transform: scale(1.05);
-            background: #2c8f4c;
-            color: white;
-        }
-
-      /* --- PROFILE DROPDOWN MODERNE --- */
-.profile-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.profile-img {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #fff;
-    object-fit: cover;
-    transition: 0.3s;
-}
-
-.profile-img:hover { transform: scale(1.1); }
-
-/* STYLE CARTE TRANSLUCIDE */
-.dropdown-menu {
-    position: absolute;
-    right: 0;
-    top: 60px;
-    width: 260px;
-    padding: 20px;
-    border-radius: 20px;
-    background: #2c8f4b79;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: #2c8f4c;
-
-    display: none;
-    flex-direction: column;
-    animation: fadeIn 0.2s ease;
-}
-
-/* Animation ouverture */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-.dropdown-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 10px;
-    gap: 12px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: white;
-    font-size: 16px;
-    transition: 0.2s;
-}
-
-.dropdown-item:hover {
-    background: #2c8f4c;
-}
-
-/* Icones dans le dropdown */
-.dropdown-item i {
-    font-size: 20px;
-}
-
-/* Séparateur */
-.dropdown-separator {
-    height: 2px;
-    background: rgba(0, 83, 28, 0.3);
-    margin: 10px 0;
-}
-
-
-.immg {
-    height: 140%;              /* 👉 l’image occupe toute la hauteur du header */
-    width: auto;               /* 👉 garde proportions */
-    object-fit: contain; 
-    margin-left: -29px;      /* 👉 pas de déformation */
-    margin-bottom:8px;
-}
-
-/* --- TOGGLE SWITCH --- */
-.theme-switch {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    gap: 12px;
-    color: white;
-    font-size: 16px;
-}
-
-.switch {
-    position: relative;
-    width: 50px;
-    height: 24px;
-    background: rgba(255,255,255,0.3);
-    border-radius: 50px;
-    transition: 0.3s;
-}
-
-.switch::after {
-    content: "";
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    background: white;
-    border-radius: 50%;
-    top: 1px;
-    left: 1px;
-    transition: 0.3s;
-}
-
-/* Quand dark mode activé */
-body.dark .switch {
-    background: #111;
-}
-
-body.dark .switch::after {
-    transform: translateX(26px);
-}
-
-/* Mode sombre global */
-body.dark {
-    background: #1e3b2f ;
-    color: white;
-}
-
-body.dark .btn-menu {
-    background: #1f1f1f;
-    color: white;
-}
-
-body.dark .header {
-    background: #1b5b32;
-}
-
-body.dark .dropdown-menu {
-    background: #1b5b3299;
-}
-
-/* --- MENU NAVIGATION DANS LE HEADER --- */
-.nav {
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-
-.header-menu {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-}
-
-.header-menu .nav {
-    display: flex;
-    gap: 18px;
-}
-
-.header-menu .nav-link {
-    color: white !important;
-    font-size: 16px;
-    padding: 8px 14px;
-    border-radius: 8px;
-    transition: 0.3s;
-    text-decoration:none;
-}
-
-.header-menu .nav-link:hover {
-    background: rgba(255, 255, 255, 0.25);
-}
-
-.header-menu .nav-link.active {
-    background: white;
-    color: #2c8f4c !important;
-    font-weight: bold;
-}
-
-/* MODE SOMBRE */
-body.dark .header-menu .nav-link {
-    color: #fff !important;
-}
-
-body.dark .header-menu .nav-link.active {
-    background: #fff;
-    color: #1b5b32 !important;
-}
-
-body.dark .header-menu .nav-link:hover {
-    background: rgba(255,255,255,0.25);
-}
-
-
-    </style>
 </head>
 
 <body>
@@ -292,6 +62,54 @@ body.dark .header-menu .nav-link:hover {
        </ul>
 </div>
 
+<!-- 🔔 Notifications -->
+<!-- ========== NOTIFICATION ICON + DROPDOWN ========== -->
+<div class="notif-container">
+
+    <!-- Icône + Badge -->
+    <div class="icon-btn notif-btn" onclick="toggleNotif()">
+        <i class="bi bi-bell"></i>
+
+        <?php if ($nb_notif > 0): ?>
+            <span class="notif-count"><?= $nb_notif ?></span>
+        <?php endif; ?>
+    </div>
+
+    <!-- Dropdown -->
+    <div id="notif-dropdown" class="notif-dropdown">
+        <div class="notif-header">
+            <strong>Notifications (<?= $nb_notif ?>)</strong>
+        </div>
+
+        <div class="notif-list">
+            <?php if (!empty($liste_notif)): ?>
+                <?php foreach ($liste_notif as $n): ?>
+                  <div class="notif-item">
+    <h4><?= $n['titre'] ?></h4>
+
+    <p>
+        <?= $n['message'] ?><br>
+        <strong style="color:#2c8f4c;">
+            Projet : <?= $n['nom_pub'] ?? 'Projet supprimé' ?>
+        </strong>
+    </p>
+
+    <span class="notif-date"><?= $n['date_notif'] ?></span>
+</div>
+
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="notif-item empty">Aucune notification</div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+
+
+    <!-- ⭐ Favoris -->
+    <div class="icon-btn fav-btn">
+        <i class="bi bi-heart"></i>
+    </div>
 
     <!-- PROFILE DROPDOWN -->
     <div class="profile-dropdown">
@@ -322,11 +140,25 @@ body.dark .header-menu .nav-link:hover {
         </div>
     </div>
 
-</div>
+
 
 
 
 <script>
+
+function toggleNotif() {
+    const drop = document.getElementById("notif-dropdown");
+    drop.style.display = (drop.style.display === "block") ? "none" : "block";
+}
+
+// Ferme si clique en dehors
+document.addEventListener("click", function (e) {
+    const container = document.querySelector(".notif-container");
+    if (!container.contains(e.target)) {
+        document.getElementById("notif-dropdown").style.display = "none";
+    }
+});
+
 // Toggle du menu
 document.querySelector(".profile-img").onclick = function() {
     const menu = document.querySelector(".dropdown-menu");

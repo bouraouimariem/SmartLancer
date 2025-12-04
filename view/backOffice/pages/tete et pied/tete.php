@@ -26,14 +26,11 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="navbar-brand-wrapper d-flex justify-content-center">
     <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-      <a class="navbar-brand brand-logo" style=" width: 30%;" href="../index.php"><img  src="../assets/images/logo.png"
+      <a class="navbar-brand brand-logo" style=" width: 20%;" href="../index.php"><img  src="../assets/images/logo.png"
         alt="logo" /></a>
         <br>
-        <h1 style="font-family: 'Poppins', sans-serif; font-size: 24px; height: 20%;">Lanci</h1>
+        <h1 style="font-family: 'Poppins', sans-serif; font-size: 24px; height: 20%;">SmartLancer</h1>
          </br>
-      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-        <span class="mdi mdi-sort-variant"></span>
-      </button>
     </div>
   </div>
   <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -150,7 +147,7 @@
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
           <img src="../assets/images/faces/face5.jpg" alt="profile" />
-          <span class="nav-profile-name">Louis Barnett</span>
+          <span class="nav-profile-name">Rasslene</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a class="dropdown-item">
@@ -213,7 +210,7 @@
           <li class="nav-item">
             <a class="nav-link" href="#">
               <i class="mdi mdi-emoticon menu-icon"></i>
-              <span class="menu-title">Gestion des Evenements</span>
+              <span class="menu-title">Gestion des Commentaires</span>
             </a>
           </li>    
   </ul>

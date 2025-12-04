@@ -31,6 +31,8 @@ $list = $publicationC->listpub_for_user($id_user);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil Client</title>
      <link rel="shortcut icon" type="image/x-icon" href="../img/logo.png?v=<?php echo time(); ?>">
+     <link rel="stylesheet" href="../css/projet_client.css">
+
      <?php
 $img = "../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
 ?>
@@ -70,7 +72,10 @@ $img = "../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
     </div>
 
 </div>
- 
+ <a href="accueil_client.php" class="back-btn" >
+    ⬅ Retour
+</a>
+
 <div class="main-container">
     <div class="left-content">
         <h3>📢 Vos Publications</h3>
@@ -171,7 +176,8 @@ $img = "../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
     <!-- ======== Section Création Projet ======== -->
     <div class="right-content">
         <h3>➕ Créer un Nouveau Projet</h3>
-        <form method="POST" action="tete et pied/ajouter_publication.php">
+        <form method="POST" action="tete et pied/ajouter_publication.php" onsubmit="return validerForm();">
+
             <label>Nom du Projet</label>
             <input type="text" name="nom_pub" placeholder="Ex: Application Mobile Durable">
 
@@ -198,548 +204,49 @@ $img = "../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
     </div>
 </div>
 
-<!-- ======== STYLES ======== -->
-<style>
-    body {
-        font-family: "Poppins", sans-serif;
-        background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-        margin: 0;
-        padding: 0;
-        color: #333;
-    }
-
-    
-    .main-container {
-        display: flex;
-        justify-content: space-between;
-        gap: 30px;
-        padding: 40px;
-           }
-
-    .left-content, .right-content {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-
-    .left-content {
-        width: 65%;
-    }
-
-    .right-content {
-        width: 30%;
-    }
-
-    .publication-card {
-        background: #fafafa;
-        border-left: 5px solid #4caf50;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .btn {
-        padding: 8px 14px;
-        border-radius: 8px;
-        color: white;
-        font-size: 14px;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-    }
-
-    .btn.green { background: #43a047; }
-    .btn.blue { background: #1e88e5; }
-    .btn.red { background: #e53935;
-     }
-    .btn.gray { background: #757575; }
-    .btn.full { width: 100%; margin-top: 15px; }
-
-    .btn:hover { opacity: 0.85; }
-     .actions {
-    display: flex;
-    justify-content: flex-end; /* ✅ Aligne les boutons à droite */
-    gap: 10px; /* ✅ Espace entre les deux boutons */
-    margin-top: 10px;
-}
-
-.actions .btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background 0.3s ease;
-}
-
-/* ✅ Bouton Refuser (rouge) */
-.actions .btn.red {
-    background-color: #e74c3c;
-}
-.actions .btn.red:hover {
-    background-color: #c0392b;
-}
-
-/* ✅ Bouton Accepter (vert) */
-.actions .btn.green {
-    background-color: #27ae60;
-}
-.actions .btn.green:hover {
-    background-color: #1e8449;
-}
-
-    input, textarea {
-        width: 100%;
-        border: 1px solid #ccc;
-        padding: 8px;
-        border-radius: 8px;
-        margin-bottom: 12px;
-        font-size: 14px;
-    }
-
-    textarea {
-        resize: vertical;
-        min-height: 80px;
-    }
-
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-        margin-top: 10px;
-        color: #555;
-        font-size: 14px;
-    }
-
-    .proposal {
-        background: #e8f5e9;
-        border-radius: 10px;
-        padding: 10px;
-        margin-bottom: 10px;
-    }
-
-    .prop-list {
-        margin-top: 10px;
-        background: #f1f8e9;
-        border-radius: 8px;
-        padding: 10px;
-    }
-
-    .edit-form {
-        display: none;
-        background: #f9fff9;
-        border: 1px solid #c8e6c9;
-        padding: 15px;
-        margin-top: 10px;
-        border-radius: 10px;
-    }
-
-    h3, h4, h5 {
-        color: #2e7d32;
-    }
-
-            body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: #e0f5e8ff;
-        }
-
-        /* HEADER */
-        .header {
-    background: #2c8f4c;
-    height: 70px;              /* 👉 hauteur FIXE */
-    padding: 0 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-     overflow: visible; /* IMPORTANT */
-    }
-
-
-        
-
-        .logout-btn {
-            background: #d9534f;
-            padding: 8px 15px;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-
-        /* CONTAINER */
-        .container {
-            width: 80%;
-            margin: 50px auto;
-            text-align: center;
-        }
-
-        .btn-menu {
-            display: inline-block;
-            width: 260px;
-            padding: 20px;
-            margin: 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
-            text-decoration: none;
-            color: #333;
-            font-size: 20px;
-            transition: 0.3s;
-        }
-
-        .btn-menu:hover {
-            transform: scale(1.05);
-            background: #2c8f4c;
-            color: white;
-        }
-
-      /* --- PROFILE DROPDOWN MODERNE --- */
-.profile-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.profile-img {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #fff;
-    object-fit: cover;
-    transition: 0.3s;
-}
-
-.profile-img:hover { transform: scale(1.1); }
-
-/* STYLE CARTE TRANSLUCIDE */
-.dropdown-menu {
-    position: absolute;
-    right: 0;
-    top: 60px;
-    width: 260px;
-    padding: 20px;
-    border-radius: 20px;
-    background: #2c8f4b79;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: #2c8f4c;
-
-    display: none;
-    flex-direction: column;
-    animation: fadeIn 0.2s ease;
-}
-
-/* Animation ouverture */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-.dropdown-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 10px;
-    gap: 12px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: white;
-    font-size: 16px;
-    transition: 0.2s;
-}
-
-.dropdown-item:hover {
-    background: #2c8f4c;
-}
-
-/* Icones dans le dropdown */
-.dropdown-item i {
-    font-size: 20px;
-}
-
-/* Séparateur */
-.dropdown-separator {
-    height: 2px;
-    background: rgba(0, 83, 28, 0.3);
-    margin: 10px 0;
-}
-
-
-.immg {
-    height: 140%;              /* 👉 l’image occupe toute la hauteur du header */
-    width: auto;               /* 👉 garde proportions */
-    object-fit: contain; 
-    margin-left: -29px;      /* 👉 pas de déformation */
-    margin-bottom:8px;
-}
-
-/* --- TOGGLE SWITCH --- */
-.theme-switch {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    gap: 12px;
-    color: white;
-    font-size: 16px;
-}
-
-.switch {
-    position: relative;
-    width: 50px;
-    height: 24px;
-    background: rgba(255,255,255,0.3);
-    border-radius: 50px;
-    transition: 0.3s;
-}
-
-.switch::after {
-    content: "";
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    background: white;
-    border-radius: 50%;
-    top: 1px;
-    left: 1px;
-    transition: 0.3s;
-}
-
-/* Quand dark mode activé */
-body.dark .switch {
-    background: #111;
-}
-
-body.dark .switch::after {
-    transform: translateX(26px);
-}
-
-/* Mode sombre global */
-body.dark {
-    background: #1e3b2f ;
-    color: black;
-}
-
-body.dark .btn-menu {
-    background: #1f1f1f;
-    color: white;
-}
-
-body.dark .header {
-    background: #1b5b32;
-}
-
-body.dark .dropdown-menu {
-    background: #1b5b3299;
-}
-
-/* --- MENU NAVIGATION DANS LE HEADER --- */
-.nav {
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-
-.header-menu {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-}
-
-.header-menu .nav {
-    display: flex;
-    gap: 18px;
-}
-
-.header-menu .nav-link {
-    color: white !important;
-    font-size: 16px;
-    padding: 8px 14px;
-    border-radius: 8px;
-    transition: 0.3s;
-    text-decoration:none;
-}
-
-.header-menu .nav-link:hover {
-    background: rgba(255, 255, 255, 0.25);
-}
-
-.header-menu .nav-link.active {
-    background: white;
-    color: #2c8f4c !important;
-    font-weight: bold;
-}
-
-/* MODE SOMBRE */
-body.dark .header-menu .nav-link {
-    color: #fff !important;
-}
-
-body.dark .header-menu .nav-link.active {
-    background: #fff;
-    color: #1b5b32 !important;
-}
-
-body.dark .header-menu .nav-link:hover {
-    background: rgba(255,255,255,0.25);
-}
-
-
-
-
-    /* Animation d'ouverture/fermeture des propositions */
-.prop-list {
-    margin-top: 10px;
-    background: #f1f8e9;
-    border-radius: 8px;
-    padding: 0 10px;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 2s ease, padding 0.2s ease;
-}
-
-.prop-list.expanded {
-    padding: 10px;
-    max-height: 800px; /* Ajuste selon la taille de ton contenu */
-}
-
-/* ================================
-       🌙 MODE SOMBRE / CONTENT
-================================ */
-
-body.dark .left-content,
-body.dark .right-content {
-    background: #24382b;           /* Bloc sombre */
-    color: #e0e0e0;                /* Texte clair */
-    box-shadow: 0 3px 12px rgba(0,0,0,0.4);
-}
-
-/* Carte publication */
-body.dark .publication-card {
-    background: #2b4636;
-    border-left-color: #4caf50;
-    color: #abff9bff;
-}
-
-/* Proposals (petits blocs verts) */
-body.dark .proposal {
-    background: #2d4a37;
-}
-
-/* Conteneur liste propositions */
-body.dark .prop-list {
-    background: #253a2d;
-}
-
-/* Formulaire d’édition */
-body.dark .edit-form {
-    background: #2b4636;
-    border-color: #3c6e52;
-    color: #e0e0e0;
-}
-
-/* Inputs sombres */
-body.dark input,
-body.dark textarea {
-    background: #1f2f26;
-    border: 1px solid #3c6e52;
-    color: white;
-}
-
-body.dark h4
-{
-    color: #78cb9cff;
-}
-
-body.dark h3
-{
-    color: #4eb18bff;
-}
-
-
-body.dark .info-grid
-{
-    color:white;
-}
-
-
-body.dark .bttn {
-  --green: #1BFD9C;
-  width: 400px;
-  font-size: 15px;
-  padding: 0.7em 2.7em;
-  letter-spacing: 0.06em;
-  position: relative;
-  font-family: inherit;
-  border-radius: 0.6em;
-  margin-top:17px;
-  margin-left:8px;
-  overflow: hidden;
-  transition: all 0.3s;
-  line-height: 1.4em;
-  border: 2px solid var(--green);
-  background: linear-gradient(to right, rgba(27, 253, 156, 0.1) 1%, transparent 40%,transparent 60% , rgba(27, 253, 156, 0.1) 100%);
-  color: var(--green);
-  box-shadow: inset 0 0 10px rgba(27, 253, 156, 0.4), 0 0 9px 3px rgba(27, 253, 156, 0.1);
-  cursor:pointer;
-
-}
-
-.bttn {
-  --green: #098b53ff;
-  width: 400px;
-  font-size: 15px;
-  padding: 0.7em 2.7em;
-  letter-spacing: 0.06em;
-  position: relative;
-  font-family: inherit;
-  border-radius: 0.6em;
-  margin-top:17px;
-  margin-left:8px;
-  overflow: hidden;
-  transition: all 0.3s;
-  line-height: 1.4em;
-  border: 2px solid var(--green);
-  background: linear-gradient(to right, rgba(23, 203, 125, 0.74) 1%, transparent 40%,transparent 60% , rgba(23, 203, 125, 0.74) 100%);
-  color: var(--green);
-  box-shadow: inset 0 0 10px rgba(9, 187, 110, 0.67), 0 0 9px 3px rgba(9, 187, 110, 0.67);
-  cursor:pointer;
-
-}
-
-.bttn:hover {
-  box-shadow: inset 0 0 10px rgba(27, 253, 156, 0.6), 0 0 9px 3px rgba(27, 253, 156, 0.2);
-}
-
-.bttn:before {
-  content: "";
-  position: absolute;
-  left: -4em;
-  width: 4em;
-  height: 100%;
-  top: 0;
-  transition: transform .4s ease-in-out;
-  background: linear-gradient(to right, transparent 1%, rgba(27, 253, 156, 0.1) 40%,rgba(27, 253, 156, 0.1) 60% , transparent 100%);
-}
-
-.bttn:hover:before {
-  transform: translateX(15em);
-}
-
-
-</style>
 
 <script>
+
+function validerForm() {
+    let nom = document.querySelector('input[name="nom_pub"]').value.trim();
+    let desc = document.querySelector('textarea[name="description"]').value.trim();
+    let budget = document.querySelector('input[name="budget"]').value.trim();
+    let delai = document.querySelector('input[name="delai"]').value.trim();
+    let categories = document.querySelectorAll('input[name="categories[]"]:checked');
+
+    // Vérifier Nom du projet
+    if (nom === "") {
+        alert("Veuillez entrer un nom de projet.");
+        return false;
+    }
+
+    // Vérifier Description
+    if (desc.length < 10) {
+        alert("La description doit contenir au moins 10 caractères.");
+        return false;
+    }
+
+    // Vérifier Budget
+    if (budget === "" || budget <= 0) {
+        alert("Veuillez entrer un budget valide.");
+        return false;
+    }
+
+    // Vérifier Délai
+    if (delai === "" || delai <= 0) {
+        alert("Veuillez entrer un délai en jours.");
+        return false;
+    }
+
+    // Vérifier Catégories
+    if (categories.length === 0) {
+        alert("Veuillez choisir au moins une catégorie.");
+        return false;
+    }
+
+    return true; // Autorise l'envoi du formulaire
+}
+
     // Toggle du menu
 document.querySelector(".profile-img").onclick = function() {
     const menu = document.querySelector(".dropdown-menu");

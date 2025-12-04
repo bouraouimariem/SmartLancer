@@ -39,16 +39,16 @@ if (!empty($search_id)) {
         <p class="card-title">Gestion des Utilisateurs</p>
 
         <form method="GET" action="" class="mb-3 d-flex align-items-center" style="gap: 10px;">
-          <input type="text" name="recherche_id" class="form-control" placeholder="🔎 Chercher Utilisateur ID..."
+          <input type="text" name="recherche_id" class="form-control" placeholder="Chercher Utilisateur ID..."
             value="<?php echo htmlspecialchars($search_id); ?>"
             style="max-width: 250px; border-radius: 20px; padding-left: 20px;">
 
           <button type="submit" class="btn btn-primary" style="border-radius: 20px; padding: 8px 20px;">
-            🔍 Recherche
+            Recherche
           </button>
 
           <select name="tri" class="form-select" style="max-width: 220px; border-radius: 20px;">
-            <option value="">🎯 Trier par</option>
+            <option value="">Trier par</option>
             <option value="nom_asc" <?php echo ($sort_by == 'nom_asc') ? 'selected' : ''; ?>>⬆️ Nom croissant</option>
             <option value="nom_desc" <?php echo ($sort_by == 'nom_desc') ? 'selected' : ''; ?>>⬇️ Nom décroissant</option>
             <option value="date_new" <?php echo ($sort_by == 'date_new') ? 'selected' : ''; ?>>🆕 Plus récent</option>
@@ -56,7 +56,7 @@ if (!empty($search_id)) {
           </select>
 
           <button type="submit" class="btn btn-primary" style="border-radius: 20px; padding: 8px 20px;">
-            🚀 Trier
+            Trier
           </button>
         </form>
 

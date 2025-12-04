@@ -36,16 +36,16 @@
           <p class="card-title">📰 Gestion des Blogs</p>
 
           <form method="GET" action="" class="mb-3 d-flex align-items-center" style="gap: 10px;">
-            <input type="text" name="recherche_id" class="form-control" placeholder="🔎 Chercher Blog ID..."
+            <input type="text" name="recherche_id" class="form-control" placeholder="Chercher Blog ID..."
               value="<?php echo htmlspecialchars($search_id); ?>"
               style="max-width: 250px; border-radius: 20px; padding-left: 20px;">
 
             <button type="submit" class="btn btn-primary" style="border-radius: 20px; padding: 8px 20px;">
-              🔍 Recherche
+              Recherche
             </button>
 
             <select name="tri" class="form-select" style="max-width: 220px; border-radius: 20px;">
-              <option value="">🎯 Trier par</option>
+              <option value="">Trier par</option>
               <option value="titre_asc" <?php echo ($sort_by == 'titre_asc') ? 'selected' : ''; ?>>⬆️ Titre croissant</option>
               <option value="titre_desc" <?php echo ($sort_by == 'titre_desc') ? 'selected' : ''; ?>>⬇️ Titre décroissant</option>
               <option value="date_new" <?php echo ($sort_by == 'date_new') ? 'selected' : ''; ?>>🆕 Plus récent</option>
@@ -53,7 +53,7 @@
             </select>
 
             <button type="submit" class="btn btn-primary" style="border-radius: 20px; padding: 8px 20px;">
-              🚀 Trier
+              Trier
             </button>
 
             <a href="add_blog.php" class="btn btn-success" style="border-radius: 20px; padding: 8px 20px;">

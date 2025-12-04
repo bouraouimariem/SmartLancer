@@ -44,7 +44,7 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="navbar-brand-wrapper d-flex justify-content-center">
     <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-      <a class="navbar-brand brand-logo" style=" width: 30%;" href="index.php"><img  src="assets/images/logo.png"
+      <a class="navbar-brand brand-logo" style=" width: 20%;" href="index.php"><img  src="assets/images/logo.png"
           alt="logo" /></a>
           <br>
           <h1 style="font-family: 'Poppins', sans-serif; font-size: 24px; height: 20%;">SmartLancer</h1>
@@ -52,9 +52,7 @@
            
 
         
-      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-        <span class="mdi mdi-sort-variant"></span>
-      </button>
+    
     </div>
   </div>
   <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -171,7 +169,7 @@
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
           <img src="assets/images/faces/face5.jpg" alt="profile" />
-          <span class="nav-profile-name">Louis Barnett</span>
+          <span class="nav-profile-name">Rasslene</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a class="dropdown-item">
@@ -235,18 +233,202 @@
     <li class="nav-item">
       <a class="nav-link" href="#">
         <i class="mdi mdi-emoticon menu-icon"></i>
-        <span class="menu-title">Gestion des Evenements</span>
+        <span class="menu-title">Gestion des Commentaires</span>
       </a>
     </li>    
   </ul>
 </nav>
       <!-- partial -->
+
+      <!--debut dashboard-->
       <div class="main-panel">
-          
-         
-        
-        <!-- partial -->
+
+  <div class="content-wrapper">
+
+    <!-- SECTION : Bienvenue -->
+    <div class="row">
+      <div class="col-12 mb-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h2 class="fw-bold">👋 Bienvenue dans le Dashboard Admin</h2>
+            <p class="text-muted">
+              Gérez les utilisateurs, projets, réclamations, blog, commentaires et statistiques.
+            </p>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <!-- SECTION : Statistiques -->
+    <div class="row">
+
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card bg-primary text-white">
+          <div class="card-body">
+            <h4 class="card-title">Utilisateurs</h4>
+            <h2 class="fw-bold">124</h2>
+            <p>+12 ce mois</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card bg-success text-white">
+          <div class="card-body">
+            <h4 class="card-title">Projets</h4>
+            <h2 class="fw-bold">58</h2>
+            <p>+5 ce mois</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card bg-warning text-white">
+          <div class="card-body">
+            <h4 class="card-title">Commentaires</h4>
+            <h2 class="fw-bold">230</h2>
+            <p>+30 cette semaine</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card bg-info text-white">
+          <div class="card-body">
+            <h4 class="card-title">Visites</h4>
+            <h2 class="fw-bold">930</h2>
+            <p>Aujourd’hui</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION : Graphiques & Activités -->
+    <div class="row">
+
+      <!-- Graphique -->
+      <div class="col-md-8 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">📈 Activité des Projets</h4>
+
+            <img 
+              src="https://quickchart.io/chart?c={
+                type:'line',
+                data:{labels:['Jan','Fev','Mar','Avr','Mai','Juin'],
+                datasets:[{label:'Projets',data:[3,5,8,6,10,7]}]}
+              }"
+              style="width:100%; height:300px; border-radius:5px;">
+          </div>
+        </div>
+      </div>
+
+      <!-- Activités récentes -->
+      <div class="col-md-4 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">⚡ Activités Récentes</h4>
+
+            <ul class="list-group">
+              <li class="list-group-item">✔️ Nouveau projet ajouté : <b>E-commerce</b></li>
+              <li class="list-group-item">👤 Nouvel utilisateur : <b>Rasslene</b></li>
+              <li class="list-group-item">💬 Commentaire sur <b>Site Web</b></li>
+              <li class="list-group-item">🗑 Utilisateur supprimé : <b>Sara</b></li>
+              <li class="list-group-item">📅 Nouvel Commentaires publié</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION : Derniers utilisateurs + Derniers projets -->
+    <div class="row">
+
+      <!-- Utilisateurs -->
+      <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">👤 Derniers Utilisateurs</h4>
+
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th>Email</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Rasslene</td>
+                  <td>rass@example.com</td>
+                  <td>25 Nov 2025</td>
+                </tr>
+                <tr>
+                  <td>Aymen</td>
+                  <td>aym@gmail.com</td>
+                  <td>24 Nov 2025</td>
+                </tr>
+                <tr>
+                  <td>Sarah</td>
+                  <td>sarah@gmail.com</td>
+                  <td>23 Nov 2025</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Projets -->
+      <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">📝 Derniers Projets</h4>
+
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Projet</th>
+                  <th>Catégorie</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Site e-commerce</td>
+                  <td>Web</td>
+                  <td><span class="badge bg-success">Actif</span></td>
+                </tr>
+                <tr>
+                  <td>Application Mobile</td>
+                  <td>Mobile</td>
+                  <td><span class="badge bg-warning text-dark">En attente</span></td>
+                </tr>
+                <tr>
+                  <td>Logo Branding</td>
+                  <td>Design</td>
+                  <td><span class="badge bg-info">Terminé</span></td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<!--fin dashboard-->
+
+
+        
+   
       <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->

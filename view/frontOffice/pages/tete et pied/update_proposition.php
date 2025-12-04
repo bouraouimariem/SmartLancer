@@ -17,7 +17,7 @@ if (
 
         $date_propo = new DateTime($_POST['date_propo']);
         
-        $propoC = new Proposition(
+        $propoC = new Propositions(
             $_POST['id_propo'],
             $_POST['id_user'],
             $_POST['id_pub'],

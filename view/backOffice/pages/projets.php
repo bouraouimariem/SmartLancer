@@ -40,17 +40,17 @@ $sort_by_propo = isset($_GET['tri_propo']) ? $_GET['tri_propo'] : '';
         <p class="card-title">Publication</p>
 
         <form method="GET" action="" class="mb-3 d-flex align-items-center" style="gap: 10px;">
-          <input type="text" name="recherche_id" class="form-control" placeholder="🔎 Chercher Publication ID..."
+          <input type="text" name="recherche_id" class="form-control" placeholder="Chercher Publication ID..."
             value="<?php echo htmlspecialchars($search_id); ?>"
-            style="max-width: 250px; border-radius: 20px; padding-left: 20px;">
+            style="max-width: 250px; border-radius: 20px; padding-left: 20px; padding-top: 10px;padding-bottom: 10px; ">
 
           <button type="submit" class="btn btn-primary"
             style="border-radius: 20px; padding: 8px 20px; transition: 0.3s;">
-            🔍 Recherche
+            Recherche
           </button>
 
           <select name="tri" class="form-select" style="max-width: 220px; border-radius: 20px; transition: 0.3s;">
-            <option value="">🎯 Trier par</option>
+            <option value="">Trier par</option>
             <option value="budget_asc" <?php echo ($sort_by == 'budget_asc') ? 'selected' : ''; ?>>
               ⬆️ Budget croissant</option>
             <option value="budget_desc" <?php echo ($sort_by == 'budget_desc') ? 'selected' : ''; ?>>
@@ -63,7 +63,7 @@ $sort_by_propo = isset($_GET['tri_propo']) ? $_GET['tri_propo'] : '';
 
           <button type="submit" class="btn btn-primary"
             style="border-radius: 20px; padding: 8px 20px; transition: 0.3s;">
-            🚀 Trier
+            Trier
           </button>
         </form>
 
@@ -93,7 +93,25 @@ $sort_by_propo = isset($_GET['tri_propo']) ? $_GET['tri_propo'] : '';
                   <td><?php echo $pub['budget']; ?></td>
                   <td><?php echo $pub['delai_requise']; ?></td>
                   <td><?php echo $pub['date_pub']; ?></td>
-                  <td><span class="status-badge draft"><?php echo $pub['status']; ?></span></td>
+<td>
+  <?php
+    $status = strtolower($pub['status']);
+    $class = '';
+
+    if ($status == 'accepté' || $status == 'accepte') {
+        $class = 'status-accepted';
+    } elseif ($status == 'refusé' || $status == 'refuse') {
+        $class = 'status-refused';
+    } elseif ($status == 'en cours') {
+        $class = 'status-pending';
+    } else {
+        $class = 'status-default';
+    }
+  ?>
+  <span class="status-badge <?php echo $class; ?>">
+    <?php echo $pub['status']; ?>
+  </span>
+</td>
                   <td>
                     <div class="action-buttons">
                       <a href="tete et pied/delete_publication.php?id_pub=<?php echo $pub['id_pub']; ?>"
@@ -116,17 +134,17 @@ $sort_by_propo = isset($_GET['tri_propo']) ? $_GET['tri_propo'] : '';
       <div class="card-body">
         <p class="card-title">Propositions</p>
         <form method="GET" action="" class="mb-3 d-flex align-items-center" style="gap: 10px;">
-          <input type="text" name="recherche_id_propo" class="form-control" placeholder="🔎 Chercher Propositon ID..."
+          <input type="text" name="recherche_id_propo" class="form-control" placeholder="Chercher Propositon ID..."
             value="<?php echo htmlspecialchars($search_id_propo); ?>"
-            style="max-width: 250px; border-radius: 20px; padding-left: 20px;">
+           style="max-width: 250px; border-radius: 20px; padding-left: 20px; padding-top: 10px;padding-bottom: 10px; ">
 
           <button type="submit" class="btn btn-primary"
             style="border-radius: 20px; padding: 8px 20px; transition: 0.3s;">
-            🔍 Recherche
+            Recherche
           </button>
 
           <select name="tri_propo" class="form-select" style="max-width: 220px; border-radius: 20px; transition: 0.3s;">
-            <option value="">🎯 Trier par</option>
+            <option value="">Trier par</option>
             <option value="budget_asc" <?php echo ($sort_by_propo == 'motant_asc') ? 'selected' : ''; ?>>
               ⬆️ montant croissant</option>
             <option value="budget_desc" <?php echo ($sort_by_propo == 'montant_desc') ? 'selected' : ''; ?>>
@@ -138,7 +156,7 @@ $sort_by_propo = isset($_GET['tri_propo']) ? $_GET['tri_propo'] : '';
           </select>
           <button type="submit" class="btn btn-primary"
             style="border-radius: 20px; padding: 8px 20px; transition: 0.3s;">
-            🚀 Trier
+            Trier
           </button>
         </form>
         <div class="table-responsive" style="max-height: 350px; overflow-y: auto; position: relative;">
@@ -193,7 +211,25 @@ $sort_by_propo = isset($_GET['tri_propo']) ? $_GET['tri_propo'] : '';
                   <td><?php echo $propo['montant_propo']; ?></td>
                   <td><?php echo $propo['delai_estime']; ?></td>
                   <td><?php echo $propo['date_propo']; ?></td>
-                  <td><span class="status-badge draft"><?php echo $propo['status']; ?></span></td>
+<td>
+  <?php
+    $status = strtolower($propo['status']);
+    $class = '';
+
+    if ($status == 'accepté' || $status == 'accepte') {
+        $class = 'status-accepted';
+    } elseif ($status == 'refusé' || $status == 'refuse') {
+        $class = 'status-refused';
+    } elseif ($status == 'en cours') {
+        $class = 'status-pending';
+    } else {
+        $class = 'status-default';
+    }
+  ?>
+  <span class="status-badge <?php echo $class; ?>">
+    <?php echo $propo['status']; ?>
+  </span>
+</td>
                   <td>
                     <div class="action-buttons">
                       <a href="tete et pied/delete_proposition.php?id_propo=<?php echo $propo['id_propo']; ?>"
@@ -211,6 +247,12 @@ $sort_by_propo = isset($_GET['tri_propo']) ? $_GET['tri_propo'] : '';
   </div>
 </div>
 <style>
+
+  element.style {
+  
+    border-radius: 20px;
+    padding-left: 20px;
+}
   .status-badge {
     display: inline-block;
     padding: 5px 10px;
@@ -219,15 +261,37 @@ $sort_by_propo = isset($_GET['tri_propo']) ? $_GET['tri_propo'] : '';
     font-weight: 500;
   }
 
-  .published {
-    background-color: #e6f7ee;
-    color: #0d8a53;
-  }
+ .status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  min-width: 80px;
+  text-align: center;
+}
 
-  .draft {
-    background-color: #fff8e6;
-    color: #b99000;
-  }
+/* ✅ Accepté = Vert */
+.status-accepted {
+  background-color: #28a745;
+}
+
+/* ❌ Refusé = Rouge */
+.status-refused {
+  background-color: #dc3545;
+}
+
+/* ⏳ En cours = Jaune */
+.status-pending {
+  background-color: #ffc107;
+  color: #000;
+}
+
+/* ⚪ Autre = Gris */
+.status-default {
+  background-color: #6c757d;
+}
 
   /* Action Buttons */
   .action-buttons {

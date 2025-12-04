@@ -78,8 +78,11 @@ $img = "../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
     </div>
 
 </div>
- 
+      <a href="accueil_freelancer.php" class="back-btn" >
+    ⬅ Retour
+</a>
 <div class="job_listing_area plus_padding">
+
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
@@ -89,39 +92,44 @@ $img = "../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
 </div>
 
                 <div class="job_filter white-bg">
-                    <div class="form_inner white-bg">
-                        <center><h3>Filtre</h3></center>
-                        <form action="#">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="single_field">
-                                        <input type="text" placeholder="recherche">
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="single_field">
-                                        <select class="wide">
-                                            <option data-display="Categorie">Categorie</option>
-                                            <option value="1">web</option>
-                                            <option value="2">design</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="range_wrap">
-                       <center> <label for="amount">💰 montant:</label></center>
-                        <div id="slider-range"></div>
-                        <p>
-                            <input type="text" id="amount" readonly
-                                style="border:0; color:#7A838B; font-size: 14px; font-weight:400;">
-                        </p>
-                    </div>
-                    <div class="reset_btn">
-                        <center><button class="btn btn-outline-info" type="submit">Recherche</button></center>
-                    </div>
-                </div>
+    <div class="form_inner white-bg">
+        <center><h3>Filtre</h3></center>
+
+        <form method="GET" action="">
+           
+
+            <!-- Catégorie -->
+            <div class="single_field mb-3">
+                <select name="categorie" class="form-control">
+                    <option value="">Toutes les catégories</option>
+                    <option value="Web">Web</option>
+                    <option value="Mobile">Mobile</option>
+                    <option value="Intelligence Artificielle">Intelligence Artificielle</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Design">Design</option>
+                </select>
+            </div>
+
+            <!-- Budget -->
+            <div class="single_field mb-3">
+                <label>Budget minimum</label>
+                <input type="number" name="budget_min" class="form-control" placeholder="Min">
+            </div>
+
+            <div class="single_field mb-3">
+                <label>Budget maximum</label>
+                <input type="number" name="budget_max" class="form-control" placeholder="Max">
+            </div>
+
+            <center>
+                <button type="submit" class="btn btn-outline-info w-100">
+                    Appliquer
+                </button>
+            </center>
+        </form>
+    </div>
+</div>
+
             </div>
             <div class="col-lg-9">
                 <div class="job_lists m-0">
@@ -129,8 +137,22 @@ $img = "../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
                         <?php
                         include '../../../controller/publicationC.php';
                         $publicationC = new publicationController();
-                      
-                        $pub = $publicationC->list_pub_for_freelancer($id_user);
+
+$search     = trim($_GET['search'] ?? '');
+$categorie  = $_GET['categorie'] ?? '';
+$budget_min = $_GET['budget_min'] ?? '';
+$budget_max = $_GET['budget_max'] ?? '';
+
+if ($search !== '' || $categorie !== '' || $budget_min !== '' || $budget_max !== '') {
+    $min = ($budget_min !== '') ? (int)$budget_min : 0;
+    $max = ($budget_max !== '') ? (int)$budget_max : 999999;
+
+    $pub = $publicationC->filterForFreelancer($id_user, $search, $categorie, $min, $max);
+} else {
+    $pub = $publicationC->list_pub_for_freelancer($id_user);
+}
+
+
                         foreach ($pub as $publication) { ?>
                             <div class="col-lg-12 col-md-12">
                                 <div class="single_jobs white-bg p-4 shadow-sm rounded">
@@ -765,7 +787,7 @@ body.dark .dropdown-menu {
 
 
 .job_listing_area.plus_padding {
-  padding-top: 142px;
+
   margin-left: -350px;
  color: #edf7f1;
 }

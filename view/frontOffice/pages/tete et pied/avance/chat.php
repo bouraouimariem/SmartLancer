@@ -48,18 +48,22 @@ if (!is_array($messages)) $messages = [];
 <head>
     <meta charset="UTF-8">
     <title>Discussion</title>
+     <?php
+$img = "../../../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
+?>
 
     <style>
         /* === HEADER ECO === */
-        .green-header {
-            background: linear-gradient(90deg, #1b5e20, #4caf50);
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        }
+         .header {
+    background: #2c8f4c;
+    height: 70px;              /* 👉 hauteur FIXE */
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+     overflow: visible; /* IMPORTANT */
+    }
+
         .logo-zone { display: flex; align-items: center; gap: 10px; }
         .earth-icon { width: 40px; height: 40px; }
 
@@ -112,65 +116,218 @@ if (!is_array($messages)) $messages = [];
         }
         button:hover { background: #1b5e20; }
 
-        /* === FOOTER ECO === */
-        footer {
-            background: #1b5e20;
-            color: #c8e6c9;
-            text-align: center;
-            padding: 15px;
-            margin-top: 20px;
-        }
 
-        /* === BOUTON SWITCH === */
-.toggle-btn {
-    background: #2e7d32;
-    color: white;
-    border: none;
-    padding: 10px 15px;
+        .profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-img {
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 18px;
-}
-.toggle-btn:hover {
-    background: #1b5e20;
-}
-
-/* === MODE SOMBRE (COULEUR : #1e3b2f) === */
-.dark-mode {
-    background: #1e3b2f !important;
-    color: white !important;
+    border: 2px solid #fff;
+    object-fit: cover;
+    transition: 0.3s;
 }
 
-.dark-mode .chat-box {
+.profile-img:hover { transform: scale(1.1); }
+
+/* STYLE CARTE TRANSLUCIDE */
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 60px;
+    width: 220px;
+    padding: 20px;
+    border-radius: 20px;
+    background: #2c8f4b79;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: #2c8f4c;
+
+    display: none;
+    flex-direction: column;
+    animation: fadeIn 0.2s ease;
+}
+
+/* Animation ouverture */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 10px;
+    gap: 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.dropdown-item:hover {
+    background: #2c8f4c;
+}
+
+/* Icones dans le dropdown */
+.dropdown-item i {
+    font-size: 20px;
+}
+
+/* Séparateur */
+.dropdown-separator {
+    height: 2px;
+    background: rgba(0, 83, 28, 0.3);
+    margin: 10px 0;
+}
+
+
+.immg {
+    height: 140%;              /* 👉 l’image occupe toute la hauteur du header */
+    width: auto;               /* 👉 garde proportions */
+    object-fit: contain; 
+    margin-left: -29px;      /* 👉 pas de déformation */
+    margin-bottom:8px;
+}
+
+/* --- TOGGLE SWITCH --- */
+.theme-switch {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 12px;
+    color: white;
+    font-size: 16px;
+}
+
+.switch {
+    position: relative;
+    width: 50px;
+    height: 24px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50px;
+    transition: 0.3s;
+}
+
+.switch::after {
+    content: "";
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    top: 1px;
+    left: 1px;
+    transition: 0.3s;
+}
+
+/* Quand dark mode activé */
+body.dark .switch {
+    background: #111;
+}
+
+body.dark .switch::after {
+    transform: translateX(26px);
+}
+
+/* Mode sombre global */
+body.dark {
+    background: #1e3b2f ;
+    color: white;
+}
+
+body.dark .btn-menu {
+    background: #1f1f1f;
+    color: white;
+}
+
+body.dark .header {
+    background: #1b5b32;
+}
+
+body.dark .dropdown-menu {
+    background: #1b5b3299;
+}
+
+body.dark .chat-box
+{
     background: #26493a;
-    color: white;
+    color: white ;
 }
 
-.dark-mode .sent {
-    background: #1b5e20;
-    color: white;
+body.dark input[type="text"]
+{
+    background: #285C47;
+    color: white ;
+    border:1px solid #4caf50;
 }
 
-.dark-mode .received {
-    background: #285c47;
-    color: white;
+ body.dark .sent
+{
+    background: #09680cff;
+    margin-left: auto;
 }
 
-.dark-mode input[type="text"] {
-    background: #285c47;
-    color: white;
-    border: 1px solid #4caf50;
+
+/* --- MENU NAVIGATION DANS LE HEADER --- */
+.nav {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
-.dark-mode footer {
-    background: #0d241c;
-    color: #c8e6c9;
+
+.header-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 }
 
-.dark-mode .green-header {
-    background: #0f281f;
-    color: white;
+.header-menu .nav {
+    display: flex;
+    gap: 18px;
 }
+
+.header-menu .nav-link {
+    color: white !important;
+    font-size: 16px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: 0.3s;
+    text-decoration:none;
+}
+
+.header-menu .nav-link:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.header-menu .nav-link.active {
+    background: white;
+    color: #2c8f4c !important;
+    font-weight: bold;
+}
+
+/* MODE SOMBRE */
+body.dark .header-menu .nav-link {
+    color: #fff !important;
+}
+
+body.dark .header-menu .nav-link.active {
+    background: #fff;
+    color: #1b5b32 !important;
+}
+
+body.dark .header-menu .nav-link:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+
 
     </style>
 </head>
@@ -178,15 +335,36 @@ if (!is_array($messages)) $messages = [];
 <body>
 
 <!-- ================= HEADER ================= -->
-<header class="green-header">
-    <div class="logo-zone">
-        <img src="../../../img/logo.png" class="earth-icon">
-        <h2>SmartLancer</h2>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css">
+
+<div class="header">
+
+    <!-- TITRE -->
+      <img src="../../../img/logo.png" class="immg">
+
+    <!-- PROFILE DROPDOWN -->
+    <div class="profile-dropdown">
+        <img src="<?php echo $img; ?>" class="profile-img" alt="Profil">
+
+        <div class="dropdown-menu">
+
+            <div id="themeToggle" class="dropdown-item theme-switch">
+                <i id="themeIcon" class="bi bi-moon-stars"></i>
+                <span id="themeText">Mode Sombre</span>
+                <div class="switch"></div>
+            </div>
+
+            <div class="dropdown-separator"></div>
+
+            <a href="../../logout.php" class="dropdown-item">
+                <i class="bi bi-box-arrow-right"></i>
+                Déconnexion
+            </a>
+
+        </div>
     </div>
 
-    <!-- 🔘 Bouton Dark/Light -->
-    <button id="themeToggle" class="toggle-btn">🌙</button>
-</header>
+</div>
 
 
 <!-- ================= CHAT ================= -->
@@ -206,10 +384,6 @@ if (!is_array($messages)) $messages = [];
     </form>
 </div>
 
-<!-- ================= FOOTER ================= -->
-<footer>
-    🌿 Engagés pour les Objectifs de Développement Durable | EcoLancer 2025
-</footer>
 
 <script>
 // Auto refresh chat
@@ -220,24 +394,58 @@ setInterval(() => {
             document.getElementById('chatBox').innerHTML = html;
         });
 }, 3000);
-const btn = document.getElementById("themeToggle");
-const body = document.body;
+document.querySelector(".profile-img").onclick = function() {
+    const menu = document.querySelector(".dropdown-menu");
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+};
 
-// Charger thème sauvegardé
-if (localStorage.getItem("theme") === "dark") {
-    body.classList.add("dark-mode");
-    btn.textContent = "☀️";
+// Clic extérieur → fermer
+document.addEventListener("click", function(e) {
+    if (!e.target.closest(".profile-dropdown")) {
+        document.querySelector(".dropdown-menu").style.display = "none";
+    }
+});
+
+
+/* -------------------------------------------------
+   THÈME SOMBRE / CLAIR AVEC SAUVEGARDE LOCALSTORAGE
+---------------------------------------------------*/
+const themeToggle = document.getElementById("themeToggle");
+const themeText   = document.getElementById("themeText");
+const themeIcon   = document.getElementById("themeIcon");
+
+// Lire la valeur enregistrée
+let savedTheme = localStorage.getItem("theme");
+
+// Par défaut → thème clair
+if (!savedTheme) {
+    localStorage.setItem("theme", "light");
+    savedTheme = "light";
 }
 
-btn.onclick = () => {
-    body.classList.toggle("dark-mode");
+// Appliquer le thème sauvegardé
+if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    themeText.textContent = "Mode Sombre";
+    themeIcon.className = "bi bi-moon-stars";
+} else {
+    document.body.classList.remove("dark");
+    themeText.textContent = "Mode Claire";
+    themeIcon.className = "bi bi-sun";
+}
 
-    if (body.classList.contains("dark-mode")) {
+// Toggle thème au clic
+themeToggle.onclick = function () {
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+        themeText.textContent = "Mode Sombre";
+        themeIcon.className = "bi bi-moon-stars";
         localStorage.setItem("theme", "dark");
-        btn.textContent = "☀️";
     } else {
+        themeText.textContent = "Mode Claire";
+        themeIcon.className = "bi bi-sun";
         localStorage.setItem("theme", "light");
-        btn.textContent = "🌙";
     }
 };
 </script>

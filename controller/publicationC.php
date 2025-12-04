@@ -235,6 +235,42 @@ class publicationController
 
     
 
+public function filterForFreelancer($id_user, $search = '', $categorie = '', $min = 0, $max = 999999)
+{
+    $sql = "SELECT p.* FROM publications p
+            WHERE p.status = 'en cours'
+              AND p.budget BETWEEN :min AND :max
+              AND NOT EXISTS (
+                  SELECT 1 FROM propositions pr
+                  WHERE pr.id_pub = p.id_pub
+                    AND pr.id_user = :id_user
+              )";
+
+    if (!empty($search)) {
+        $sql .= " AND p.nom_pub LIKE :search";
+    }
+    if (!empty($categorie)) {
+        $sql .= " AND p.categorie = :categorie";
+    }
+
+    $db = config::getConnexion();
+    $stmt = $db->prepare($sql);
+
+    $stmt->bindValue(':min', (int)$min, PDO::PARAM_INT);
+    $stmt->bindValue(':max', (int)$max, PDO::PARAM_INT);
+    $stmt->bindValue(':id_user', (int)$id_user, PDO::PARAM_INT);
+
+    if (!empty($search)) {
+        $stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
+    }
+    if (!empty($categorie)) {
+        $stmt->bindValue(':categorie', $categorie, PDO::PARAM_STR);
+    }
+
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 
 

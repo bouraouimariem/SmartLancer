@@ -12,7 +12,21 @@
   -ms-flex-pack: start;
   justify-content: start;
 }
-
+.back-btn {
+    display: inline-block;
+    background: #2c8f4c;
+    color: white;
+    padding: 8px 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+    margin-bottom: -15px;
+    margin-left: 41px;
+}
 /* Normal desktop :1200px. */
 /* Normal desktop :992px. */
 /* Tablet desktop :768px. */
