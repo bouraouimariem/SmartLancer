@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../Model/Reclamation.php';
 require_once __DIR__ . '/../Model/Reponse.php';
+require_once __DIR__ . '/NotificationController.php';
 
 class ReclamationController {
 
@@ -20,8 +21,18 @@ class ReclamationController {
     }
 
     public function add($nom, $email, $sujet, $message, $telephone, $status = 'En attente') {
-        return $this->model->addReclamation($nom, $email, $sujet, $message, $telephone, $status);
-    }
+
+    // 1️⃣ Ajouter la réclamation
+    $id_reclamation = $this->model->addReclamation($nom, $email, $sujet, $message, $telephone, $status);
+
+    // 2️⃣ Créer une notification pour l'admin
+    $notif = new NotificationController();
+    $notifMessage = "Nouvelle réclamation de $email : $sujet";
+    $notif->add($id_reclamation, "admin", $notifMessage);
+
+    return $id_reclamation;
+}
+
 
     public function delete($id) {
         $this->model->deleteReclamation($id);
