@@ -45,7 +45,7 @@ if (isset($_GET['delete_id'])) {
                 <option value="">Tous</option>
                 <option value="En attente" <?= (isset($_GET['status']) && $_GET['status']=='En attente') ? 'selected' : '' ?>>En attente</option>
                 <option value="Répondu" <?= (isset($_GET['status']) && $_GET['status']=='Répondu') ? 'selected' : '' ?>>Répondu</option>
-                <option value="Clos" <?= (isset($_GET['status']) && $_GET['status']=='Clos') ? 'selected' : '' ?>>Clos</option>
+                <option value="Clos" <?= (isset($_GET['status']) && $_GET['status']=='Clos') ? 'selected' : '' ?>>fermé</option>
             </select>
         </label>
 

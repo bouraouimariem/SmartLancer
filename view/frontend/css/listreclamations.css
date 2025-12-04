@@ -217,3 +217,29 @@ input[type="text"]:focus, input[type="date"]:focus, select:focus {
     margin-top: 20px;
     text-align: center;
 }
+.response {
+    background: linear-gradient(135deg, #7b2fff, #5a00e6);
+    color: #fff;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.response::before {
+    content: "👁️"; /* icône œil */
+    font-size: 16px;
+}
+
+.response:hover {
+    transform: scale(1.08);
+    background: linear-gradient(135deg, #5a00e6, #3c009c);
+}
