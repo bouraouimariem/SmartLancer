@@ -289,12 +289,17 @@ footer.secondary-footer {
                     <?php if (!empty($responses)): ?>
                         <div style="padding:10px; border-left:3px solid #eee; background:#fafafa; border-radius:8px;">
                         <?php foreach ($responses as $r): ?>
-                            <div class="reponse-item" data-id="<?= $r['id'] ?>" data-avis-id="<?= $avis['id'] ?>" data-nom="<?= htmlspecialchars($r['nom'], ENT_QUOTES) ?>" data-email="<?= htmlspecialchars($r['email'], ENT_QUOTES) ?>" data-contenu="<?= htmlspecialchars($r['contenu'], ENT_QUOTES) ?>" style="margin-bottom:10px;">
+                            <div class="reponse-item" data-id="<?= $r['id'] ?>" data-avis-id="<?= $avis['id'] ?>" data-nom="<?= htmlspecialchars($r['nom'], ENT_QUOTES) ?>" data-email="<?= htmlspecialchars($r['email'], ENT_QUOTES) ?>" data-contenu="<?= htmlspecialchars($r['contenu'], ENT_QUOTES) ?>" data-piece="<?= isset($r['piece_jointe']) ? htmlspecialchars($r['piece_jointe'], ENT_QUOTES) : '' ?>" data-niveau="<?= isset($r['niveau_sensitive']) ? htmlspecialchars($r['niveau_sensitive'], ENT_QUOTES) : '' ?>" style="margin-bottom:10px;">
                                 <div>
                                     <strong><?= htmlspecialchars($r['nom']) ?></strong>
                                     <span style="color:#777; font-size:12px; margin-left:8px;">le <?= htmlspecialchars(date('d/m/Y H:i', strtotime($r['created_at']))) ?></span>
                                 </div>
                                 <p style="margin:6px 0;" class="reponse-contenu"><?= nl2br(htmlspecialchars($r['contenu'])) ?></p>
+                                <?php if (!empty($r['niveau_sensitive'])): ?>
+                                    <div style="margin-top:8px;color:#555;font-size:13px">
+                                        <?php if (!empty($r['niveau_sensitive'])): ?><span><strong>Niveau:</strong> <?= htmlspecialchars($r['niveau_sensitive']) ?></span><?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
                                 <div style="display:flex; gap:8px;">
                                     <button class="btn-action edit-reponse" data-id="<?= $r['id'] ?>">Modifier</button>
                                     <button class="btn-action btn-delete delete-reponse" data-id="<?= $r['id'] ?>">Supprimer</button>
