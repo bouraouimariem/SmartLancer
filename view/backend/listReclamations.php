@@ -34,7 +34,7 @@ $reclamations = $controller->filterAndSearch($filters);
         </select>
     </label>
     <label>Date: <input type="date" name="date" value="<?= $_GET['date'] ?? '' ?>"></label>
-    <label>Recherche: <input type="text" name="search" placeholder="Nom, email, sujet, ID" value="<?= $_GET['search'] ?? '' ?>"></label>
+    <label>Recherche: <input type="text" name="search" placeholder="ID" value="<?= $_GET['search'] ?? '' ?>"></label>
     <button type="submit">Filtrer</button>
     <a href="listReclamations.php" style="margin-left:10px;">Réinitialiser</a>
 </form>
