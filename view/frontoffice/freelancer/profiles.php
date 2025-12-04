@@ -48,7 +48,7 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== "Freelancer") {
 
     <!-- BOUTON À DROITE -->
     <a href="/project/index.php?route=logout"
-       class="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition btn-3d">
+       class="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 shadow btn-3d">
        Déconnexion
     </a>
 
@@ -64,7 +64,7 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== "Freelancer") {
             <a href="/project/view/frontoffice/freelancer/about.php">About</a>
             <a href="/project/view/frontoffice/freelancer/skills.php">Skills</a>
             <a href="/project/view/frontoffice/freelancer/work.php">Work</a>
-            <a href="/project/view/frontoffice/freelancer/contact.php" class="hover:text-green-500">Contact</a>
+            <a href="#contact" class="hover:text-green-500">Contact</a>
         </nav>
 
         
@@ -96,7 +96,7 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== "Freelancer") {
                 </p>
 
                 <a href="/project/view/frontoffice/freelancer/edit_portfolio.php"
-                   class="inline-block mt-6 bg-green-600 text-white px-6 py-2 rounded-lg shadow hover:bg-green-700 transition">
+                   class="inline-block mt-6 bg-green-600 text-white px-6 py-2 rounded-lg shadow hover:bg-green-700 shadow btn-3d">
                     Modifier Profil
                 </a>
             </div>

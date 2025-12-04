@@ -118,11 +118,14 @@ case 'contact':
     require __DIR__ . '/view/frontoffice/contact.php';
     break;
 
-case 'all_freelancers':
-    require __DIR__ . '/controller/PortfolioController.php';
-    $controller = new PortfolioController();
-    $controller->listAll();
+
+case 'view_ban':
+    require __DIR__ . '/controller/BackofficeController.php';
+    $c = new BackofficeController();
+    $c->viewBan();
     break;
+
+
 
 
     default:

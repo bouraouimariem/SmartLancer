@@ -40,7 +40,7 @@
             >
 
             <button 
-                class="w-full bg-green-700 text-white py-2 rounded-lg mt-5 hover:bg-green-800 transition">
+                class="w-full bg-green-700 text-white py-2 rounded-lg mt-5 hover:bg-green-800 shadow btn-3d">
                 Envoyer le lien de réinitialisation
             </button>
 

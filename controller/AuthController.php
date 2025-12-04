@@ -1,6 +1,6 @@
 <?php
-// controller/AuthController.php
-require_once __DIR__ . '/../model/User.php';
+
+require_once __DIR__ . '/../model/User.php';// s'il echoue php arrete l'execusion
 
 class AuthController {
     private $userModel;
@@ -13,10 +13,10 @@ class AuthController {
     // handle and display register view
     public function register() {
         // si POST -> traiter l'inscription
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') { //la requete en mode post elle recupere les donne 
             $name = trim($_POST['name'] ?? '');
-            $email = trim($_POST['email'] ?? '');
-            $password = $_POST['password'] ?? '';
+            $email = trim($_POST['email'] ?? ''); //?? evite si le cle ne se trouve pas dans la bd
+            $password = $_POST['password'] ?? '';// trim pour eviter l'espaace avant ou apres le nom et email
             $role = $_POST['role'] ?? 'Client';
 
             // validations côté serveur (minimum)
@@ -75,10 +75,10 @@ class AuthController {
 
             if ($user && password_verify($password, $user['password'])) {
                 if ($user['banned'] == 1) {
-    $errors[] = "Votre compte est banni. Contactez l’administrateur.";
-    require __DIR__ . '/../view/frontoffice/login.php';
-    return;
-}
+                    $errors[] = "Votre compte est banni. Contactez l’administrateur.";
+                    require __DIR__ . '/../view/frontoffice/login.php';
+                    return;
+                }
 
 
                 // SESSION
@@ -108,9 +108,10 @@ class AuthController {
 
                 // ✔ Client
                 if ($user['role'] === 'Client') {
-                    header("Location: index.php?route=client");
-                    exit;
+                    header("Location: /project/view/frontoffice/client/client_welcome.php");
+                    exit();
                 }
+
 
                 // ✔ Admin
                 if ($user['role'] === 'Admin') {

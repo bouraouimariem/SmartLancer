@@ -29,7 +29,12 @@ class User {
         return $stmt->fetch(); // false | assoc array
     }
 
-    
+    public function getUserById($id) {
+    $stmt = $this->pdo->prepare("SELECT * FROM us WHERE id = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 
     
 
@@ -72,6 +77,44 @@ public function updatePassword($email, $password) {
     $stmt = $this->pdo->prepare($sql);
     return $stmt->execute(['password' => $password, 'email' => $email]);
 }
+
+public function saveBanToken($id, $token) {
+    $sql = "UPDATE us SET ban_token = ? WHERE id = ?";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([$token, $id]);
+}
+
+
+public function getFilteredUsers($search = '', $role = '', $sortBy = 'id', $order = 'ASC') {
+    $allowedSort = ['id', 'email', 'role', 'created_at'];
+    $allowedOrder = ['ASC', 'DESC'];
+
+    $sortBy = in_array($sortBy, $allowedSort) ? $sortBy : 'id';
+    $order = in_array(strtoupper($order), $allowedOrder) ? strtoupper($order) : 'ASC';
+
+    $sql = "SELECT * FROM us WHERE 1=1";
+    $params = [];
+
+    if (!empty($search)) {
+        $sql .= " AND (email LIKE :searchEmail OR name LIKE :searchName)";
+        $params[':searchEmail'] = "%$search%";
+        $params[':searchName'] = "%$search%";
+    }
+
+    if (!empty($role)) {
+        $sql .= " AND role = :role";
+        $params[':role'] = $role;
+    }
+
+    $sql .= " ORDER BY $sortBy $order";
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute($params);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 
 
 

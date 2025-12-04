@@ -46,7 +46,7 @@ $portfolio = $model->getByUserId($_SESSION['id']);
     </div>
 
     <a href="/project/index.php?route=profil"
-       class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+       class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 shadow btn-3d">
        ⬅ Retour
     </a>
     

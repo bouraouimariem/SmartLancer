@@ -75,7 +75,7 @@ if (empty($_SESSION['email']) || ($_SESSION['role'] ?? '') !== 'Freelancer') {
       </div>
 
       <button type="submit"
-        class="w-full bg-[#166534] hover:bg-green-700 text-white font-medium py-2 rounded-lg transition">
+        class="w-full bg-[#166534] hover:bg-green-700 text-white font-medium py-2 rounded-lg shadow btn-3d">
         Créer  mon profil
       </button>
 

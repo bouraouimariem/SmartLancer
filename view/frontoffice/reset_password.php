@@ -20,7 +20,7 @@
             <label class="block mb-2 font-medium">Nouveau mot de passe :</label>
             <input type="password" name="password" required class="w-full px-3 py-2 border rounded-lg">
 
-            <button class="w-full bg-green-700 text-white py-2 rounded-lg mt-5 hover:bg-green-800 transition">
+            <button class="w-full bg-green-700 text-white py-2 rounded-lg mt-5 hover:bg-green-800 shadow btn-3d">
                 Mettre à jour
             </button>
 

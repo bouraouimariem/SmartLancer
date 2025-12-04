@@ -65,7 +65,7 @@ $portfolio = $model->getByUserId($_SESSION['id']);
              class="w-full p-2 border rounded">
     </div>
 
-    <button class="w-full bg-green-700 text-white p-2 rounded">
+    <button class="w-full bg-green-700 text-white p-2 rounded shadow btn-3d">
       Mettre à jour
     </button>
 
