@@ -40,6 +40,7 @@ $total_pages = ceil($total_avis / $limit);
     <title>Statistiques & Recherche - Avis et Réponses</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* Global Styles */
         * {
             margin: 0;
             padding: 0;
@@ -48,16 +49,16 @@ $total_pages = ceil($total_avis / $limit);
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f3f6f8 0%, #e9f0f5 100%);
+            background: linear-gradient(135deg, #d0e8ff, #f0f9ff);
             color: #333;
         }
 
         .header {
-            background: linear-gradient(135deg, #0a5338 0%, #075e3a 100%);
+            background: linear-gradient(135deg, #1E90FF 0%, #0a74d6 100%);
             color: white;
             padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(30,144,255,0.2);
         }
 
         .header h1 {
@@ -85,10 +86,10 @@ $total_pages = ceil($total_avis / $limit);
         }
 
         .section h2 {
-            color: #0a5338;
+            color: #1E90FF;
             font-size: 24px;
             margin-bottom: 25px;
-            border-bottom: 3px solid #0a5338;
+            border-bottom: 3px solid #1E90FF;
             padding-bottom: 10px;
         }
 
@@ -101,11 +102,18 @@ $total_pages = ceil($total_avis / $limit);
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #0a5338 0%, #075e3a 100%);
+            background: linear-gradient(135deg, #1E90FF 0%, #0a74d6 100%);
             color: white;
             padding: 20px;
             border-radius: 8px;
             text-align: center;
+            box-shadow: 0 4px 10px rgba(30,144,255,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(30,144,255,0.25);
         }
 
         .stat-card .number {
@@ -135,17 +143,18 @@ $total_pages = ceil($total_avis / $limit);
             border-radius: 6px;
             font-size: 14px;
             font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
         }
 
         .search-bar input:focus {
             outline: none;
-            border-color: #0a5338;
-            box-shadow: 0 0 0 3px rgba(10, 83, 56, 0.1);
+            border-color: #1E90FF;
+            box-shadow: 0 0 0 3px rgba(30,144,255,0.1);
         }
 
         .search-bar button {
             padding: 12px 25px;
-            background: #0a5338;
+            background: #1E90FF;
             color: white;
             border: none;
             border-radius: 6px;
@@ -155,9 +164,9 @@ $total_pages = ceil($total_avis / $limit);
         }
 
         .search-bar button:hover {
-            background: #075e3a;
+            background: #0a74d6;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(10, 83, 56, 0.3);
+            box-shadow: 0 4px 12px rgba(30,144,255,0.3);
         }
 
         /* Filtres */
@@ -172,7 +181,7 @@ $total_pages = ceil($total_avis / $limit);
             display: block;
             margin-bottom: 6px;
             font-weight: 600;
-            color: #0a5338;
+            color: #1E90FF;
             font-size: 13px;
         }
 
@@ -183,11 +192,12 @@ $total_pages = ceil($total_avis / $limit);
             border-radius: 6px;
             font-family: 'Poppins', sans-serif;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .filter-group select:focus {
             outline: none;
-            border-color: #0a5338;
+            border-color: #1E90FF;
         }
 
         /* Distribution des notes */
@@ -205,7 +215,7 @@ $total_pages = ceil($total_avis / $limit);
         .note-label {
             min-width: 40px;
             font-weight: 600;
-            color: #0a5338;
+            color: #1E90FF;
         }
 
         .note-progress {
@@ -218,7 +228,7 @@ $total_pages = ceil($total_avis / $limit);
 
         .note-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #0a5338, #075e3a);
+            background: linear-gradient(90deg, #1E90FF, #0a74d6);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -240,12 +250,12 @@ $total_pages = ceil($total_avis / $limit);
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 15px;
-            border-left: 4px solid #0a5338;
+            border-left: 4px solid #1E90FF;
             transition: all 0.3s ease;
         }
 
         .avis-item:hover {
-            box-shadow: 0 4px 12px rgba(10, 83, 56, 0.1);
+            box-shadow: 0 4px 12px rgba(30,144,255,0.1);
             transform: translateX(5px);
         }
 
@@ -258,7 +268,7 @@ $total_pages = ceil($total_avis / $limit);
 
         .avis-author {
             font-weight: 600;
-            color: #0a5338;
+            color: #1E90FF;
             font-size: 16px;
         }
 
@@ -290,8 +300,8 @@ $total_pages = ceil($total_avis / $limit);
         .avis-likes {
             display: inline-block;
             padding: 4px 8px;
-            background: #e9f7ef;
-            color: #0a5338;
+            background: #e0f0ff;
+            color: #1E90FF;
             border-radius: 4px;
             font-weight: 600;
         }
@@ -311,20 +321,20 @@ $total_pages = ceil($total_avis / $limit);
             border: 1px solid #e0e0e0;
             border-radius: 4px;
             text-decoration: none;
-            color: #0a5338;
+            color: #1E90FF;
             transition: all 0.3s ease;
         }
 
         .pagination a:hover {
-            background: #0a5338;
+            background: #1E90FF;
             color: white;
-            border-color: #0a5338;
+            border-color: #1E90FF;
         }
 
         .pagination .current {
-            background: #0a5338;
+            background: #1E90FF;
             color: white;
-            border-color: #0a5338;
+            border-color: #1E90FF;
             font-weight: 600;
         }
 
@@ -332,22 +342,44 @@ $total_pages = ceil($total_avis / $limit);
         .reset-filters {
             display: inline-block;
             padding: 8px 16px;
-            background: #dc3545;
+            background: #FF4C4C;
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
             margin-bottom: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
 
         .reset-filters:hover {
-            background: #c82333;
+            background: #D33030;
+            transform: scale(1.05);
         }
 
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 24px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-bar input {
+                min-width: 100%;
+            }
+        }
+    </style>
             }
 
             .section {

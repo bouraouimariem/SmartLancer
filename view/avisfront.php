@@ -65,84 +65,179 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>Avis & Évaluations - SmartLancer</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-:root {
-    --green: #075e3a;
-    --green-dark: #075e3a;
-    --green-light: #c7f6e4;
-    --bg-body: #edf2f7;
-    --card-bg: #ffffff;
+/* Global styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-body { font-family: 'Poppins', sans-serif; background: var(--bg-body); margin: 0; color: #333; }
+html, body {
+    min-height: 100%;
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #d0e8ff, #f0f9ff);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px 0;
+    color: #333;
+}
 
 main {
-    display: flex; justify-content: center; align-items: center;
-    min-height: 90vh; padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    padding: 20px;
+    width: 100%;
 }
 
+/* Container */
 .avis-box {
-    background: var(--card-bg);
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-    padding: 40px;
-    width: 100%;
-    max-width: 500px;
-    border: 3px solid var(--green-light);
+    width: 95%;
+    max-width: 700px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 25px 25px;
+    border-radius: 15px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+    animation: fadeIn 0.8s ease-in-out;
+    border: 1px solid #e0f0ff;
     transition: 0.3s;
 }
 
-.avis-box:hover { transform: translateY(-3px); }
+.avis-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(30,144,255,0.2);
+}
 
-.avis-box h2 { text-align: center; color: var(--green-dark); margin-bottom: 25px; font-size: 28px; }
+/* Title */
+.avis-box h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    color: #1E90FF;
+    letter-spacing: 1px;
+}
 
-.form-avis { display: flex; flex-direction: column; gap: 18px; }
+/* Form */
+.form-avis {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
 
-.form-avis label { font-weight: 600; font-size: 14px; color: #333; }
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+    color: #333;
+    font-size: 14px;
+}
 
-.form-avis input, .form-avis textarea {
-    width: 100%; padding: 12px 14px; border-radius: 14px;
-    border: 1px solid #cdded7; font-size: 15px; font-family: inherit;
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 16px;
+    background: #f9f9f9;
+    color: #333;
     transition: all 0.3s ease;
 }
 
-.form-avis input:focus, .form-avis textarea:focus {
-    outline: none; border-color: var(--green);
-    box-shadow: 0 0 10px rgba(15,163,107,0.3);
+textarea {
+    resize: none;
+    height: 120px;
 }
 
-textarea { resize: none; height: 120px; }
+input:focus, textarea:focus, select:focus {
+    outline: 2px solid #1E90FF;
+    background: #fff;
+    border-color: #1E90FF;
+    box-shadow: 0 0 8px rgba(30,144,255,0.4);
+}
 
-.rating { display: flex; justify-content: flex-start; gap: 10px; }
+/* Rating */
+.rating {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 6px;
+}
 
-.rating input { display: none; }
+.rating input {
+    display: none;
+}
 
 .rating label {
-    font-size: 28px; color: #ccc; cursor: pointer; transition: color 0.25s ease;
+    font-size: 28px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.25s ease;
+    margin-top: 0;
 }
 
 .rating input:checked ~ label,
 .rating label:hover,
-.rating label:hover ~ label { color: #FFC107; }
-
-.btn {
-    background-color: var(--green);
-    color: white; border: none; border-radius: 12px;
-    padding: 14px 20px; font-size: 16px; font-weight: 600;
-    cursor: pointer; transition: 0.3s; margin-top: 10px;
+.rating label:hover ~ label {
+    color: #FFC107;
 }
 
-.btn:hover {
-    background-color: var(--green-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(15,163,107,0.35);
+/* Button */
+button, .btn {
+    background: #1E90FF;
+    padding: 12px 20px;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.3s;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
 }
 
-.message { text-align: center; font-weight: bold; color: var(--green-dark); margin-bottom: 15px; }
+button:hover, .btn:hover {
+    background: #0a74d6;
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(30,144,255,0.3);
+}
 
-.error-message { color: red; font-size: 13px; margin-top: 2px; display: block; min-height: 18px; }
+/* Message */
+.message {
+    text-align: center;
+    font-weight: bold;
+    color: #1E90FF;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: #f0f8ff;
+    border-radius: 8px;
+}
 
-input.error, textarea.error { border: 2px solid red; animation: shake 0.3s; }
-input.success, textarea.success { border: 2px solid green; }
+/* Error message */
+.error-message {
+    color: red;
+    font-size: 13px;
+    margin-top: 2px;
+    display: block;
+    min-height: 18px;
+}
+
+input.error, textarea.error {
+    border: 2px solid red !important;
+    animation: shake 0.3s;
+}
+
+input.success, textarea.success {
+    border: 2px solid green !important;
+}
 
 @keyframes shake {
     0% { transform: translateX(0); }
@@ -152,7 +247,27 @@ input.success, textarea.success { border: 2px solid green; }
     100% { transform: translateX(0); }
 }
 
-@media (max-width: 600px) { .avis-box { padding: 30px; } }
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .avis-box {
+        padding: 25px 15px;
+        width: 95%;
+    }
+
+    button, .btn {
+        font-size: 15px;
+        padding: 10px 16px;
+    }
+
+    textarea {
+        height: 100px;
+    }
+}
 </style>
 </head>
 

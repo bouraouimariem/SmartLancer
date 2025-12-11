@@ -5,6 +5,24 @@ require_once __DIR__ . '/../../model/reponse.php';
 $db = (new Database())->getConnection();
 $reponseModel = new Reponse($db);
 
+// Handle toggling notifications from backoffice
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_notifications'])) {
+    $val = isset($_POST['notifications_enabled']) && $_POST['notifications_enabled'] === '1' ? '1' : '0';
+    try {
+        $stmt = $db->prepare('INSERT INTO app_settings (name, value) VALUES (:name, :value) ON DUPLICATE KEY UPDATE value = :value2');
+        $name = 'notifications_enabled';
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':value', $val);
+        $stmt->bindParam(':value2', $val);
+        $stmt->execute();
+    } catch (Exception $e) {
+        // ignore
+    }
+    // redirect to avoid repost
+    header('Location: ' . $_SERVER['REQUEST_URI']);
+    exit;
+}
+
 // Filter and search parameters
 $search_keyword = isset($_GET['search']) ? trim($_GET['search']) : '';
 $visible_only = isset($_GET['visible_only']) ? ($_GET['visible_only'] === '1') : false;  // Par défaut: afficher TOUTES les réponses
@@ -15,6 +33,28 @@ $offset = ($page - 1) * $limit;
 
 // Get stats
 $stats = $reponseModel->getStatistics();
+
+// read current notifications setting (default enabled)
+$notif_enabled = 1;
+try {
+    $s = $db->prepare('SELECT value FROM app_settings WHERE name = :name LIMIT 1');
+    $n = 'notifications_enabled';
+    $s->bindParam(':name', $n);
+    $s->execute();
+    $r = $s->fetch(PDO::FETCH_ASSOC);
+    if ($r && isset($r['value'])) $notif_enabled = $r['value'] === '1' ? 1 : 0;
+} catch (Exception $e) {
+    // ignore
+}
+
+// notifications count
+$notif_count = 0;
+try {
+    $c = $db->query('SELECT COUNT(*) FROM notifications');
+    $notif_count = (int)$c->fetchColumn();
+} catch (Exception $e) {
+    $notif_count = 0;
+}
 
 // Get reponses based on search or filters
 if (!empty($search_keyword)) {
@@ -28,6 +68,48 @@ if (!empty($search_keyword)) {
 $total_pages = ceil($total / $limit);
 $displayed = count($reponses);
 ?>
+<?php if (isset($_GET['view']) && $_GET['view'] === 'notifications'):
+    // show recent notifications
+    try {
+        $stmt = $db->prepare('SELECT * FROM notifications ORDER BY created_at DESC LIMIT 200');
+        $stmt->execute();
+        $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        $notifications = [];
+    }
+?>
+    <div class="card" style="margin-bottom:16px;">
+        <h2>Historique des notifications (<?= count($notifications) ?>)</h2>
+        <?php if (empty($notifications)): ?>
+            <p>Aucune notification enregistrée.</p>
+        <?php else: ?>
+            <table style="width:100%; border-collapse:collapse; margin-top:12px;">
+                <thead>
+                    <tr>
+                        <th style="text-align:left; padding:8px; border-bottom:1px solid #eee">ID</th>
+                        <th style="text-align:left; padding:8px; border-bottom:1px solid #eee">Avis ID</th>
+                        <th style="text-align:left; padding:8px; border-bottom:1px solid #eee">Réponse ID</th>
+                        <th style="text-align:left; padding:8px; border-bottom:1px solid #eee">Destinataire</th>
+                        <th style="text-align:left; padding:8px; border-bottom:1px solid #eee">Envoyé</th>
+                        <th style="text-align:left; padding:8px; border-bottom:1px solid #eee">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($notifications as $n): ?>
+                    <tr>
+                        <td style="padding:8px; border-bottom:1px solid #f0f0f0"><?= htmlspecialchars($n['id']) ?></td>
+                        <td style="padding:8px; border-bottom:1px solid #f0f0f0"><?= htmlspecialchars($n['avis_id']) ?></td>
+                        <td style="padding:8px; border-bottom:1px solid #f0f0f0"><?= htmlspecialchars($n['reponse_id']) ?></td>
+                        <td style="padding:8px; border-bottom:1px solid #f0f0f0"><?= htmlspecialchars($n['to_email']) ?></td>
+                        <td style="padding:8px; border-bottom:1px solid #f0f0f0"><?= $n['sent'] ? 'Oui' : 'Non' ?></td>
+                        <td style="padding:8px; border-bottom:1px solid #f0f0f0"><?= htmlspecialchars($n['created_at']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
+    <?php exit; endif; ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -216,12 +298,32 @@ body{font-family:'Poppins',sans-serif;background:#f3f6f8;color:#222;padding:20px
         <h1>📋 Gestion des réponses</h1>
     </div>
 
+    <!-- Notifications control -->
+    <div style="margin-bottom:16px; display:flex; gap:12px; align-items:center;">
+        <form method="POST" style="display:flex; gap:8px; align-items:center;">
+            <input type="hidden" name="toggle_notifications" value="1">
+            <label style="font-weight:700; margin-right:8px;">Notifications par email :</label>
+            <label style="display:flex; align-items:center; gap:8px;">
+                <input type="radio" name="notifications_enabled" value="1" <?= $notif_enabled ? 'checked' : '' ?>> Activées
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; margin-left:8px;">
+                <input type="radio" name="notifications_enabled" value="0" <?= !$notif_enabled ? 'checked' : '' ?>> Désactivées
+            </label>
+            <button type="submit" class="btn" style="background:#075e3a;color:#fff;margin-left:12px;">Enregistrer</button>
+        </form>
+
+        <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
+            <div class="card" style="padding:8px 12px; font-weight:700;">Historique notifications: <?= $notif_count ?></div>
+            <a href="?view=notifications" class="btn" style="background:#e9f7ef;color:#075e3a;">Voir</a>
+        </div>
+    </div>
+
     <!-- Navigation Bar -->
     <nav style="background: linear-gradient(135deg, #075e3a 0%, #0a5338 100%); padding: 16px 20px; margin-bottom: 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; gap: 12px; flex-wrap: wrap;">
-        <a href="dashboard.php" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: rgba(255,255,255,0.15); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 13px; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.2);" onmouseover="this.style.background='rgba(255,255,255,0.25)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.transform='translateY(0)'">
+        <a href="dashboardavis.php" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: rgba(255,255,255,0.15); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 13px; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.2);" onmouseover="this.style.background='rgba(255,255,255,0.25)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.transform='translateY(0)'">
             📊 Dashboard
         </a>
-        <a href="avisadmin.php" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: rgba(255,255,255,0.15); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 13px; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.2);" onmouseover="this.style.background='rgba(255,255,255,0.25)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.transform='translateY(0)'">
+        <a href="dashboardavis.php?tab=avis" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: rgba(255,255,255,0.15); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 13px; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.2);" onmouseover="this.style.background='rgba(255,255,255,0.25)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.transform='translateY(0)'">
             ⭐ Avis
         </a>
         <a href="reponseadmin.php" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: rgba(255,255,255,0.3); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 13px; border: 1px solid rgba(255,255,255,0.4);">

@@ -167,13 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </select>
                 </div>
 
-                <!-- Section: Notification -->
-                <div class="form-group" style="flex-direction:row; align-items:center; margin-top:8px;">
-                    <input type="checkbox" name="notifier_auteur" id="resp-notifier" value="1" checked>
-                    <label for="resp-notifier" style="margin-bottom:0; font-weight:400; cursor:pointer;">
-                        ✉️ Envoyer une notification à l'auteur de l'avis
-                    </label>
-                </div>
+                <!-- Notification automatic; option removed from UI -->
 
                 <!-- Buttons -->
                 <div class="btn-group">
@@ -197,12 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
             saveReponse();
         });
 
-        // Notification checkbox listener
-        box.querySelector('#resp-notifier').addEventListener('change', function(e) {
-            if (e.target.checked) {
-                showNotification('📧 L\'auteur de l\'avis sera notifié de votre réponse', 'info');
-            }
-        });
+        // Notification is now automatic server-side; UI checkbox removed
 
         // File preview
         box.querySelector('#resp-fichier').addEventListener('change', function(e) {
@@ -245,7 +234,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const title = container.querySelector('#modal-title');
         const visibiliteRadios = container.querySelectorAll('input[name="visibilite"]');
         const categorieEl = container.querySelector('#resp-categorie');
-        const notifierEl = container.querySelector('#resp-notifier');
         const fileInput = container.querySelector('#resp-fichier');
         const filePreview = container.querySelector('#resp-file-preview');
 
@@ -262,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (roleEl) roleEl.value = data.role_repondeur || data.role || '';
         if (categorieEl) categorieEl.value = data.categorie || '';
-        if (notifierEl) notifierEl.checked = true;
+        // notifier removed from UI; notification handled server-side
         
         // Reset file input for new responses
         if (!data.id) {
@@ -298,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const role_repondeur = container.querySelector('#resp-role').value.trim();
         const visibilite = container.querySelector('input[name="visibilite"]:checked').value;
         const categorie = container.querySelector('#resp-categorie').value.trim();
-        const notifier_auteur = container.querySelector('#resp-notifier').checked ? 1 : 0;
+        // notifier removed from UI; notifications are sent automatically by the server
         const fileInput = container.querySelector('#resp-fichier');
         const visible = visibilite ? '1' : '0';
         const type = 'freelance';
@@ -333,7 +321,6 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('role_repondeur', role_repondeur);
         formData.append('is_online', is_online);
         formData.append('categorie', categorie);
-        formData.append('notifier_auteur', notifier_auteur);
         
         if (id) formData.append('id', id);
         
@@ -346,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log('Envoi à:', controllerUrl);
         console.log('Action:', action);
-        console.log('Données:', { avis_id, nom, email, contenu, visible, type, role_repondeur, categorie, notifier_auteur });
+        console.log('Données:', { avis_id, nom, email, contenu, visible, type, role_repondeur, categorie });
         console.log('Fichier sélectionné:', fileInput.files[0] ? fileInput.files[0].name : 'AUCUN');
         
         // Log FormData contents

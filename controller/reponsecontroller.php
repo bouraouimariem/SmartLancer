@@ -6,13 +6,90 @@ header('Content-Type: application/json; charset=utf-8');
 try {
     require_once __DIR__ . '/../model/database.php';
     require_once __DIR__ . '/../model/reponse.php';
+    require_once __DIR__ . '/../model/avis.php';
 
     $db = (new Database())->getConnection();
     $reponseModel = new Reponse($db);
+    $avisModel = new Avis($db);
+
+    // Ensure settings and notifications tables exist (simple lightweight migrations)
+    $db->exec("CREATE TABLE IF NOT EXISTS app_settings (
+        name VARCHAR(100) NOT NULL PRIMARY KEY,
+        value TEXT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+
+    $db->exec("CREATE TABLE IF NOT EXISTS notifications (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        avis_id INT DEFAULT NULL,
+        reponse_id INT DEFAULT NULL,
+        to_email VARCHAR(255) DEFAULT NULL,
+        subject TEXT,
+        body TEXT,
+        sent TINYINT(1) DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+
+    // Helper to read an app setting
+    function getAppSetting($db, $name, $default = null) {
+        try {
+            $stmt = $db->prepare('SELECT value FROM app_settings WHERE name = :name LIMIT 1');
+            $stmt->bindParam(':name', $name);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($row && isset($row['value'])) return $row['value'];
+        } catch (Exception $e) {
+            // ignore
+        }
+        return $default;
+    }
+
+    function setAppSetting($db, $name, $value) {
+        try {
+            $stmt = $db->prepare('INSERT INTO app_settings (name, value) VALUES (:name, :value) ON DUPLICATE KEY UPDATE value = :value2');
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':value', $value);
+            $stmt->bindParam(':value2', $value);
+            return $stmt->execute();
+        } catch (Exception $e) {
+            error_log('[setAppSetting] ' . $e->getMessage());
+            return false;
+        }
+    }
 
     $action = $_POST['action'] ?? '';
 
     $result = ['success' => false, 'message' => 'Action non spécifiée'];
+
+// Action: Toggle notifications settings (admin only)
+if ($action === 'toggle_notifications') {
+    $enabled = isset($_POST['enabled']) ? (int)$_POST['enabled'] : 0;
+    $enabled = $enabled ? '1' : '0';
+    
+    if (setAppSetting($db, 'notifications_enabled', $enabled)) {
+        $result = [
+            'success' => true,
+            'message' => 'Paramètres des notifications mis à jour',
+            'enabled' => $enabled == '1'
+        ];
+    } else {
+        $result['message'] = 'Erreur lors de la mise à jour du paramètre.';
+    }
+    
+    echo json_encode($result);
+    exit;
+}
+
+// Action: Get current notifications settings
+if ($action === 'get_notifications_settings') {
+    $enabled = getAppSetting($db, 'notifications_enabled', '1');
+    $result = [
+        'success' => true,
+        'enabled' => $enabled == '1'
+    ];
+    
+    echo json_encode($result);
+    exit;
+}
 
 // Common configuration
 $MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
@@ -74,6 +151,67 @@ function uploadPieceJointe(array $file, array $allowedMimes, int $maxSize)
     return ['path' => 'view/uploads/' . $safe];
 }
 
+/**
+ * Envoie une notification par email à l'auteur de l'avis quand une nouvelle réponse est ajoutée.
+ * Utilise mail() et log en cas d'échec (configuration SMTP peut être nécessaire en local).
+ */
+function notifyAvisAuthorByEmail($db, $avis, $reponse)
+{
+    try {
+        if (empty($avis) || empty($avis['email'])) return false;
+        $to = $avis['email'];
+        $avisId = $avis['id'] ?? '';
+        $subject = "[SmartLancer] Nouvelle réponse à votre avis";
+        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
+        $link = (isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http') . '://' . $host . '/validationmodule/view/reponsefront.php?avis_id=' . $avisId;
+
+        $message = "Bonjour " . ($avis['nom'] ?? '') . ",\n\n";
+        $message .= "Une nouvelle réponse a été ajoutée à votre avis (ID: " . $avisId . ").\n\n";
+        $message .= "Auteur: " . ($reponse['nom'] ?? 'Anonyme') . "\n";
+        $message .= "Contenu:\n" . ($reponse['contenu'] ?? '') . "\n\n";
+        $message .= "Voir la réponse et l'avis : " . $link . "\n\n";
+        $message .= "Cordialement,\nL'équipe SmartLancer";
+
+        $headers = "From: no-reply@" . $host . "\r\n";
+        $headers .= "Content-Type: text/plain; charset=utf-8\r\n";
+
+        // Check global setting
+        $enabled = getAppSetting($db, 'notifications_enabled', '1');
+        $sent = 0;
+        if ($enabled == '1') {
+            $ok = @mail($to, $subject, $message, $headers);
+            if ($ok) {
+                $sent = 1;
+                error_log("[notifyAvisAuthorByEmail] Mail envoyé à: $to");
+            } else {
+                error_log("[notifyAvisAuthorByEmail] Envoi du mail échoué vers: $to");
+            }
+        } else {
+            error_log('[notifyAvisAuthorByEmail] Notifications désactivées par le réglage global.');
+        }
+
+        // Store notification record
+        try {
+            $stmt = $db->prepare('INSERT INTO notifications (avis_id, reponse_id, to_email, subject, body, sent) VALUES (:avis_id, :reponse_id, :to_email, :subject, :body, :sent)');
+            $rid = $reponse['id'] ?? null;
+            $stmt->bindParam(':avis_id', $avisId);
+            $stmt->bindParam(':reponse_id', $rid);
+            $stmt->bindParam(':to_email', $to);
+            $stmt->bindParam(':subject', $subject);
+            $stmt->bindParam(':body', $message);
+            $stmt->bindParam(':sent', $sent, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (Exception $e) {
+            error_log('[notifyAvisAuthorByEmail] Erreur enregistrement notification: ' . $e->getMessage());
+        }
+
+        return $sent == 1;
+    } catch (Exception $e) {
+        error_log('[notifyAvisAuthorByEmail] Exception: ' . $e->getMessage());
+        return false;
+    }
+}
+
 if ($action === 'add') {
     $avis_id = isset($_POST['avis_id']) ? (int)$_POST['avis_id'] : 0;
     $nom = trim($_POST['nom'] ?? '');
@@ -88,7 +226,6 @@ if ($action === 'add') {
     
     // New fields for PRO form
     $categorie = trim($_POST['categorie'] ?? '');
-    $notifier_auteur = isset($_POST['notifier_auteur']) ? (int)$_POST['notifier_auteur'] : 0;
 
     // file upload (optional)
     $piece_jointe = null;
@@ -118,14 +255,28 @@ if ($action === 'add') {
     if (!in_array($role_repondeur, $ALLOWED_ROLES, true)) $role_repondeur = 'client';
     if (!in_array($type, $ALLOWED_TYPES, true)) $type = 'freelance';
 
-    // Note: piece_jointe, categorie, and notifier_auteur are optional fields
+    // Note: piece_jointe and categorie are optional fields
     error_log('Avant addReponse - piece_jointe: ' . ($piece_jointe ?? 'NULL') . ', categorie: ' . ($categorie ?? 'NULL'));
     
-    if ($reponseModel->addReponse($avis_id, $nom, $email, $contenu, $visible, $type, $role_repondeur, $statut, $is_online, $piece_jointe, $categorie, $notifier_auteur)) {
+    if ($reponseModel->addReponse($avis_id, $nom, $email, $contenu, $visible, $type, $role_repondeur, $statut, $is_online, $piece_jointe, $categorie)) {
         $id = $db->lastInsertId();
         $new = $reponseModel->getById($id);
         error_log('Après getById - reponse: ' . json_encode($new));
-        
+
+        // Notification automatique: récupérer l'avis et prévenir l'auteur
+        try {
+            $avis = null;
+            if (isset($avisModel)) {
+                $avis = $avisModel->getAvisById($avis_id);
+            }
+            // envoyer email automatiquement (même si le formulaire ne contient plus la case notifier)
+            if ($avis) {
+                notifyAvisAuthorByEmail($db, $avis, $new);
+            }
+        } catch (Exception $e) {
+            error_log('[reponsecontroller] Erreur notification: ' . $e->getMessage());
+        }
+
         $result = ['success' => true, 'message' => 'Réponse ajoutée', 'reponse' => $new];
     } else {
         $result['message'] = 'Erreur en base.';
@@ -147,7 +298,6 @@ if ($action === 'edit') {
     
     // New fields for PRO form
     $categorie = isset($_POST['categorie']) ? trim($_POST['categorie']) : null;
-    $notifier_auteur = isset($_POST['notifier_auteur']) ? (int)$_POST['notifier_auteur'] : 0;
 
     $piece_jointe = null;
     if (isset($_FILES['piece_jointe']) && $_FILES['piece_jointe']['size'] > 0) {

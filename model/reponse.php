@@ -23,8 +23,8 @@ class Reponse {
     }
 
     // Ajoute une réponse: compatible avec schéma ancien ou enrichi
-    public function addReponse($avis_id, $nom, $email, $contenu, $visible = 1, $type = 'freelance', $role_repondeur = null, $statut = null, $is_online = 0, $piece_jointe = null, $categorie = null, $notifier_auteur = 0) {
-        // Table: id, avis_id, nom, email, contenu, created_at, version_history, updated_at, visible, type, role_repondeur, statut, is_online, last_activity, piece_jointe, categorie, notifier_auteur
+    public function addReponse($avis_id, $nom, $email, $contenu, $visible = 1, $type = 'freelance', $role_repondeur = null, $statut = null, $is_online = 0, $piece_jointe = null, $categorie = null) {
+        // Table: id, avis_id, nom, email, contenu, created_at, version_history, updated_at, visible, type, role_repondeur, statut, is_online, last_activity, piece_jointe, categorie
         // supporte les anciennes tables sans les colonnes optionnelles
         $cols = ['avis_id', 'nom', 'email', 'contenu', 'created_at'];
         $values = [':avis_id', ':nom', ':email', ':contenu', 'NOW()'];
@@ -79,10 +79,7 @@ class Reponse {
             $cols[] = 'categorie';
             $values[] = ':categorie';
         }
-        if ($this->hasColumn('notifier_auteur')) {
-            $cols[] = 'notifier_auteur';
-            $values[] = ':notifier_auteur';
-        }
+        // notifier_auteur column removed from schema; no longer handled.
         if ($this->hasColumn('last_activity')) {
             $cols[] = 'last_activity';
             $values[] = 'NOW()';
@@ -124,10 +121,7 @@ class Reponse {
         if ($this->hasColumn('categorie')) {
             $stmt->bindParam(':categorie', $categorie);
         }
-        if ($this->hasColumn('notifier_auteur')) {
-            $na = $notifier_auteur ? 1 : 0;
-            $stmt->bindParam(':notifier_auteur', $na, PDO::PARAM_INT);
-        }
+        // notifier_auteur removed
         return $stmt->execute();
     }
 
@@ -364,10 +358,7 @@ class Reponse {
         }
         
         // Notifications
-        if ($this->hasColumn('notifier_auteur')) {
-            $query .= ",
-                    SUM(CASE WHEN notifier_auteur = 1 THEN 1 ELSE 0 END) as notification_enabled_count";
-        }
+        // notifier_auteur removed from schema; skip notification_enabled_count
         
         $query .= " FROM {$this->table}";
         

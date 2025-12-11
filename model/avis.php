@@ -7,6 +7,21 @@ class Avis {
         $this->conn = $db;
     }
 
+    // Helper: check if the table has a column (compatible with current DB connection)
+    private function hasColumn($column) {
+        try {
+            $sql = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :table AND COLUMN_NAME = :col";
+            $stmt = $this->conn->prepare($sql);
+            $table = $this->table;
+            $stmt->bindParam(':table', $table);
+            $stmt->bindParam(':col', $column);
+            $stmt->execute();
+            return $stmt->fetchColumn() > 0;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
     
     public function addAvis($nom, $email, $note, $contenu) {
         $query = "INSERT INTO {$this->table} (nom, email, note, contenu) VALUES (:nom, :email, :note, :contenu)";
@@ -45,7 +60,19 @@ class Avis {
 
     
     public function updateAvis($id, $nom, $email, $note, $contenu) {
-        $query = "UPDATE {$this->table} SET nom = :nom, email = :email, note = :note, contenu = :contenu, updated_at = NOW() WHERE id = :id";
+        $setParts = [
+            'nom = :nom',
+            'email = :email',
+            'note = :note',
+            'contenu = :contenu'
+        ];
+
+        if ($this->hasColumn('updated_at')) {
+            $setParts[] = 'updated_at = NOW()';
+        }
+
+        $setSql = implode(', ', $setParts);
+        $query = "UPDATE {$this->table} SET {$setSql} WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':email', $email);
