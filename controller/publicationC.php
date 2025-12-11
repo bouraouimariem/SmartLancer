@@ -2,17 +2,23 @@
 
 include_once(__DIR__ . '/../config.php');
 include(__DIR__ . '/../model/publication.php');
+require_once __DIR__ . '/notificationC.php';
+
 class publicationController
 {
+    // ----------------------------
+    // CREATE PUBLICATION + NOTIF
+    // ----------------------------
     public function create_pub($pub)
     {
         $sql = "INSERT INTO publications 
-        (id_user, nom_pub, categorie, description, budget,delai_requise,date_pub,status) 
-        VALUES 
-        ( :id_user, :nom_pub, :categorie, :description, :budget, :delai_requise, :date_pub, :status)";
-        $db = config::getConnexion();
-        try {
+            (id_user, nom_pub, categorie, description, budget, delai_requise, date_pub, status) 
+            VALUES 
+            (:id_user, :nom_pub, :categorie, :description, :budget, :delai_requise, :date_pub, :status)";
 
+        $db = config::getConnexion();
+
+        try {
             $query = $db->prepare($sql);
             $query->execute([
                 'id_user' => $pub->getIdUser(),
@@ -24,12 +30,26 @@ class publicationController
                 'date_pub' => $pub->getDatePub()->format('Y-m-d H:i:s'),
                 'status' => $pub->getStatus(),
             ]);
+
+            // ID publication
+            $id_pub = $db->lastInsertId();
+
+            // Notification admin
+            $notif = new NotificationController();
+            $notif->ajouterNotification(
+                0, // admin
+                $id_pub,
+                "Nouvelle publication",
+                "Un utilisateur a ajouté une nouvelle publication."
+            );
+
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
-
-
     }
+
+    // ----------------------------
+    // LIST BY USER
     public function listpub_for_user($id_user)
     {
         $sql = "SELECT * FROM publications WHERE id_user = :id_user ORDER BY date_pub DESC";
@@ -37,29 +57,43 @@ class publicationController
         $db = config::getConnexion();
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-        try {
 
+        try {
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             die('Error:' . $e->getMessage());
         }
     }
+
+    // ----------------------------
+    // LIST ALL
+
     public function list_pub_all()
     {
         $sql = "SELECT * FROM publications ORDER BY date_pub DESC";
 
         $db = config::getConnexion();
         try {
-            $liste = $db->query($sql);
-            return $liste;
+            return $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             die('Error:' . $e->getMessage());
         }
     }
+
+    // ----------------------------
+    // LIST FOR FREELANCER
+
     public function list_pub_for_freelancer($id_user)
     {
-        $sql = "SELECT * FROM publications p WHERE p.status = 'en cours' AND NOT EXISTS (SELECT 1 FROM propositions pr WHERE pr.id_pub = p.id_pub AND pr.id_user = :id_user)";
+        $sql = "SELECT * FROM publications p 
+                WHERE p.status = 'en cours' 
+                AND NOT EXISTS (
+                    SELECT 1 FROM propositions pr 
+                    WHERE pr.id_pub = p.id_pub 
+                    AND pr.id_user = :id_user
+                )";
+
         $db = config::getConnexion();
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':id_user', $id_user);
@@ -71,6 +105,10 @@ class publicationController
             die('Error: ' . $e->getMessage());
         }
     }
+
+ // <<<<< FIN RÉELLE DE LA CLASSE publicationController
+
+
     public function list_pub_propo($id_user)
     {
         $sql = "SELECT * FROM publications p WHERE EXISTS (SELECT 1 FROM propositions pr WHERE pr.id_pub = p.id_pub AND pr.id_user = :id_user)";
@@ -272,8 +310,46 @@ public function filterForFreelancer($id_user, $search = '', $categorie = '', $mi
 }
 
 
+public function countPublications() {
+    $sql = "SELECT COUNT(*) AS total FROM publications";
+    $db = config::getConnexion();
 
-
-
+    try {
+        $query = $db->prepare($sql);
+        $query->execute();
+        $result = $query->fetch();
+        return $result['total'];
+    } catch (Exception $e) {
+        die('Erreur: '.$e->getMessage());
+    }
 }
+
+public function getLastThreePublications() {
+    $sql = "SELECT * FROM publications ORDER BY id_pub DESC LIMIT 3";
+    $db = config::getConnexion();
+    try {
+        $query = $db->prepare($sql);
+        $query->execute();
+        return $query->fetchAll();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+
+
+public function getLastPublication()
+{
+    $db = config::getConnexion();
+    $sql = "SELECT * FROM publications ORDER BY date_pub DESC LIMIT 1";
+    try {
+        $query = $db->prepare($sql);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+}  // ←<<<<<<<<< ICI ! FIN DE LA CLASSE publicationController
+
 ?>

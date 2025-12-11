@@ -116,5 +116,22 @@ class CommentaireC {
     return $result['total'] ?? 0;
 }
 
+
+public function getLastComment()
+{
+    $db = config::getConnexion();
+    $sql = "SELECT * FROM commentaire ORDER BY date_com DESC LIMIT 1";
+    try {
+        $query = $db->prepare($sql);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        return null;
+    }
+}
+
+
+
+
 }
 ?>

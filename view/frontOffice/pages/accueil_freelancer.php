@@ -23,7 +23,9 @@ $img = "../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
 <?php
 
 // Charger le contrôleur
-include '../../../controller/notificationC.php';
+require_once '../../../controller/notificationC.php';
+
+
 $notifC = new NotificationController();
 $nb_notif = $notifC->countUnread($_SESSION['id_user']);
 $liste_notif = $notifC->getNotifications($_SESSION['id_user']);

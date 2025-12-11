@@ -81,6 +81,7 @@ $img = "../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
       <a href="accueil_freelancer.php" class="back-btn" >
     ⬅ Retour
 </a>
+
 <div class="job_listing_area plus_padding">
 
     <div class="container">
@@ -498,6 +499,9 @@ if ($search !== '' || $categorie !== '' || $budget_min !== '' || $budget_max !==
         </div>
     </div>
 </div>
+<a href="../../../pdf/propositions_pdf.php" class="btn-download-pdf" target="_blank">
+    <i class="bi bi-file-earmark-pdf"></i> Télécharger les Propositions
+</a>
 
 
 <style>
@@ -790,6 +794,22 @@ body.dark .dropdown-menu {
 
   margin-left: -350px;
  color: #edf7f1;
+}
+.btn-download-pdf {
+    font-size:10px;
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #2c8f4c;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 50%;
+    margin-top: 100px;
+}
+
+.btn-download-pdf:hover {
+    color: black;
+    background-color: #7bd898ff;
 }
 
 

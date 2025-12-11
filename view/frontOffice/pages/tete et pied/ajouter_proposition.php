@@ -1,7 +1,7 @@
 <?php
 include '../../../../controller/propositionC.php';
 include '../../../../controller/publicationC.php';
-include '../../../../controller/notificationC.php';
+require_once '../../../../controller/notificationC.php';
 
 session_start();
 

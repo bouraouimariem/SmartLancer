@@ -204,7 +204,26 @@ $img = "../../uploads/profiles/" . ($_SESSION['user']['image'] ?? "rass.jpg");
     </div>
 </div>
 
+<a href="../../../pdf/publications_pdf.php" class="btn-download-pdf" target="_blank">
+    <i class="bi bi-file-earmark-pdf"></i> Télécharger les Publications
+</a>
+<style>.btn-download-pdf {
+    font-size:10px;
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #2c8f4c;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 50%;
+    margin-top: 40px;
+}
 
+.btn-download-pdf:hover {
+    color: black;
+    background-color: #7bd898ff;
+}
+</style>
 <script>
 
 function validerForm() {
