@@ -1,3 +1,11 @@
+<?php
+require_once __DIR__ . '/../../Model/NotificationUser.php';
+
+$notif = new NotificationUser();
+$notifications = $notif->getAll();
+$unread = array_filter($notifications, fn($n) => $n['is_read'] == 0);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -225,6 +233,22 @@
 
 <header>
     <h1>SmartLancer</h1>
+    <a href="notifications_user.php" style="position:relative; font-size:22px;">
+    🔔
+    <?php if (count($unread) > 0): ?>
+        <span style="
+            background:red; 
+            color:white;
+            padding:2px 5px;
+            border-radius:50%;
+            font-size:12px;
+            position:absolute;
+            top:-10px;
+            right:-10px;">
+            <?= count($unread) ?>
+        </span>
+    <?php endif; ?>
+</a>
 </header>
 
 <div class="landing-container">

@@ -44,5 +44,9 @@ class Reponse {
         $stmt = $this->conn->prepare("DELETE FROM reponses WHERE id_reponse = ?");
         return $stmt->execute([$id]);
     }
+    public function getLastInsertId() {
+    return $this->conn->lastInsertId();
+}
+
 }
 ?>

@@ -42,12 +42,29 @@ class ReclamationController {
     /* -------------------------------
        REPONSES / CHAT
     --------------------------------*/
-    public function reply($id_reclamation, $contenu) {
-        if (empty(trim($contenu))) return false;
-        $this->responseModel->addResponse($id_reclamation, $contenu);
-        $this->model->updateStatus($id_reclamation, "Répondu");
-        return true;
-    }
+   public function reply($id_reclamation, $contenu) {
+    if (empty(trim($contenu))) return false;
+
+    // 1️⃣ Ajouter la réponse
+    $this->responseModel->addResponse($id_reclamation, $contenu);
+
+    // 2️⃣ Récupérer l’ID de la réponse ajoutée
+    $id_reponse = $this->responseModel->getLastInsertId();
+
+    // 3️⃣ Créer une notification user
+    require_once __DIR__ . '/../Model/NotificationUser.php';
+    $notif = new NotificationUser();
+
+    $messageNotif = "L'administrateur a répondu à votre réclamation #$id_reclamation.";
+
+    $notif->add($id_reponse, $id_reclamation, $messageNotif);
+
+    // 4️⃣ Mettre à jour le statut
+    $this->model->updateStatus($id_reclamation, "Répondu");
+
+    return true;
+}
+
 
     public function userReply($id_reclamation, $contenu) {
         if (empty(trim($contenu))) return false;
