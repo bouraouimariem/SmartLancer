@@ -1,8 +1,10 @@
 <?php
 require_once __DIR__ . '/../model/database.php';
 require_once __DIR__ . '/../model/avis.php';
+require_once __DIR__ . '/../model/validator.php';
 
 $message = '';
+$messageType = 'info';
 $database = new Database();
 $db = $database->getConnection();
 $avisModel = new Avis($db);
@@ -30,29 +32,58 @@ if (isset($_GET['id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nom = htmlspecialchars($_POST['nom']);
-    $email = htmlspecialchars($_POST['email']);
-    $note = isset($_POST['note']) ? (int)$_POST['note'] : 0;
-    $contenu = htmlspecialchars($_POST['avis']);
+    // Réinitialiser les erreurs
+    Validator::resetErrors();
 
-    if (!empty($nom) && !empty($email) && $note >= 1 && $note <= 5 && !empty($contenu)) {
+    // Récupérer et valider les données
+    $nom = $_POST['nom'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $note = isset($_POST['note']) ? (int)$_POST['note'] : 0;
+    $contenu = $_POST['avis'] ?? '';
+
+    // Validations côté serveur
+    $isValid = true;
+    if (!Validator::validateNom($nom)) {
+        $isValid = false;
+    }
+    if (!Validator::validateEmail($email)) {
+        $isValid = false;
+    }
+    if (!Validator::validateNote($note)) {
+        $isValid = false;
+    }
+    if (!Validator::validateContenu($contenu)) {
+        $isValid = false;
+    }
+
+    if (!$isValid) {
+        $message = 'Veuillez corriger les erreurs suivantes: ' . implode(', ', array_values(Validator::getErrors()));
+        $messageType = 'error';
+    } else {
+        // Nettoyer les données
+        $nom = Validator::sanitize($nom);
+        $email = Validator::sanitize($email);
+        $contenu = Validator::sanitize($contenu);
+
         if ($isEdit) {
             if ($avisModel->updateAvis($id, $nom, $email, $note, $contenu)) {
-                header('Location: /validationmodule/view/profilfreelancer.php');
-                exit;
+                $message = 'Avis modifié avec succès!';
+                $messageType = 'success';
+                header('Refresh: 2; url=/validationmodule/view/profilfreelancer.php');
             } else {
                 $message = "Erreur : impossible de modifier l'avis.";
+                $messageType = 'error';
             }
         } else {
             if ($avisModel->addAvis($nom, $email, $note, $contenu)) {
-                header('Location: /validationmodule/view/profilfreelancer.php');
-                exit;
+                $message = 'Avis ajouté avec succès!';
+                $messageType = 'success';
+                header('Refresh: 2; url=/validationmodule/view/profilfreelancer.php');
             } else {
                 $message = "Erreur : impossible d'ajouter votre avis. Veuillez réessayer.";
+                $messageType = 'error';
             }
         }
-    } else {
-        $message = "Veuillez remplir tous les champs correctement.";
     }
 }
 ?>
@@ -277,19 +308,21 @@ input.success, textarea.success {
         <h2><?= $isEdit ? "Modifier l'avis" : "Laisser un avis" ?></h2>
 
         <?php if($message): ?>
-            <p class="message"><?= $message ?></p>
+            <p class="message" style="background-color: <?= $messageType === 'error' ? '#ffebee' : ($messageType === 'success' ? '#e8f5e9' : '#f0f8ff') ?>; color: <?= $messageType === 'error' ? '#c62828' : ($messageType === 'success' ? '#2e7d32' : '#0277bd') ?>; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                <?= htmlspecialchars($message) ?>
+            </p>
         <?php endif; ?>
 
         <form action="" method="post" class="form-avis">
-            <label for="nom">Nom complet</label>
-            <input type="text" id="nom" name="nom" placeholder="Votre nom" value="<?= htmlspecialchars($avisData['nom']) ?>" >
+            <label for="nom">Nom complet <span style="color: #dc3545;">*</span></label>
+            <input type="text" id="nom" name="nom" placeholder="Votre nom" value="<?= htmlspecialchars($avisData['nom']) ?>">
             <span id="nom_error" class="error-message"></span>
 
-            <label for="email">Email</label>
-            <input type="text" id="email" name="email" placeholder="Votre email" value="<?= htmlspecialchars($avisData['email']) ?>" >
+            <label for="email">Email <span style="color: #dc3545;">*</span></label>
+            <input type="text" id="email" name="email" placeholder="Votre email" value="<?= htmlspecialchars($avisData['email']) ?>">
             <span id="email_error" class="error-message"></span>
 
-            <label>Votre note</label>
+            <label>Votre note <span style="color: #dc3545;">*</span></label>
             <div class="rating">
                 <?php for ($i = 5; $i >= 1; $i--): ?>
                     <input type="radio" id="star<?= $i ?>" name="note" value="<?= $i ?>" <?= ($avisData['note'] == $i) ? 'checked' : '' ?>>
@@ -298,7 +331,7 @@ input.success, textarea.success {
             </div>
             <span id="note_error" class="error-message"></span>
 
-            <label for="avis">Votre avis</label>
+            <label for="avis">Votre avis <span style="color: #dc3545;">*</span></label>
             <textarea id="avis" name="avis" placeholder="Écrivez votre avis..." ><?= htmlspecialchars($avisData['contenu']) ?></textarea>
             <span id="avis_error" class="error-message"></span>
 

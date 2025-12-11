@@ -34,30 +34,36 @@ if (isset($_POST['toggle_notifications'])) {
     $new_status = $_POST['toggle_notifications'] === 'enable' ? '1' : '0';
     $saved = false;
     try {
-        // Vérifier si app_settings existe
-        $checkTable = $pdo->prepare("SHOW TABLES LIKE 'app_settings'");
-        $checkTable->execute();
+        // Essayer de vérifier si la ligne existe
+        $checkStmt = $pdo->prepare('SELECT id FROM app_settings WHERE name = :name LIMIT 1');
+        $checkStmt->bindParam(':name', 'notifications_enabled');
+        $checkStmt->execute();
         
-        if ($checkTable->rowCount() > 0) {
-            // Vérifier si la ligne existe
-            $stmt = $pdo->prepare('SELECT id FROM app_settings WHERE name = "notifications_enabled" LIMIT 1');
-            $stmt->execute();
-            if ($stmt->rowCount() > 0) {
-                $stmt = $pdo->prepare('UPDATE app_settings SET value = :value WHERE name = "notifications_enabled"');
-            } else {
-                $stmt = $pdo->prepare('INSERT INTO app_settings (name, value, created_at) VALUES ("notifications_enabled", :value, NOW())');
-            }
+        if ($checkStmt->rowCount() > 0) {
+            // Mettre à jour si elle existe
+            $stmt = $pdo->prepare('UPDATE app_settings SET value = :value WHERE name = :name');
             $stmt->bindParam(':value', $new_status);
+            $stmt->bindParam(':name', 'notifications_enabled');
             $saved = $stmt->execute();
         } else {
-            // table exists check returned 0 rows: fallback to session
-            $_SESSION['notifications_enabled'] = $new_status;
-            $saved = true;
+            // Créer si elle n'existe pas
+            $stmt = $pdo->prepare('INSERT INTO app_settings (name, value) VALUES (:name, :value)');
+            $stmt->bindParam(':name', 'notifications_enabled');
+            $stmt->bindParam(':value', $new_status);
+            $saved = $stmt->execute();
         }
     } catch (Exception $e) {
-        // Table doesn't exist or other DB error, use session fallback
-        $_SESSION['notifications_enabled'] = $new_status;
-        $saved = true;
+        error_log('Notification settings error: ' . $e->getMessage());
+        // Si la table n'existe pas, essayer une insertion simple
+        try {
+            $stmt = $pdo->prepare('INSERT INTO app_settings (name, value) VALUES (:name, :value) ON DUPLICATE KEY UPDATE value = :value2');
+            $stmt->bindParam(':name', 'notifications_enabled');
+            $stmt->bindParam(':value', $new_status);
+            $stmt->bindParam(':value2', $new_status);
+            $saved = $stmt->execute();
+        } catch (Exception $e2) {
+            error_log('Insert/Replace failed: ' . $e2->getMessage());
+        }
     }
 
     // If request is AJAX, return JSON so front-end can update without redirect
@@ -80,15 +86,12 @@ function getAppSetting($db, $name, $default = null) {
         $stmt->bindParam(':name', $name);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row && isset($row['value'])) return $row['value'];
+        if ($row && isset($row['value'])) {
+            return $row['value'];
+        }
     } catch (Exception $e) {
-        // ignore
+        error_log('getAppSetting error: ' . $e->getMessage());
     }
-    // fallback to session if available
-    if (session_status() === PHP_SESSION_NONE) {
-        @session_start();
-    }
-    if (isset($_SESSION[$name])) return $_SESSION[$name];
     return $default;
 }
 
@@ -1292,25 +1295,29 @@ $reponse_total_pages = ceil($total_reponses / $reponse_limit);
                 const btn = notifForm.querySelector('button[name="toggle_notifications"]');
                 const formData = new FormData(notifForm);
 
+                // determine desired enabled state from button value
+                const willEnable = String(btn.value) === 'enable';
+                formData.delete('toggle_notifications');
+                formData.append('action', 'toggle_notifications');
+                formData.append('enabled', willEnable ? '1' : '0');
+
                 // disable button while processing
                 btn.disabled = true;
                 const originalText = btn.innerHTML;
                 btn.innerHTML = '⏳...';
 
-                fetch(window.location.href, {
+                // POST to controller API for a consistent toggle endpoint
+                fetch('../../controller/reponsecontroller.php', {
                     method: 'POST',
                     headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
                         'Accept': 'application/json'
                     },
                     body: formData,
                     credentials: 'same-origin'
                 }).then(res => res.json()).then(data => {
                     btn.disabled = false;
-                    // update UI when successful
-                    if (data && data.status === 'ok') {
-                        const enabled = String(data.notifications_enabled) === '1';
-                        // update status text
+                    if (data && data.success) {
+                        const enabled = !!data.enabled;
                         const card = document.querySelector('.notification-card');
                         if (card) {
                             const pState = card.querySelector('p strong');
@@ -1322,7 +1329,6 @@ $reponse_total_pages = ceil($total_reponses / $reponse_limit);
                             btn.className = 'btn ' + (enabled ? 'btn-danger' : 'btn-primary');
                             btn.innerHTML = enabled ? '🔴 Désactiver' : '🟢 Activer';
                         }
-                        // show toast
                         if (toast) {
                             toast.textContent = enabled ? 'Notifications activées' : 'Notifications désactivées';
                             toast.style.display = 'block';

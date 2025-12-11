@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../model/database.php';
 require_once __DIR__ . '/../model/avis.php';
+require_once __DIR__ . '/../model/validator.php';
 
 class aviscontroller {
     private $avisModel;
@@ -13,11 +14,39 @@ class aviscontroller {
 
     public function addAvis() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nom = htmlspecialchars($_POST['nom']);
-            $email = htmlspecialchars($_POST['email']);
-            //$note = (int)$_POST['note'];
+            // Réinitialiser les erreurs
+            Validator::resetErrors();
+
+            // Récupérer et valider les données
+            $nom = $_POST['nom'] ?? '';
+            $email = $_POST['email'] ?? '';
             $note = isset($_POST['note']) ? (int)$_POST['note'] : 0;
-            $contenu = htmlspecialchars($_POST['avis']);
+            $contenu = $_POST['avis'] ?? '';
+
+            // Validations
+            $isValid = true;
+            if (!Validator::validateNom($nom)) {
+                $isValid = false;
+            }
+            if (!Validator::validateEmail($email)) {
+                $isValid = false;
+            }
+            if (!Validator::validateNote($note)) {
+                $isValid = false;
+            }
+            if (!Validator::validateContenu($contenu)) {
+                $isValid = false;
+            }
+
+            if (!$isValid) {
+                echo "Erreur : " . implode(' | ', Validator::getErrors());
+                return;
+            }
+
+            // Nettoyer les données
+            $nom = Validator::sanitize($nom);
+            $email = Validator::sanitize($email);
+            $contenu = Validator::sanitize($contenu);
 
             if ($this->avisModel->addAvis($nom, $email, $note, $contenu)) {
                 echo "Avis ajouté avec succès !";

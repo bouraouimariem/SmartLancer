@@ -9,14 +9,13 @@ $reponseModel = new Reponse($db);
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_notifications'])) {
     $val = isset($_POST['notifications_enabled']) && $_POST['notifications_enabled'] === '1' ? '1' : '0';
     try {
-        $stmt = $db->prepare('INSERT INTO app_settings (name, value) VALUES (:name, :value) ON DUPLICATE KEY UPDATE value = :value2');
+        $stmt = $db->prepare('INSERT INTO app_settings (name, value) VALUES (:name, :value) ON DUPLICATE KEY UPDATE value = :value');
         $name = 'notifications_enabled';
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':value', $val);
-        $stmt->bindParam(':value2', $val);
         $stmt->execute();
     } catch (Exception $e) {
-        // ignore
+        error_log('Erreur lors de la mise à jour des notifications: ' . $e->getMessage());
     }
     // redirect to avoid repost
     header('Location: ' . $_SERVER['REQUEST_URI']);

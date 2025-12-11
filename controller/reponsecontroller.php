@@ -7,6 +7,7 @@ try {
     require_once __DIR__ . '/../model/database.php';
     require_once __DIR__ . '/../model/reponse.php';
     require_once __DIR__ . '/../model/avis.php';
+    require_once __DIR__ . '/../model/validator.php';
 
     $db = (new Database())->getConnection();
     $reponseModel = new Reponse($db);
@@ -190,17 +191,22 @@ function notifyAvisAuthorByEmail($db, $avis, $reponse)
             error_log('[notifyAvisAuthorByEmail] Notifications désactivées par le réglage global.');
         }
 
-        // Store notification record
+        // Store notification record only when notifications are enabled
         try {
-            $stmt = $db->prepare('INSERT INTO notifications (avis_id, reponse_id, to_email, subject, body, sent) VALUES (:avis_id, :reponse_id, :to_email, :subject, :body, :sent)');
-            $rid = $reponse['id'] ?? null;
-            $stmt->bindParam(':avis_id', $avisId);
-            $stmt->bindParam(':reponse_id', $rid);
-            $stmt->bindParam(':to_email', $to);
-            $stmt->bindParam(':subject', $subject);
-            $stmt->bindParam(':body', $message);
-            $stmt->bindParam(':sent', $sent, PDO::PARAM_INT);
-            $stmt->execute();
+            if ($enabled == '1') {
+                $stmt = $db->prepare('INSERT INTO notifications (avis_id, reponse_id, to_email, subject, body, sent) VALUES (:avis_id, :reponse_id, :to_email, :subject, :body, :sent)');
+                $rid = $reponse['id'] ?? null;
+                $stmt->bindParam(':avis_id', $avisId);
+                $stmt->bindParam(':reponse_id', $rid);
+                $stmt->bindParam(':to_email', $to);
+                $stmt->bindParam(':subject', $subject);
+                $stmt->bindParam(':body', $message);
+                $stmt->bindParam(':sent', $sent, PDO::PARAM_INT);
+                $stmt->execute();
+            } else {
+                // Notifications disabled: do not persist notification entries
+                error_log('[notifyAvisAuthorByEmail] Notifications désactivées — enregistrement ignoré.');
+            }
         } catch (Exception $e) {
             error_log('[notifyAvisAuthorByEmail] Erreur enregistrement notification: ' . $e->getMessage());
         }
@@ -213,19 +219,65 @@ function notifyAvisAuthorByEmail($db, $avis, $reponse)
 }
 
 if ($action === 'add') {
+    Validator::resetErrors();
+    
     $avis_id = isset($_POST['avis_id']) ? (int)$_POST['avis_id'] : 0;
-    $nom = trim($_POST['nom'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $contenu = trim($_POST['contenu'] ?? '');
-    $role_repondeur = trim($_POST['role_repondeur'] ?? 'client');
-    // statut géré uniquement en backoffice; pour les nouvelles réponses on force 'en_attente'
+    $nom = $_POST['nom'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $contenu = $_POST['contenu'] ?? '';
+    $role_repondeur = $_POST['role_repondeur'] ?? 'client';
     $statut = 'en_attente';
     $visible = isset($_POST['visible']) ? (int)$_POST['visible'] : 1;
     $visible = $visible ? 1 : 0;
-    $type = trim($_POST['type'] ?? 'freelance');
-    
-    // New fields for PRO form
-    $categorie = trim($_POST['categorie'] ?? '');
+    $type = $_POST['type'] ?? 'freelance';
+    $categorie = $_POST['categorie'] ?? '';
+
+    // Validations côté serveur
+    if ($avis_id <= 0) {
+        $result['message'] = 'Avis invalide.';
+        echo json_encode($result);
+        exit;
+    }
+
+    if (!Validator::validateNom($nom)) {
+        $result['message'] = Validator::getError('nom') ?: 'Nom invalide.';
+        echo json_encode($result);
+        exit;
+    }
+
+    if (!Validator::validateEmailOptional($email)) {
+        $result['message'] = Validator::getError('email') ?: 'Email invalide.';
+        echo json_encode($result);
+        exit;
+    }
+
+    if (!Validator::validateReponseContenu($contenu)) {
+        $result['message'] = Validator::getError('contenu') ?: 'Contenu invalide.';
+        echo json_encode($result);
+        exit;
+    }
+
+    // Valider le rôle et le type
+    if (!Validator::validateRole($role_repondeur)) {
+        $role_repondeur = 'client';
+    }
+
+    if (!Validator::validateType($type)) {
+        $type = 'freelance';
+    }
+
+    if (!Validator::validateCategorie($categorie)) {
+        $categorie = '';
+    }
+
+    if (!Validator::validateVisibility($visible)) {
+        $visible = 1;
+    }
+
+    // Nettoyer les données
+    $nom = Validator::sanitize($nom);
+    $email = Validator::sanitize($email);
+    $contenu = Validator::sanitize($contenu);
 
     // file upload (optional)
     $piece_jointe = null;
@@ -246,16 +298,6 @@ if ($action === 'add') {
         error_log('Aucun fichier dans FILES');
     }
 
-    if ($avis_id <= 0 || $nom === '' || $email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $contenu === '') {
-        $result['message'] = 'Données invalides.';
-        echo json_encode($result);
-        exit;
-    }
-
-    if (!in_array($role_repondeur, $ALLOWED_ROLES, true)) $role_repondeur = 'client';
-    if (!in_array($type, $ALLOWED_TYPES, true)) $type = 'freelance';
-
-    // Note: piece_jointe and categorie are optional fields
     error_log('Avant addReponse - piece_jointe: ' . ($piece_jointe ?? 'NULL') . ', categorie: ' . ($categorie ?? 'NULL'));
     
     if ($reponseModel->addReponse($avis_id, $nom, $email, $contenu, $visible, $type, $role_repondeur, $statut, $is_online, $piece_jointe, $categorie)) {
@@ -269,7 +311,7 @@ if ($action === 'add') {
             if (isset($avisModel)) {
                 $avis = $avisModel->getAvisById($avis_id);
             }
-            // envoyer email automatiquement (même si le formulaire ne contient plus la case notifier)
+            // envoyer email automatiquement
             if ($avis) {
                 notifyAvisAuthorByEmail($db, $avis, $new);
             }
@@ -287,18 +329,79 @@ if ($action === 'add') {
 }
 
 if ($action === 'edit') {
+    Validator::resetErrors();
+    
     $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
-    $nom = trim($_POST['nom'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $contenu = trim($_POST['contenu'] ?? '');
-    $role_repondeur = isset($_POST['role_repondeur']) ? trim($_POST['role_repondeur']) : null;
+    $nom = $_POST['nom'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $contenu = $_POST['contenu'] ?? '';
+    $role_repondeur = isset($_POST['role_repondeur']) ? $_POST['role_repondeur'] : null;
     $visible = array_key_exists('visible', $_POST) ? (int)$_POST['visible'] : null;
     if ($visible !== null) $visible = $visible ? 1 : 0;
-    $type = isset($_POST['type']) ? trim($_POST['type']) : null;
-    
-    // New fields for PRO form
-    $categorie = isset($_POST['categorie']) ? trim($_POST['categorie']) : null;
+    $type = isset($_POST['type']) ? $_POST['type'] : null;
+    $categorie = isset($_POST['categorie']) ? $_POST['categorie'] : null;
 
+    // Validations côté serveur
+    if ($id <= 0) {
+        $result['message'] = 'ID invalide.';
+        echo json_encode($result);
+        exit;
+    }
+
+    $existing = $reponseModel->getById($id);
+    if (!$existing) {
+        $result['message'] = 'Réponse introuvable.';
+        echo json_encode($result);
+        exit;
+    }
+
+    if (!Validator::validateNom($nom)) {
+        $result['message'] = Validator::getError('nom') ?: 'Nom invalide.';
+        echo json_encode($result);
+        exit;
+    }
+
+    if (!Validator::validateEmail($email)) {
+        $result['message'] = Validator::getError('email') ?: 'Email invalide.';
+        echo json_encode($result);
+        exit;
+    }
+
+    if (strcasecmp($existing['email'], $email) !== 0) {
+        $result['message'] = 'Email non autorisé pour modifier cette réponse.';
+        echo json_encode($result);
+        exit;
+    }
+
+    if (!Validator::validateReponseContenu($contenu)) {
+        $result['message'] = Validator::getError('contenu') ?: 'Contenu invalide.';
+        echo json_encode($result);
+        exit;
+    }
+
+    // Nettoyer les données
+    $nom = Validator::sanitize($nom);
+    $email = Validator::sanitize($email);
+    $contenu = Validator::sanitize($contenu);
+
+    // Valider les champs optionnels
+    if ($type !== null && !Validator::validateType($type)) {
+        $type = 'freelance';
+    }
+
+    if ($role_repondeur !== null && !Validator::validateRole($role_repondeur)) {
+        $role_repondeur = null;
+    }
+
+    if ($categorie !== null && !Validator::validateCategorie($categorie)) {
+        $categorie = null;
+    }
+
+    if ($visible !== null && !Validator::validateVisibility($visible)) {
+        $visible = 1;
+    }
+
+    // Gestion du fichier (optionnel)
     $piece_jointe = null;
     if (isset($_FILES['piece_jointe']) && $_FILES['piece_jointe']['size'] > 0) {
         $upload = uploadPieceJointe($_FILES['piece_jointe'], $ALLOWED_MIMES, $MAX_FILE_SIZE);
@@ -312,28 +415,6 @@ if ($action === 'edit') {
         }
     }
 
-    if ($id <= 0 || $nom === '' || $email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $contenu === '') {
-        $result['message'] = 'Données invalides.';
-        echo json_encode($result);
-        exit;
-    }
-
-    $existing = $reponseModel->getById($id);
-    if (!$existing) {
-        $result['message'] = 'Réponse introuvable.';
-        echo json_encode($result);
-        exit;
-    }
-
-    if (strcasecmp($existing['email'], $email) !== 0) {
-        $result['message'] = 'Email non autorisé pour modifier cette réponse.';
-        echo json_encode($result);
-        exit;
-    }
-
-    if ($type !== null && !in_array($type, $ALLOWED_TYPES, true)) $type = 'freelance';
-    if ($role_repondeur !== null && !in_array($role_repondeur, $ALLOWED_ROLES, true)) $role_repondeur = null;
-
     if ($reponseModel->updateReponse($id, $nom, $email, $contenu, $visible, $type, $role_repondeur, null)) {
         $updated = $reponseModel->getById($id);
         $result = ['success' => true, 'message' => 'Réponse modifiée', 'reponse' => $updated];
@@ -346,11 +427,20 @@ if ($action === 'edit') {
 }
 
 if ($action === 'delete') {
+    Validator::resetErrors();
+    
     $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
-    $email = trim($_POST['email'] ?? '');
+    $email = $_POST['email'] ?? '';
 
-    if ($id <= 0 || $email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $result['message'] = 'Identifiant ou email invalide.';
+    // Validations côté serveur
+    if ($id <= 0) {
+        $result['message'] = 'ID invalide.';
+        echo json_encode($result);
+        exit;
+    }
+
+    if (!Validator::validateEmail($email)) {
+        $result['message'] = Validator::getError('email') ?: 'Email invalide.';
         echo json_encode($result);
         exit;
     }
