@@ -8,6 +8,7 @@ class config
             $username="root";
             $password ="";
             $dbname="projetweb2A";
+
             try {
                 self::$pdo = new PDO("mysql:host=$servername;dbname=$dbname",
                         $username,
