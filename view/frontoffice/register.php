@@ -127,7 +127,7 @@ $old = $_POST ?? [];
           <option value="">-- Choisir un rôle --</option>
           <option value="Client">Client</option>
           <option value="Freelancer">Freelancer</option>
-          <option value="Admin">Admin</option>
+          
         </select>
       </div>
 

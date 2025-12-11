@@ -27,7 +27,7 @@ class PortfolioController {
     'lien'           => $_POST['lien'],
     'bio'            => $_POST['bio'],
     'experience'     => $_POST['experience'],
-    'competence'     => $_POST['competence'],
+    'competence' => $_POST['competence_tags'],
     'tarif'          => $_POST['tarif']
 ]);
 
@@ -108,7 +108,7 @@ class PortfolioController {
         'lien'           => $_POST['lien'],
         'bio'            => $_POST['bio'],
         'experience'     => $_POST['experience'],
-        'competence'     => $_POST['competence'],
+        'competence' => $_POST['competence_tags'],
         'tarif'          => $_POST['tarif']
     ];
 

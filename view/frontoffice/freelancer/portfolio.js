@@ -53,3 +53,63 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
+let selectedTags = [];
+
+document.getElementById("competence").addEventListener("input", function() {
+    let query = this.value.trim();
+    if (query.length < 1) {
+        document.getElementById("suggestions").classList.add("hidden");
+        return;
+    }
+
+    fetch("/project/api/get_competence.php?q=" + query)
+        .then(res => res.json())
+        .then(data => {
+            let box = document.getElementById("suggestions");
+            box.innerHTML = "";
+            box.classList.remove("hidden");
+
+            data.forEach(item => {
+                let div = document.createElement("div");
+                div.className = "px-3 py-2 hover:bg-gray-200 cursor-pointer";
+                div.textContent = item;
+
+                div.onclick = function() {
+                    addTag(item);
+                };
+
+                box.appendChild(div);
+            });
+        });
+});
+
+function addTag(text) {
+    if (selectedTags.includes(text)) return;
+
+    selectedTags.push(text);
+
+    let tag = document.createElement("span");
+    tag.className = "bg-green-600 text-white px-3 py-1 rounded-full flex items-center gap-2";
+    tag.textContent = text;
+
+    let close = document.createElement("span");
+    close.textContent = "×";
+    close.className = "cursor-pointer font-bold";
+    close.onclick = function() {
+        tag.remove();
+        selectedTags = selectedTags.filter(t => t !== text);
+        document.getElementById("competence_tags").value = selectedTags.join(",");
+    };
+
+    tag.appendChild(close);
+    document.getElementById("tags").appendChild(tag);
+
+    document.getElementById("competence_tags").value = selectedTags.join(",");
+    document.getElementById("competence").value = "";
+    document.getElementById("suggestions").innerHTML = "";
+    document.getElementById("suggestions").classList.add("hidden");
+}
+
+
+

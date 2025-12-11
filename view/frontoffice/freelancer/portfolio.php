@@ -64,8 +64,17 @@ if (empty($_SESSION['email']) || ($_SESSION['role'] ?? '') !== 'Freelancer') {
 
       <div>
         <label for="competence" class="block text-sm font-medium text-black mb-1">Compétences :</label>
-        <input type="text" id="competence" name="competence" placeholder="Ex: HTML, CSS, JS" value="<?= htmlspecialchars($old['competence'] ?? '') ?>"
-          class="w-full px-3 py-2 rounded-lg border border-gray-300">
+        <input type="text" id="competence" name="competence"
+       class="w-full px-3 py-2 rounded-lg border border-gray-300"
+       placeholder="Tapez une compétence...">
+
+<div id="suggestions"
+     class="bg-white border border-gray-300 rounded mt-1 hidden max-h-40 overflow-y-auto"></div>
+
+<div id="tags" class="flex flex-wrap gap-2 mt-3"></div>
+
+<input type="hidden" name="competence_tags" id="competence_tags">
+
       </div>
 
       <div>

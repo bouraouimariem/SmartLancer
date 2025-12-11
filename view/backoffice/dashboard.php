@@ -1,4 +1,6 @@
 <?php
+// dashboard.php
+// $users doit être fourni par le controller (BackofficeController::index)
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -35,7 +37,7 @@
     .hidden-el { display: none !important; }
 
     /* Smooth reveal for delete button */
-    .reveal { 
+    .reveal {
       display: inline-block;
       opacity: 0;
       transform: translateY(-6px);
@@ -43,6 +45,26 @@
     }
     @keyframes revealAnim {
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Stat cards */
+    .stat-card { border-radius: 12px; padding: 1rem; }
+    .badge-active { background: #16a34a; color: #fff; padding: 0.25rem 0.5rem; border-radius: 999px; font-weight:600; }
+    .badge-banned { background: #dc2626; color: #fff; padding: 0.25rem 0.5rem; border-radius: 999px; font-weight:600; }
+    .small-muted { color: #6b7280; font-size: 0.85rem; }
+
+    /* Status text badge in table */
+    .status-banned { background: #fee2e2; color: #991b1b; padding: .25rem .5rem; border-radius: 999px; font-weight:600; display:inline-block; }
+    .status-active { background: #ecfdf5; color: #065f46; padding: .25rem .5rem; border-radius: 999px; font-weight:600; display:inline-block; }
+
+    /* Responsive tweaks */
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+    }
+    @media (max-width: 640px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .sidebar { display: none; } /* Hide sidebar on very small screens for simplicity */
+      main { margin-left: 0 !important; }
     }
   </style>
 
@@ -78,9 +100,61 @@
   <main class="ml-64 w-full p-10 fade-in">
 
     <!-- HEADER -->
-    <div class="flex justify-between items-center mb-10">
-      <h1 class="text-4xl font-bold text-gray-800">Gestion des utilisateurs</h1>
-      <span class="text-gray-600">Bienvenue, <?= $_SESSION['name'] ?? '' ?></span>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+      <div>
+        <h1 class="text-4xl font-bold text-gray-800">Gestion des utilisateurs</h1>
+        <div class="small-muted mt-1">Bienvenue, <?= htmlspecialchars($_SESSION['name'] ?? '') ?></div>
+      </div>
+
+      
+    </div>
+
+    <?php
+      // Calculate statistics from $users array
+      $totalUsers = 0;
+      $totalFreelancers = 0;
+      $totalClients = 0;
+      $totalAdmins = 0;
+      $totalBanned = 0;
+
+      if (!empty($users) && is_array($users)) {
+        foreach ($users as $u) {
+          $totalUsers++;
+          $role = strtolower($u['role'] ?? '');
+          if ($role === 'freelancer') $totalFreelancers++;
+          if ($role === 'client') $totalClients++;
+          if ($role === 'admin') $totalAdmins++;
+          $bannedFlag = (int)($u['banned'] ?? $u['is_banned'] ?? 0);
+          if ($bannedFlag === 1) $totalBanned++;
+        }
+      }
+    ?>
+
+    <!-- STATS CARDS -->
+    <div class="grid stats-grid grid-cols-4 gap-4 mb-6">
+      <div class="stat-card bg-white shadow p-4">
+        <div class="text-sm text-gray-500">Utilisateurs</div>
+        <div class="text-2xl font-bold"><?= (int)$totalUsers ?></div>
+        <div class="small-muted mt-1">Total enregistré</div>
+      </div>
+
+      <div class="stat-card bg-white shadow p-4">
+        <div class="text-sm text-gray-500">Freelancers</div>
+        <div class="text-2xl font-bold"><?= (int)$totalFreelancers ?></div>
+        <div class="small-muted mt-1">Profils actifs</div>
+      </div>
+
+      <div class="stat-card bg-white shadow p-4">
+        <div class="text-sm text-gray-500">Clients</div>
+        <div class="text-2xl font-bold"><?= (int)$totalClients ?></div>
+        <div class="small-muted mt-1">Demandes & projets</div>
+      </div>
+
+      <div class="stat-card bg-white shadow p-4">
+        <div class="text-sm text-gray-500">Bannis</div>
+        <div class="text-2xl font-bold text-red-600"><?= (int)$totalBanned ?></div>
+        <div class="small-muted mt-1">Utilisateurs bannis</div>
+      </div>
     </div>
 
     <!-- TABLE -->
@@ -118,8 +192,6 @@
     </select>
   </div>
 
-  
-
   <button type="submit" class="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 btn-3d">Appliquer</button>
 </form>
 
@@ -130,14 +202,15 @@
               <th class="py-3 px-4">Email</th>
               <th class="py-3 px-4">Rôle</th>
               <th class="py-3 px-4">Date</th>
+              <th class="py-3 px-4">Status</th>
               <th class="py-3 px-4 text-center">Action</th>
             </tr>
           </thead>
 
           <tbody>
-            <?php foreach ($users as $us): 
-                // Ensure we have a banned flag in the $us array (0 or 1). Adjust key if your DB uses different column name.
-                $isBanned = ($us['banned'] ?? 0) == 1;
+            <?php foreach ($users as $us):
+                // Normalize and read banned flag (support different DB column names)
+                $isBanned = ((int)($us['banned'] ?? $us['is_banned'] ?? 0)) === 1;
             ?>
               <tr class="border-b row-anim" data-user-row="<?= (int)$us['id'] ?>">
 
@@ -146,9 +219,17 @@
                 <td class="py-3 px-4 text-green-700 font-semibold"><?= htmlspecialchars($us['role']) ?></td>
                 <td class="py-3 px-4"><?= htmlspecialchars($us['created_at']) ?></td>
 
+                <td class="py-3 px-4">
+                  <?php if ($isBanned): ?>
+                    <span class="status-banned">Banni</span>
+                  <?php else: ?>
+                    <span class="status-active">Actif</span>
+                  <?php endif; ?>
+                </td>
+
                 <td class="py-3 px-4 text-center space-x-2">
 
-                  <!-- DELETE (wrap in a span so we can show/hide it easily) -->
+                  <!-- DELETE (visible only if banned in current UI) -->
                   <span id="delete-wrapper-<?= (int)$us['id'] ?>" class="<?= $isBanned ? 'reveal' : 'hidden-el' ?>">
                     <form action="index.php?route=delete_user"
                           method="post"
@@ -242,7 +323,7 @@
 
           // Let the form continue to submit (page may reload after server response)
           // We do not call preventDefault here: we want the controller to run.
-          // If you prefer AJAX, you can preventDefault and submit via fetch.
+          // If you prefer AJAX, preventDefault and submit via fetch instead.
         });
       });
     });

@@ -24,7 +24,10 @@ class AuthController {
             if (strlen($name) < 3) $errors[] = "Le nom doit contenir au moins 3 caractères.";
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Email invalide.";
             if (strlen($password) < 6) $errors[] = "Le mot de passe doit contenir au moins 6 caractères.";
-            if (!in_array($role, ['Client', 'Freelancer', 'Admin'])) $errors[] = "Rôle invalide.";
+            // autorisés seulement par UI ou par insert DB (Admin ne peut pas s'inscrire)
+            if (!in_array($role, ['Client', 'Freelancer'])) {
+                $errors[] = "Rôle invalide.";
+            }
 
             // vérifier si email existe déjà
             if (empty($errors)) {

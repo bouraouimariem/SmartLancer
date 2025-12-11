@@ -37,7 +37,7 @@ $portfolio = $model->getByUserId($_SESSION['id']);
     </style>
 </head>
 
-<body class="bg-white min-h-screen p-20">
+<body class="bg-white min-h-screen flex justify-center items-center p-20">
 
 <!-- HEADER -->
 <header class="flex justify-between items-center bg-green-700 text-white shadow px-6 py-4 fixed w-full top-0 left-0 z-50 fade-in">

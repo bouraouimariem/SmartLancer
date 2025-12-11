@@ -9,6 +9,9 @@ $auth = new AuthController();//pour gerer les pages
 
 switch ($route) {
 
+
+    // --- CONTROLLER ---
+
     case 'register':
         $auth->register(); 
         break;
@@ -17,6 +20,31 @@ switch ($route) {
         $auth->login();
         break;
 
+    case 'logout':
+    $auth->logout();   
+    break;
+
+     // --- PORTFOLIO ---
+
+    case 'profil':
+    require __DIR__ . '/controller/PortfolioController.php';
+    $controller = new PortfolioController();
+    $controller->show();
+    break;
+
+    case 'create_portfolio':
+        require __DIR__ . '/controller/PortfolioController.php';
+        $controller = new PortfolioController();
+        $controller->create();
+        break;
+        
+    case 'update_portfolio':
+            require __DIR__ . '/controller/PortfolioController.php';
+            $controller = new PortfolioController();
+            $controller->update();  // 👉 tu dois APPELER update()
+            break;
+
+       // --- PAGES SIMPLES ---
     case 'client':
         require __DIR__ . '/view/frontoffice/client/client_home.php';
         break;
@@ -34,13 +62,7 @@ switch ($route) {
         require __DIR__ . '/view/create_project.php';
         break;
 
-    case 'profil':
-    require __DIR__ . '/controller/PortfolioController.php';
-    $controller = new PortfolioController();
-    $controller->show();
-    break;
-
-
+    
     case 'feedback':
         require __DIR__ . '/view/feedback.php';
         break;
@@ -48,82 +70,69 @@ switch ($route) {
     case 'blog':
         require __DIR__ . '/view/blog.php';
         break;
-
+        
     case 'reclamation':
-        require __DIR__ . '/view/reclamation.php';
-        break;
+            require __DIR__ . '/view/reclamation.php';
+            break;
+            
+    case 'contact':
+            require __DIR__ . '/view/frontoffice/contact.php';
+            break;
+    
 
-    case 'logout':
-    $auth->logout();   
-    break;
 
+// --- BACKOFFICE ---
 
-case 'create_portfolio':
-    require __DIR__ . '/controller/PortfolioController.php';
-    $controller = new PortfolioController();
-    $controller->create();
-    break;
-
-case 'backoffice':
+    case 'backoffice':
     require __DIR__ . '/controller/BackofficeController.php';
     $c = new BackofficeController();
     $c->index();
     break;
 
-case 'delete_user':
+    case 'delete_user':
     require __DIR__ . '/controller/BackofficeController.php';
     $c = new BackofficeController();
     $c->deleteUser();
     break;
 
-    
-case 'update_portfolio':
-    require __DIR__ . '/controller/PortfolioController.php';
-    $controller = new PortfolioController();
-    $controller->update();  // 👉 tu dois APPELER update()
-    break;
-
-
-
-case 'ban_user':
+    case 'ban_user':
     require __DIR__ . '/controller/BackofficeController.php';
     $c = new BackofficeController();
     $c->banUser();
     break;
 
- 
+    case 'view_ban':
+    require __DIR__ . '/controller/BackofficeController.php';
+    $c = new BackofficeController();
+    $c->viewBan();
+    break;
 
-case 'forgot_password':
+ 
+ // --- RESET PASSWORD ---
+    case 'forgot_password':
     require __DIR__ . '/view/frontoffice/forgot_password.php';
     break;
 
-case 'send_reset':
+    case 'send_reset':
     require __DIR__ . '/controller/ResetPasswordController.php';
     $controller = new ResetPasswordController();
     $controller->sendResetLink();
     break;
 
-case 'reset_password':
+    case 'reset_password':
     require __DIR__ . '/view/frontoffice/reset_password.php';
     break;
 
-case 'update_password':
+    case 'update_password':
     require __DIR__ . '/controller/ResetPasswordController.php';
     $controller = new ResetPasswordController();
     $controller->updatePassword();
     break;
 
 
-case 'contact':
-    require __DIR__ . '/view/frontoffice/contact.php';
-    break;
 
 
-case 'view_ban':
-    require __DIR__ . '/controller/BackofficeController.php';
-    $c = new BackofficeController();
-    $c->viewBan();
-    break;
+    
 
 
 

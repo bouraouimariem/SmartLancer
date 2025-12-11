@@ -55,8 +55,17 @@ $portfolio = $model->getByUserId($_SESSION['id']);
 
     <div>
       <label>Compétences :</label>
-      <input type="text" name="competence" value="<?= $portfolio['competence'] ?>"
-             class="w-full p-2 border rounded">
+      <input type="text" id="competence" name="competence"
+       class="w-full px-3 py-2 rounded-lg border border-gray-300"
+       placeholder="Tapez une compétence...">
+
+<div id="suggestions"
+     class="bg-white border border-gray-300 rounded mt-1 hidden max-h-40 overflow-y-auto"></div>
+
+<div id="tags" class="flex flex-wrap gap-2 mt-3"></div>
+
+<input type="hidden" name="competence_tags" id="competence_tags">
+
     </div>
 
     <div>
@@ -71,6 +80,7 @@ $portfolio = $model->getByUserId($_SESSION['id']);
 
   </form>
 </div>
+<script src="portfolio.js"></script>
 
 </body>
 </html>
