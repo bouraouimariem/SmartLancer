@@ -188,6 +188,37 @@ tr:hover {
 .back:hover, .add-new:hover {
     transform: scale(1.08);
 }
+.status-en-attente {
+    background: #f39c12; /* orange */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+}
+
+.status-repondu {
+    background: #27ae60; /* vert */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+}
+
+.status-clos {
+    background: #e74c3c; /* rouge */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+}
+
+
 
 /* Form styling */
 form {

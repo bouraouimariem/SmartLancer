@@ -227,29 +227,58 @@ $unread = array_filter($notifications, fn($n) => $n['is_read'] == 0);
                 font-size: 18px;
             }
         }
+        header {
+    background: linear-gradient(90deg, #1E90FF, #187bcd);
+    color: white;
+    padding: 25px 50px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+/* Position de la cloche */
+.notification {
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 32px; /* Agrandir la cloche */
+    color: white;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.notification:hover {
+    transform: translateY(-50%) scale(1.2);
+}
+
+/* Badge de notification */
+.notif-count {
+    background: red;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 50%;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+}
+
     </style>
 </head>
 <body>
 
 <header>
     <h1>SmartLancer</h1>
-    <a href="notifications_user.php" style="position:relative; font-size:22px;">
-    🔔
-    <?php if (count($unread) > 0): ?>
-        <span style="
-            background:red; 
-            color:white;
-            padding:2px 5px;
-            border-radius:50%;
-            font-size:12px;
-            position:absolute;
-            top:-10px;
-            right:-10px;">
-            <?= count($unread) ?>
-        </span>
-    <?php endif; ?>
-</a>
+    <a href="notifications_user.php" class="notification">
+        🔔
+        <?php if (count($unread) > 0): ?>
+            <span class="notif-count"><?= count($unread) ?></span>
+        <?php endif; ?>
+    </a>
 </header>
+
 
 <div class="landing-container">
     <div class="landing-content">

@@ -8,8 +8,11 @@ $controller = new ReclamationController();
 $filters = [
     'status' => $_GET['status'] ?? null,
     'date' => $_GET['date'] ?? null,
-    'search' => $_GET['search'] ?? null
+    'search' => $_GET['search'] ?? null,
+    'nom' => $_GET['nom'] ?? null,
+    'email' => $_GET['email'] ?? null
 ];
+
 
 // Récupérer les réclamations filtrées (sans filtrer par email)
 $reclamations = $controller->filterAndSearch($filters, 'date_envoi DESC');
@@ -45,12 +48,17 @@ if (isset($_GET['delete_id'])) {
                 <option value="">Tous</option>
                 <option value="En attente" <?= (isset($_GET['status']) && $_GET['status']=='En attente') ? 'selected' : '' ?>>En attente</option>
                 <option value="Répondu" <?= (isset($_GET['status']) && $_GET['status']=='Répondu') ? 'selected' : '' ?>>Répondu</option>
-                <option value="Clos" <?= (isset($_GET['status']) && $_GET['status']=='Clos') ? 'selected' : '' ?>>fermé</option>
+                <option value="Fermée" <?= (isset($_GET['status']) && $_GET['status']=='Fermée') ? 'selected' : '' ?>>Fermée</option>
+
             </select>
         </label>
 
         <label>Date: <input type="date" name="date" value="<?= $_GET['date'] ?? '' ?>"></label>
-        <label>Recherche: <input type="text" name="search" placeholder="ID ou Nom" value="<?= $_GET['search'] ?? '' ?>"></label>
+        <label>Recherche: <input type="text" name="search" placeholder="ID, Nom ou Email" value="<?= $_GET['search'] ?? '' ?>"></label>
+
+        <label>Nom: <input type="text" name="nom" value="<?= $_GET['nom'] ?? '' ?>"></label>
+        <label>Email: <input type="email" name="email" value="<?= $_GET['email'] ?? '' ?>"></label>
+
 
         <button type="submit">Filtrer</button>
         <a href="reclamations.php" style="margin-left:10px;">Réinitialiser</a>
@@ -81,15 +89,28 @@ if (isset($_GET['delete_id'])) {
                     <td><?= nl2br(htmlspecialchars($rec['message'])) ?></td>
                     <td><?= htmlspecialchars($rec['telephone']) ?></td>
                     <td><?= htmlspecialchars($rec['date_envoi']) ?></td>
-                    <td><?= htmlspecialchars($rec['status'] ?? 'En attente') ?></td>
                     <td>
-                        <a href="index.php?edit_id=<?= $rec['id_reclamation'] ?>" class="button edit">Modifier</a>
-                        <a href="reclamations.php?delete_id=<?= $rec['id_reclamation'] ?>" class="button delete"
-                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?');">Supprimer</a>
-                        <?php if($rec['status'] === 'Répondu'): ?>
-                            <a href="voir_reponse.php?id=<?= $rec['id_reclamation'] ?>" class="button response">Voir réponse</a>
-                        <?php endif; ?>
+                    <span class="<?= 
+                        strtolower($rec['status'])=='répondu' ? 'status-repondu' : 
+                        (in_array(strtolower($rec['status']), ['clos','fermé','fermée']) ? 'status-clos' : 'status-en-attente') 
+                    ?>">
+                        <?= in_array(strtolower($rec['status']), ['clos','fermé','fermée']) ? 'Fermée' : htmlspecialchars($rec['status']) ?>
+                    </span>
                     </td>
+
+                  <td>
+                    <?php if(strtolower($rec['status']) == 'en attente'): ?>
+                        <a href="index.php?edit_id=<?= $rec['id_reclamation'] ?>" class="button edit">Modifier</a>
+                    <?php endif; ?>
+
+                    <a href="reclamations.php?delete_id=<?= $rec['id_reclamation'] ?>" class="button delete"
+                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?');">Supprimer</a>
+
+                    <?php if(strtolower($rec['status']) != 'en attente'): ?>
+                        <a href="voir_reponse.php?id=<?= $rec['id_reclamation'] ?>" class="button response">Voir réponse</a>
+                    <?php endif; ?>
+                    </td>
+
                 </tr>
             <?php endforeach; ?>
         </table>

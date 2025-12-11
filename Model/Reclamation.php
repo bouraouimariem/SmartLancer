@@ -135,11 +135,24 @@ class Reclamation {
         $params[':date'] = $filters['date'];
     }
 
-    // Filtre par recherche sur ID ou Nom seulement
-    if (!empty($filters['search'])) {
-        $sql .= " AND (id_reclamation LIKE :search OR nom LIKE :search)";
-        $params[':search'] = "%" . $filters['search'] . "%";
-    }
+    // Filtre par ID, nom ou email
+if (!empty($filters['search'])) {
+    $sql .= " AND (id_reclamation LIKE :search OR nom LIKE :search OR email LIKE :search)";
+    $params[':search'] = "%" . $filters['search'] . "%";
+}
+
+// Filtre spécifique par nom
+if (!empty($filters['nom'])) {
+    $sql .= " AND nom LIKE :nom";
+    $params[':nom'] = "%" . $filters['nom'] . "%";
+}
+
+// Filtre spécifique par email
+if (!empty($filters['email'])) {
+    $sql .= " AND email LIKE :email";
+    $params[':email'] = "%" . $filters['email'] . "%";
+}
+
 
     // Tri
     $sql .= " ORDER BY $sort";
