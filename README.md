@@ -31,7 +31,6 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -55,9 +54,6 @@ market.
 We target clients who need ***specialists in programming*** to develop and design
 their own projects effectively and efficiently. And developers who want to use
 their skills.
-
-We offer ***Project-based***  for freelancers and they are able to upload their certificates to our platform, in addition to an assessment system to evaluate their capabilities with a progress
-bar.
 
 <br />
 
@@ -90,37 +86,12 @@ To get start with the project you need to follow the instructions:
 ### Prerequisites
 
 
-* You need to install The node package manger (NPM) & nodejs & MongoDB
-  ```sh
-  npm install npm@latest -g
-  ```
+
 
 ### Installation
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/RaniaElbaz/freelancePlatform/tree/master
-   ```
-2. Install NPM packages
-   ```sh
-   npm install
-   ```
-3. Start the Database Server
-    ```sh
-    mongod
-   ```
-4. Start the Backend Server
-    ```sh
-    npm start
-   ```
-5. Start the Frontend Server
-    ```sh
-    npm start
-   ```
 
-<br />
 
----
 
 <br />
 
@@ -167,22 +138,15 @@ Don't forget to give the project a star! Thanks again!
 
 <br />
 
-<!-- LICENSE -->
-## License
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-
-
-
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@Mariem Bouraoui] - mariembouraoui2024@gmail.com
-Your Name - [@Rasslenne ben Slimen] - bnslimene.raslene15@gmail.com
-Your Name - [@Maha Azaiz] - mariembouraoui2024@gmail.com
-Your Name - [@Ichraf Ben Jemaa] - mariembouraoui2024@gmail.com
+ [@Mariem Bouraoui] - mariembouraoui2024@gmail.com
+ [@Rasslenne ben Slimen] - bnslimene.raslene15@gmail.com
+ [@Maha Azaiz] - Maha@gmail.com
+ [@Ichraf Ben Jemaa] - Ichraf@gmail.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/bouraouimariem/SmartLancer)
+Project Link: [https://github.com/bouraouimariem/SmartLance]
 
 <br />
 
