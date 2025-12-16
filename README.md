@@ -1,188 +1,198 @@
 
-
+<!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/bouraouimariem/SmartLancer">
-    <img src="reclamation/assets/logo.png" alt="SmarLancer Logo" width="120" height="60">
+  <a href="https://github.com/github_username/repo_name">
+    <img src="reclamation/logo.png" alt="Logo" width="120" height="60">
   </a>
-  <h3 align="center">SmarLancer</h3>
-  <p align="center">
-    Une plateforme web pour connecter les clients et les freelances facilement.
-  </p>
+<h3 align="center">SmartLancer</h3>
 </div>
 
 
 
-## Table des matières
-- [À propos du projet](#à-propos-du-projet)
-- [Technologies utilisées](#technologies-utilisées)
-- [Installation](#installation)
-- [Modules](#modules)
-- [Utilisation](#utilisation)
-- [Contributions](#contributions)
-- [Licence](#licence)
-- [Contact](#contact)
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary style="color: Magenta; font-weight: bolder; font-size: 25px ">
+    Table of Contents
+  </summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
 
+<br /><br />
 
-## À propos du projet
+---
 
-**SmarLancer** est une plateforme web permettant de **mettre en relation les clients et les freelances**.  
-Elle est développée avec **HTML, CSS, JavaScript et PHP**, et utilise **MySQL** via **XAMPP** pour la gestion de la base de données.
-
-Cette plateforme offre une interface simple et intuitive pour :  
-
-- Créer et gérer les profils utilisateurs  
-- Publier et gérer des projets  
-- Envoyer et recevoir des propositions pour les projets  
-- Gérer les réclamations et les réponses  
-- Ajouter des commentaires et des avis sur les projets  
+<br />
 
 
-
-## Technologies utilisées
-
-- [HTML5](https://developer.mozilla.org/fr/docs/Web/HTML)  
-- [CSS3](https://developer.mozilla.org/fr/docs/Web/CSS)  
-- [JavaScript](https://developer.mozilla.org/fr/docs/Web/JavaScript)  
-- [PHP](https://www.php.net/)  
-- [MySQL](https://www.mysql.com/)  
-- [XAMPP](https://www.apachefriends.org/index.html)  
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
 
+**SmartLancer** is a Freelancing Platform aims to produce an integrated Programming Services for both **Clients** and **Freelancers**, make it easier, and ensure to communicate and meet the requirements of the labor
+market.
 
-## Installation
+We target clients who need ***specialists in programming*** to develop and design
+their own projects effectively and efficiently. And developers who want to use
+their skills.
 
-Pour démarrer le projet **SmarLancer** sur votre machine :  
+We offer ***Project-based***  for freelancers and they are able to upload their certificates to our platform, in addition to an assessment system to evaluate their capabilities with a progress
+bar.
 
-### Prérequis
+<br />
 
-- Installer [XAMPP](https://www.apachefriends.org/index.html)  
-- Avoir un navigateur moderne  
-- VS Code pour éditer le code  
+---
 
-### Étapes
+<br />
 
-1. **Cloner le dépôt :**  
-   ```bash
-   git clone https://github.com/bouraouimariem/SmartLancer.git
-````
+### Built With
 
-2. **Copier les fichiers** dans le dossier `htdocs` de XAMPP
-   Exemple : `C:\xampp\htdocs\SmarLancer`
-3. **Créer la base de données MySQL** via phpMyAdmin :
+* HTML5
+* CSS3,
+* JavaScript
+* PHP
+* MySQL
+* XAMPP
 
-   ```sql
-   CREATE DATABASE smarlancer;
+<!-- Title /  Logo Src / a href -->
+
+<br />
+
+---
+
+<br />
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+To get start with the project you need to follow the instructions:
+
+### Prerequisites
+
+
+* You need to install The node package manger (NPM) & nodejs & MongoDB
+  ```sh
+  npm install npm@latest -g
+  ```
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/RaniaElbaz/freelancePlatform/tree/master
    ```
-4. **Configurer la connexion à la base de données** (`config.php`) :
-
-   ```php
-   <?php
-   $servername = "localhost";
-   $username = "root";
-   $password = "";
-   $dbname = "smarlancer";
-
-   $conn = new mysqli($servername, $username, $password, $dbname);
-
-   if ($conn->connect_error) {
-       die("Connection failed: " . $conn->connect_error);
-   }
-   ?>
+2. Install NPM packages
+   ```sh
+   npm install
    ```
-5. **Démarrer Apache et MySQL** via le XAMPP Control Panel
-6. **Ouvrir le projet dans le navigateur** :
-
+3. Start the Database Server
+    ```sh
+    mongod
    ```
-   http://localhost/SmarLancer/
+4. Start the Backend Server
+    ```sh
+    npm start
+   ```
+5. Start the Frontend Server
+    ```sh
+    npm start
    ```
 
+<br />
+
+---
+
+<br />
 
 
-## Modules
+<!-- USAGE EXAMPLES -->
+## Usage
 
-1. **Gestion des utilisateurs et profils**
+To use the platform first you need to go to the home page, click signUp and Register to the website using your mail.. a verification link will sent to your mail, activate your mail and follow the instructions.. then login then you will directed to the find work pages.. navigate between the pages..
 
-   * Inscription et connexion sécurisées
-   * Gestion et modification du profil
-   * Gestion des mots de passe
-
-2. **Gestion des projets et propositions**
-
-   * Création et publication des projets
-   * Consultation des projets disponibles
-   * Envoi et réception de propositions
-
-3. **Gestion des réclamations et réponses**
-
-   * Soumission et traitement des réclamations
-   * Réponses et suivi par les administrateurs
-
-4. **Gestion des commentaires et avis**
-
-   * Ajouter des avis et commentaires sur les projets
-   * Historique des avis et notation
-
-
-
-## Utilisation
-
-* Créez un compte et complétez votre profil
-* Publiez un projet ou parcourez les projets existants
-* Envoyez et recevez des propositions
-* Gérez vos réclamations et ajoutez vos commentaires
-
-### Exemples d’images
-
-<div align="center">
-    <img src="reclamation/assets/home2.png" alt="Page d'accueil" width="400">
-    <br/><br/>
-    <img src="reclamation/assets/home.png" alt="Page d'accueil" width="400">
-    <br/><br/>
-    <img src="reclamation/assets/login1.png" alt="Page de connexion" width="400">
-    <br/><br/>
-    <img src="reclamation/assets/login2.png" alt="Page de connexion" width="400">
+<div>
+    <img src="reclamation/login.png" alt="Logo" >
+    <br />
+    <img src="reclamation/home1.png" alt="Logo" >
 </div>
 
 
+<br />
 
-## Contributions
+---
 
-Les contributions sont les bienvenues !
+<br />
 
-1. Fork le projet
-2. Créez une branche pour votre fonctionnalité :
 
-   ```bash
-   git checkout -b feature/NouvelleFonctionnalite
-   ```
-3. Committez vos modifications :
+<!-- CONTRIBUTING -->
+## Contributing
 
-   ```bash
-   git commit -m "Ajout de la fonctionnalité X"
-   ```
-4. Poussez la branche sur GitHub :
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-   ```bash
-   git push origin feature/NouvelleFonctionnalite
-   ```
-5. Ouvrez une Pull Request
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 
 
-## Licence
 
-Distribué sous la licence MIT. Voir `LICENSE.txt` pour plus de détails.
+<br />
+
+---
+
+<br />
+
+<!-- LICENSE -->
+## License
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 
 
+
+<!-- CONTACT -->
 ## Contact
 
-* Mariem Bouraoui : [mariembouraoui2024@gmail.com](mailto:mariembouraoui2024@gmail.com)
-* Maha Azaiz : [bnslimene.raslene15@gmail.com](mailto:bnslimene.raslene15@gmail.com)
-*  Ben Slimene Raslene : [bnslimene.raslene15@gmail.com](mailto:b@gmail.com)
-*  Ichraf ben jemaa : [bnslimene.raslene15@gmail.com](mailto:@gmail.com)
+Your Name - [@Mariem Bouraoui] - mariembouraoui2024@gmail.com
+Your Name - [@Rasslenne ben Slimen] - bnslimene.raslene15@gmail.com
+Your Name - [@Maha Azaiz] - mariembouraoui2024@gmail.com
+Your Name - [@Ichraf Ben Jemaa] - mariembouraoui2024@gmail.com
 
-Project Link : [https://github.com/bouraouimariem/SmartLancer](https://github.com/bouraouimariem/SmartLancer)
+Project Link: [https://github.com/github_username/repo_name](https://github.com/bouraouimariem/SmartLancer)
 
+<br />
+
+---
+
+<br />
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* Il s’agit d’un projet de fin d’études pour le parcours Développement Web Full Stack (MEA\RN) soutenu par l’Institut de Technologie de l’Information (ITI).
+Le projet a été réalisé à ESPRIT – École Supérieure Privée d’Ingénierie et de Technologie à Tunis (Tunisie)
