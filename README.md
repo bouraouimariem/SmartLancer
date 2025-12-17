@@ -1,162 +1,176 @@
-
 <!-- PROJECT LOGO -->
+
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="reclamation/logo.png" alt="Logo" width="120" height="60">
+  <a href="https://github.com/bouraouimariem/SmartLancer">
+    <img src="reclamation/logo.png" alt="SmartLancer Logo" width="140" height="70">
   </a>
-<h3 align="center">SmartLancer</h3>
+
+<h1 align="center">SmartLancer</h1>
+
+<p align="center">
+  A freelancing platform connecting <strong>clients</strong> with <strong>freelancers</strong> in the programming field.
+  <br />
+  <a href="https://github.com/bouraouimariem/SmartLancer"><strong>View Repository »</strong></a>
+</p>
 </div>
 
+---
 
+## 📑 Table of Contents
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary style="color: Magenta; font-weight: bolder; font-size: 25px ">
-    Table of Contents
-  </summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
+* [About the Project](#about-the-project)
 
+  * [Project Objectives](#project-objectives)
+  * [Built With](#built-with)
+* [Getting Started](#getting-started)
 
-<br /><br />
+  * [Prerequisites](#prerequisites)
+  * [Installation](#installation)
+* [Usage](#usage)
+* [Contributing](#contributing)
+* [Contact](#contact)
+* [Acknowledgments](#acknowledgments)
+* [License](#license)
 
 ---
 
-<br />
+## About the Project
 
+**SmartLancer** is a web-based freelancing platform designed to simplify collaboration between **clients** and **freelancers** specializing in programming and software development.
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+The platform allows clients to publish projects and find qualified developers, while freelancers can showcase their skills, apply for jobs, and manage their work efficiently.
 
+### Project Objectives
 
-**SmartLancer** is a Freelancing Platform aims to produce an integrated Programming Services for both **Clients** and **Freelancers**, make it easier, and ensure to communicate and meet the requirements of the labor
-market.
-
-We target clients who need ***specialists in programming*** to develop and design
-their own projects effectively and efficiently. And developers who want to use
-their skills.
-
-<br />
-
----
-
-<br />
+* Facilitate communication between clients and freelancers
+* Provide a secure and user-friendly freelancing environment
+* Help developers monetize their programming skills
+* Support clients in finding the right talent quickly and efficiently
 
 ### Built With
 
-* HTML5
-* CSS3,
-* JavaScript
-* PHP
-* MySQL
-* XAMPP
-
-<!-- Title /  Logo Src / a href -->
-
-<br />
+* **HTML5**
+* **CSS3**
+* **JavaScript**
+* **PHP**
+* **MySQL**
+* **XAMPP**
 
 ---
 
-<br />
-
-<!-- GETTING STARTED -->
 ## Getting Started
 
-To get start with the project you need to follow the instructions:
+To run this project locally, follow the steps below.
 
 ### Prerequisites
 
+Make sure you have the following installed on your machine:
 
-
+* [XAMPP](https://www.apachefriends.org/index.html)
+* Web browser (Chrome, Firefox, etc.)
+* Git
 
 ### Installation
 
+1. Clone the repository:
 
+```bash
+git clone https://github.com/bouraouimariem/SmartLancer.git
+```
 
+2. Move the project to the XAMPP `htdocs` directory:
 
-<br />
+```bash
+C:/xampp/htdocs/SmartLancer
+```
 
+3. Start **Apache** and **MySQL** from the XAMPP Control Panel.
 
-<!-- USAGE EXAMPLES -->
+4. Import the database:
+
+   * Open `phpMyAdmin`
+   * Create a new database (e.g. `smartlancer_db`)
+   * Import the provided `.sql` file
+
+5. Open your browser and navigate to:
+
+```
+http://localhost/SmartLancer
+```
+
+---
+
 ## Usage
 
-To use the platform first you need to go to the home page, click signUp and Register to the website using your mail.. a verification link will sent to your mail, activate your mail and follow the instructions.. then login then you will directed to the find work pages.. navigate between the pages..
+1. Open the home page of the platform.
+2. Click on **Sign Up** and create an account using your email address.
+3. A verification link will be sent to your email.
+4. Activate your account and log in.
+5. Access the dashboard to:
 
-<div>
-    <img src="reclamation/login.png" alt="Logo" >
-    <br />
-    <img src="reclamation/home1.png" alt="Logo" >
+   * Browse projects
+   * Post new jobs (clients)
+   * Apply for jobs (freelancers)
+
+### Screenshots
+
+<div align="center">
+  <img src="assets/home2.png" alt="Login Page" width="80%" />
+  <br /><br />
+  <img src="assets/login1.png" alt="Home Page" width="80%" />
 </div>
 
-
-<br />
-
 ---
 
-<br />
-
-
-<!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are welcome and greatly appreciated.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+To contribute:
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+1. Fork the repository
+2. Create your feature branch:
+
+```bash
+git checkout -b feature/AmazingFeature
+```
+
+3. Commit your changes:
+
+```bash
+git commit -m "Add AmazingFeature"
+```
+
+4. Push to the branch:
+
+```bash
+git push origin feature/AmazingFeature
+```
+
 5. Open a Pull Request
 
-
-
-
-<br />
-
 ---
 
-<br />
-
-<!-- CONTACT -->
 ## Contact
 
- [@Mariem Bouraoui] - mariembouraoui2024@gmail.com
- [@Rasslenne ben Slimen] - bnslimene.raslene15@gmail.com
- [@Maha Azaiz] - Maha@gmail.com
- [@Ichraf Ben Jemaa] - Ichraf@gmail.com
+* **Mariem Bouraoui** – [mariembouraoui2024@gmail.com](mailto:mariembouraoui2024@gmail.com)
+* **Raslene Ben Slimen** – [bnslimene.raslene15@gmail.com](mailto:bnslimene.raslene15@gmail.com)
+* **Maha Azaiz** – [maha@gmail.com](mailto:maha@gmail.com)
+* **Ichraf Ben Jemaa** – [ichraf@gmail.com](mailto:ichraf@gmail.com)
 
-Project Link: [https://github.com/bouraouimariem/SmartLance]
-
-<br />
+🔗 Project Link: [https://github.com/bouraouimariem/SmartLancer](https://github.com/bouraouimariem/SmartLancer)
 
 ---
 
-<br />
-
-
-<!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* Il s’agit d’un projet de fin d’études pour le parcours Développement Web Full Stack (MEA\RN) soutenu par l’Institut de Technologie de l’Information (ITI).
-Le projet a été réalisé à ESPRIT – École Supérieure Privée d’Ingénierie et de Technologie à Tunis (Tunisie)
+* This project is a **Final Year Project** for the *Full Stack Web Development* program (MEA / RN).
+* Supervised and supported by the **Institut de Technologie de l’Information (ITI)**.
+* Developed at **ESPRIT – École Supérieure Privée d’Ingénierie et de Technologie**, Tunis, Tunisia.
+
+---
+
+## License
+
+This project is licensed under the **MIT License**. You are free to use, modify, and distribute this project with proper attribution.
