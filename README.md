@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/bouraouimariem/SmartLancer">
-    <img src="reclamation/logo.png" alt="SmartLancer Logo" width="140" height="70">
+    <img src="assets/logo.png" alt="SmartLancer Logo" width="140" height="70">
   </a>
 
 <h1 align="center">SmartLancer</h1>
