@@ -116,9 +116,9 @@ http://localhost/SmartLancer
 ### Screenshots
 
 <div align="center">
-  <img src="assets/home2.png" alt="Login Page" width="80%" />
+  <img src="assets/home.jpg" alt="Login Page" width="80%" />
   <br /><br />
-  <img src="assets/login1.png" alt="Home Page" width="80%" />
+  <img src="assets/login.png" alt="Home Page" width="80%" />
 </div>
 
 ---
