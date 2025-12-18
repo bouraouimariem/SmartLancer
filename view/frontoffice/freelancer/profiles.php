@@ -33,6 +33,10 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== "Freelancer") {
             transform: translateY(-5px) scale(1.05);
             box-shadow: 0 15px 25px rgba(0,0,0,0.2);
         }
+        .hidden {
+    display: none;
+}
+
     </style>
 </head>
 
@@ -60,12 +64,13 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== "Freelancer") {
 
         <!-- NAVBAR -->
         <nav class="flex justify-end mb-8 text-gray-600 font-semibold space-x-6">
-            <a href="/project/view/frontoffice/freelancer/freelancer_home.php" class="hover:text-green-500">Home</a>
-            <a href="/project/view/frontoffice/freelancer/about.php">About</a>
-            <a href="/project/view/frontoffice/freelancer/skills.php">Skills</a>
-            <a href="/project/view/frontoffice/freelancer/work.php">Work</a>
-            <a href="#contact" class="hover:text-green-500">Contact</a>
-        </nav>
+   <a href="/project/view/frontoffice/freelancer/freelancer_home.php" class="hover:text-green-500">Home</a>
+    <a href="#" onclick="showSection('about')" class="hover:text-green-500">About</a>
+    <a href="#" onclick="showSection('skills')" class="hover:text-green-500">Skills</a>
+    <a href="#" onclick="showSection('work')" class="hover:text-green-500">Work</a>
+    <a href="#" onclick="showSection('contact')" class="hover:text-green-500">Contact</a>
+</nav>
+
 
         
 
@@ -79,7 +84,10 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== "Freelancer") {
 
     <!-- Nom sous la photo -->
     <h3 class="text-xl font-semibold mb-2"> I'am <?= htmlspecialchars($_SESSION['name']) ?> </h3>
-
+<p class="mt-4">
+                    <span class="font-semibold">Tarif :</span>
+                    <?= htmlspecialchars($portfolio['tarif']) ?> DT
+                </p>
     
 </div>
 
@@ -90,15 +98,52 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== "Freelancer") {
 
                 
 
-                <p class="mt-4">
-                    <span class="font-semibold">Tarif :</span>
-                    <?= htmlspecialchars($portfolio['tarif']) ?> DT
-                </p>
+                
+                <div>
 
-                <a href="/project/view/frontoffice/freelancer/edit_portfolio.php"
-                   class="inline-block mt-6 bg-green-600 text-white px-6 py-2 rounded-lg shadow hover:bg-green-700 shadow btn-3d">
-                    Modifier Profil
-                </a>
+    <!-- HOME -->
+    <div id="home" class="section">
+        <p class="text-lg text-gray-700">
+            Bienvenue sur mon portfolio 👋  
+            Sélectionnez une section pour voir plus d’informations.
+        </p>
+    </div>
+
+    
+
+    <!-- ABOUT -->
+    <div id="about" class="section hidden">
+        <h2 class="text-xl font-bold mb-2">About Me</h2>
+        <p><?= nl2br(htmlspecialchars($portfolio['bio'])) ?></p>
+    </div>
+
+    <!-- SKILLS -->
+    <div id="skills" class="section hidden">
+        <h2 class="text-xl font-bold mb-2">Skills</h2>
+        <p><?= nl2br(htmlspecialchars($portfolio['competence'])) ?></p>
+    </div>
+
+    <!-- WORK -->
+    <div id="work" class="section hidden">
+        <h2 class="text-xl font-bold mb-2">My Work</h2>
+        <p><?= nl2br(htmlspecialchars($portfolio['experience'])) ?></p>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="contact" class="section hidden">
+        <h2 class="text-xl font-bold mb-2">Contact</h2>
+        <p>Email : <?= htmlspecialchars($_SESSION['email']) ?></p>
+    </div>
+
+    <a href="/project/view/frontoffice/freelancer/edit_portfolio.php"
+       class="inline-block mt-6 bg-green-600 text-white px-6 py-2 rounded-lg shadow btn-3d">
+        Modifier Profil
+    </a>
+
+</div>
+
+
+                
             </div>
         </div>
     </div>
@@ -107,6 +152,17 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== "Freelancer") {
     <footer class="text-center mt-10 text-gray-400 text-sm">
         © 2025 Esprit — By Web Creator
     </footer>
+
+<script>
+function showSection(id) {
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.add('hidden');
+    });
+
+    document.getElementById(id).classList.remove('hidden');
+}
+</script>
+
 
 </body>
 </html>

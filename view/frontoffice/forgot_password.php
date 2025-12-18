@@ -34,7 +34,7 @@
                 type="email" 
                 name="email"
                 id="email"
-                required
+                
                 class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-700"
                 placeholder="Entrez votre email"
             >

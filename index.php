@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/model/database.php'; //nchargi connexion a la data base 
 require_once __DIR__ . '/controller/AuthController.php';// controleur d'authentification
+require_once 'controller/EmailVerificationController.php';
 
 // route via ?route=...
 $route = $_GET['route'] ?? 'register';//kani mawjuda URL la page s'ouvre snn par defaut register
@@ -132,7 +133,20 @@ switch ($route) {
 
 
 
-    
+    case 'verify_email':
+    $controller = new EmailVerificationController();
+    $controller->verifyEmail();
+    break;
+    case 'resend_verification':
+    require __DIR__ . '/view/frontoffice/resend_verification.php';
+    break;
+
+
+    case 'resend_verification_submit':
+    $controller = new EmailVerificationController();
+    $controller->resendVerificationEmail();
+    break;
+
 
 
 

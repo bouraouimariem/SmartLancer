@@ -2,7 +2,9 @@
 $errors = $errors ?? [];
 $old = $_POST ?? [];
 $success = $_SESSION['success'] ?? null;
+$error = $_SESSION['error'] ?? null;
 unset($_SESSION['success']);
+unset($_SESSION['error']);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -94,7 +96,14 @@ unset($_SESSION['success']);
           <!-- SUCCESS -->
           <?php if ($success): ?>
               <div class="bg-green-100 border border-green-300 text-green-700 p-3 rounded mb-4 fade-in">
-                  <?= htmlspecialchars($success) ?>
+                  <?= $success ?>
+              </div>
+          <?php endif; ?>
+
+          <!-- SESSION ERROR -->
+          <?php if ($error): ?>
+              <div class="bg-red-100 border border-red-300 text-red-700 p-3 rounded mb-4 fade-in">
+                  <?= $error ?>
               </div>
           <?php endif; ?>
 
@@ -103,7 +112,7 @@ unset($_SESSION['success']);
               <div class="bg-red-100 border border-red-300 text-red-700 p-3 rounded mb-4 fade-in">
                   <ul>
                       <?php foreach ($errors as $err): ?>
-                          <li><?= htmlspecialchars($err) ?></li>
+                          <li><?= $err ?></li>
                       <?php endforeach; ?>
                   </ul>
               </div>
@@ -136,10 +145,12 @@ unset($_SESSION['success']);
               </p>
 
               <p class="text-center mt-2 fade-in">
-                  <a href="view/frontoffice/forgot_password.php" class="text-green-700 hover:underline shadow btn-3d">
+                  <a href="index.php?route=forgot_password" class="text-green-700 hover:underline shadow btn-3d">
                       Mot de passe oublié ?
                   </a>
               </p>
+
+              
 
           </form>
 

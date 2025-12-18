@@ -113,7 +113,65 @@ public function getFilteredUsers($search = '', $role = '', $sortBy = 'id', $orde
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+ 
+    public function storeVerificationToken($email, $token) {
+        try {
+            $sql = "UPDATE us SET verification_token = :token WHERE email = :email";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute(['token' => $token, 'email' => $email]);
+        } catch(PDOException $e) {
+            error_log("Erreur storeVerificationToken: " . $e->getMessage());
+            return false;
+        }
+    }
 
+    /**
+     * Vérifier si le token de vérification existe
+     */
+    public function verifyEmailToken($token) {
+        try {
+            $sql = "SELECT email FROM us WHERE verification_token = :token LIMIT 1";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['token' => $token]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result ? true : false;
+        } catch(PDOException $e) {
+            error_log("Erreur verifyEmailToken: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Marquer l'email comme vérifié
+     */
+    public function markEmailAsVerified($token) {
+        try {
+            $sql = "UPDATE us SET email_verified = 1, verification_token = NULL WHERE verification_token = :token";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute(['token' => $token]);
+        } catch(PDOException $e) {
+            error_log("Erreur markEmailAsVerified: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Vérifier si l'email est vérifié
+     */
+    public function isEmailVerified($email) {
+        try {
+            $sql = "SELECT email_verified FROM us WHERE email = :email";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['email' => $email]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result && $result['email_verified'] == 1;
+        } catch(PDOException $e) {
+            error_log("Erreur isEmailVerified: " . $e->getMessage());
+            return false;
+        }
+    }
 
 
 

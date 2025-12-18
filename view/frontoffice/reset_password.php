@@ -15,20 +15,19 @@
 
         <form action="/project/index.php?route=update_password" method="POST">
 
-            <input type="hidden" name="token" value="<?= htmlspecialchars($_GET['token'] ?? '') ?>">
+    <label class="block mb-2 font-medium">Token reçu par email :</label>
+    <input type="text" name="token" 
+           class="w-full px-3 py-2 border rounded-lg mb-4">
 
-            <label class="block mb-2 font-medium">Nouveau mot de passe :</label>
-            <input type="password" name="password" required class="w-full px-3 py-2 border rounded-lg">
+    <label class="block mb-2 font-medium">Nouveau mot de passe :</label>
+    <input type="password" name="password" 
+           class="w-full px-3 py-2 border rounded-lg">
 
-            <button class="w-full bg-green-700 text-white py-2 rounded-lg mt-5 hover:bg-green-800 shadow btn-3d">
-                Mettre à jour
-            </button>
+    <button class="w-full bg-green-700 text-white py-2 rounded-lg mt-5">
+        Mettre à jour
+    </button>
+</form>
 
-            <p class="text-center text-sm mt-4">
-                <a href="/project/index.php?route=login" class="text-green-700">Retour</a>
-            </p>
-
-        </form>
 
     </div>
 
